@@ -5,6 +5,8 @@ android:
   components:
     - build-tools-24.0.0
     - android-24
+    - platform-tools
+    - tools
 
 script:
   ./gradlew build
