@@ -1,27 +1,16 @@
-allprojects {
-  repositories {
-    jcenter()
-  }
-}
+ext.version = [
+    appCompat:  "24.2.0",
 
-ext {
-  // Android
-  androidBuildToolsVersion = "24.0.1"
-  androidMinSdkVersion = 15
-  androidTargetSdkVersion = 24
-  androidCompileSdkVersion = 24
+    // Testing
+    jUnit:      "4.12"
+]
 
-  // Library
-  appCompatVersion = '24.2.0'
+def version = ext.version;
 
-  // Testing
-  jUnitVersion = '4.12'
+ext.presentationDependencies = [
+    appCompat:    "com.android.support:appcompat-v7:${version.appCompat}"
+]
 
-  presentationDependencies = [
-      appCompat:    "com.android.support:appcompat-v7:${appCompatVersion}"
-  ]
-
-  presentationTestDependencies = [
-      jUnit:        "junit:junit:${jUnitVersion}"
-  ]
-}
+ext.presentationTestDependencies = [
+    jUnit:        "junit:junit:${version.jUnit}"
+]

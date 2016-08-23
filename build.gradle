@@ -14,12 +14,6 @@ allprojects {
     jcenter()
     maven { url "https://jitpack.io" }
   }
-
-  ext {
-    androidApplicationId = 'com.zireck.remotecraft'
-    androidVersionCode = 1
-    androidVersionName = "1.0"
-  }
 }
 
 task clean(type: Delete) {

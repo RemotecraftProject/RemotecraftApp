@@ -1,18 +1,20 @@
 apply plugin: 'com.android.application'
+apply from: "$rootProject.projectDir/buildsystem/dependencies.gradle"
+apply from: "$rootProject.projectDir/buildsystem/config.gradle"
+
+def configuration = ext.configuration;
 
 android {
-  def globalConfiguration = rootProject.extensions.getByName("ext")
-
-  compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
-  buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
+  compileSdkVersion configuration.compileSdkVersion
+  buildToolsVersion configuration.buildToolsVersion
 
   defaultConfig {
-    minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
-    targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+    minSdkVersion configuration.minimumSdkVersion
+    targetSdkVersion configuration.targetSdkVersion
 
-    applicationId globalConfiguration.getAt("androidApplicationId")
-    versionCode globalConfiguration.getAt("androidVersionCode")
-    versionName globalConfiguration.getAt("androidVersionName")
+    applicationId configuration.applicationId
+    versionCode configuration.versionCode
+    versionName configuration.versionName
   }
 
   compileOptions {
@@ -45,10 +47,10 @@ android {
 }
 
 dependencies {
-  def presentationDependencies = rootProject.ext.presentationDependencies
-  def presentationTestDependencies = rootProject.ext.presentationTestDependencies
+  def library = rootProject.ext.presentationDependencies;
+  def libraryTest = rootProject.ext.presentationTestDependencies;
 
-  compile presentationDependencies.appCompat
+  compile "${library.appCompat}"
 
-  testCompile presentationTestDependencies.jUnit
+  testCompile "${libraryTest.jUnit}"
 }

@@ -1,0 +1,29 @@
+ext.configuration = [
+  applicationId               : "com.zireck.remotecraft",
+  versionMajor                : 1,
+  versionMinor                : 0,
+  versionPatch                : 0,
+  versionClassifier           : "",
+
+  versionCode                 : 1,
+  versionName                 : "1.0.0",
+
+  minimumSdkVersion           : 15,
+  compileSdkVersion           : 24,
+  targetSdkVersion            : 24,
+  buildToolsVersion           : "24.0.1"
+]
+
+def configuration = ext.configuration;
+
+ext.buildVersionCode = {
+  return configuration.minimumSdkVersion * 10000000 + configuration.versionMajor * 10000 + configuration.versionMinor * 100 + configuration.versionPatch
+}
+
+ext.buildVersionName = {
+  String versionName = ext.buildVersionNameWithoutClassifier();
+  if (configuration.versionClassifier != null && !configuration.versionClassifier.isEmpty()) {
+    versionName = versionName + "-" + configuration.versionClassifier
+  }
+  return versionName;
+}
