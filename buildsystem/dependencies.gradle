@@ -1,16 +1,32 @@
 ext.version = [
-    appCompat:  "24.2.0",
+    appCompat                 : "24.2.0",
 
     // Testing
-    jUnit:      "4.12"
+    jUnit                     : "4.12"
 ]
 
 def version = ext.version;
 
+ext.dataDependencies = [
+
+]
+
+ext.dataTestDependencies = [
+    jUnit                     : "junit:junit:${version.jUnit}"
+]
+
+ext.domainDependencies = [
+
+]
+
+ext.domainTestDependencies = [
+
+]
+
 ext.presentationDependencies = [
-    appCompat:    "com.android.support:appcompat-v7:${version.appCompat}"
+    appCompat                 : "com.android.support:appcompat-v7:${version.appCompat}"
 ]
 
 ext.presentationTestDependencies = [
-    jUnit:        "junit:junit:${version.jUnit}"
+    jUnit                     : "junit:junit:${version.jUnit}"
 ]

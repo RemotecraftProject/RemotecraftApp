@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+configurations {
+    provided
+}
+
+sourceSets {
+  main {
+    compileClasspath += configurations.provided
+  }
+}
+
+dependencies {
+  def library = rootProject.ext.domainDependencies;
+  def libraryTest = rootProject.ext.domainTestDependencies;
+}

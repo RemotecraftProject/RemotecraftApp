@@ -1,25 +1,23 @@
-apply plugin: 'com.android.application'
-apply from: "$rootProject.projectDir/buildsystem/dependencies.gradle"
+apply plugin: 'com.android.library'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 
 def configuration = ext.configuration;
 
 android {
+  defaultPublishConfig "debug"
+
   compileSdkVersion configuration.compileSdkVersion
   buildToolsVersion configuration.buildToolsVersion
 
   defaultConfig {
     minSdkVersion configuration.minimumSdkVersion
     targetSdkVersion configuration.targetSdkVersion
-
-    applicationId configuration.applicationId
     versionCode configuration.versionCode
-    versionName configuration.versionName
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_7
-    targetCompatibility JavaVersion.VERSION_1_7
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 
   packagingOptions {
@@ -37,20 +35,13 @@ android {
     disable 'InvalidPackage'
     disable 'OldTargetApi'
   }
-
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-    }
-  }
 }
 
 dependencies {
-  def library = rootProject.ext.presentationDependencies;
-  def libraryTest = rootProject.ext.presentationTestDependencies;
+  def library = rootProject.ext.dataDependencies;
+  def libraryTest = rootProject.ext.dataTestDependencies;
 
-  compile "${library.appCompat}"
+  compile project(':domain')
 
   testCompile "${libraryTest.jUnit}"
 }
