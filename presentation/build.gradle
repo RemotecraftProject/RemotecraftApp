@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 
 def configuration = ext.configuration;
@@ -60,7 +61,18 @@ dependencies {
   compile project(':domain')
   compile project(':data')
 
+  apt "${library.daggerCompiler}"
+  compile "${library.dagger}"
+  compile "${library.rxJava}"
+  compile "${library.rxAndroid}"
+  provided "${library.javaxAnnotation}"
+  compile "${library.design}"
   compile "${library.appCompat}"
+  compile "${library.recyclerView}"
+  compile "${library.cardView}"
+  apt "${library.butterKnifeCompiler}"
+  compile "${library.butterKnife}"
+  compile "${library.materialDesignColors}"
 
   testCompile "${libraryTest.jUnit}"
 }

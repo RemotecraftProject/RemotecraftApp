@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 
 def configuration = ext.configuration;
@@ -42,6 +43,14 @@ dependencies {
   def libraryTest = rootProject.ext.dataTestDependencies;
 
   compile project(':domain')
+
+  apt "${library.daggerCompiler}"
+  compile "${library.dagger}"
+  compile "${library.rxJava}"
+  compile "${library.rxAndroid}"
+  provided "${library.javaxAnnotation}"
+  compile "${library.javaxInject}"
+  compile "${library.androidAnnotations}"
 
   testCompile "${libraryTest.jUnit}"
 }
