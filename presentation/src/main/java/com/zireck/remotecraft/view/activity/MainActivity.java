@@ -1,7 +1,8 @@
-package com.zireck.remotecraft;
+package com.zireck.remotecraft.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.zireck.remotecraft.R;
 
 public class MainActivity extends AppCompatActivity {
 
