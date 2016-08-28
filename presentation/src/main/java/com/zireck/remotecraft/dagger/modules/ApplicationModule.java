@@ -6,6 +6,7 @@ import com.zireck.remotecraft.UiThread;
 import com.zireck.remotecraft.data.executor.JobExecutor;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.navigation.Navigator;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -28,5 +29,10 @@ public class ApplicationModule {
 
   @Provides @Singleton PostExecutionThread providePostExecutionThread(UiThread uiThread) {
     return uiThread;
+  }
+
+  @Provides @Singleton
+  Navigator provideNavigator() {
+    return new Navigator();
   }
 }

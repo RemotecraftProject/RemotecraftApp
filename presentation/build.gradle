@@ -22,7 +22,9 @@ android {
   }
 
   dexOptions {
-    incremental true
+    dexInProcess = true
+    preDexLibraries true
+    javaMaxHeapSize "3g"
   }
 
   compileOptions {
@@ -61,7 +63,7 @@ dependencies {
   compile project(':domain')
   compile project(':data')
 
-  apt "${library.daggerCompiler}"
+  annotationProcessor "${library.daggerCompiler}"
   compile "${library.dagger}"
   compile "${library.rxJava}"
   compile "${library.rxAndroid}"
@@ -70,7 +72,7 @@ dependencies {
   compile "${library.appCompat}"
   compile "${library.recyclerView}"
   compile "${library.cardView}"
-  apt "${library.butterKnifeCompiler}"
+  annotationProcessor "${library.butterKnifeCompiler}"
   compile "${library.butterKnife}"
   compile "${library.materialDesignColors}"
 
