@@ -32,6 +32,8 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
+  compileOptions.incremental = false
+
   packagingOptions {
     exclude 'LICENSE.txt'
     exclude 'META-INF/DEPENDENCIES'
