@@ -16,6 +16,7 @@ ext.version = [
     // UI
     butterKnife               : "8.3.0",
     materialDesignColors      : "3.0.0",
+    androidSpinKit            : "1.0.5",
 
     // Testing
     jUnit                     : "4.12"
@@ -62,7 +63,8 @@ ext.presentationDependencies = [
 
     butterKnifeCompiler       : "com.jakewharton:butterknife-compiler:${version.butterKnife}",
     butterKnife               : "com.jakewharton:butterknife:${version.butterKnife}",
-    materialDesignColors      : "com.wada811:android-material-design-colors:${version.materialDesignColors}"
+    materialDesignColors      : "com.wada811:android-material-design-colors:${version.materialDesignColors}",
+    androidSpinKit            : "com.github.ybq:Android-SpinKit:${version.androidSpinKit}"
 ]
 
 ext.presentationTestDependencies = [

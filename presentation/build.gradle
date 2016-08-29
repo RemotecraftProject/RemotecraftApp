@@ -65,6 +65,7 @@ dependencies {
   apt "${library.butterKnifeCompiler}"
   compile "${library.butterKnife}"
   compile "${library.materialDesignColors}"
+  compile "${library.androidSpinKit}"
 
   testCompile "${libraryTest.jUnit}"
 }
