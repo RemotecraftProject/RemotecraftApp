@@ -15,24 +15,12 @@ android {
     applicationId configuration.applicationId
     versionCode configuration.versionCode
     versionName configuration.versionName
-
-    jackOptions {
-      enabled true
-    }
-  }
-
-  dexOptions {
-    dexInProcess = true
-    preDexLibraries true
-    javaMaxHeapSize "3g"
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
   }
-
-  compileOptions.incremental = false
 
   packagingOptions {
     exclude 'LICENSE.txt'
@@ -65,7 +53,7 @@ dependencies {
   compile project(':domain')
   compile project(':data')
 
-  annotationProcessor "${library.daggerCompiler}"
+  apt "${library.daggerCompiler}"
   compile "${library.dagger}"
   compile "${library.rxJava}"
   compile "${library.rxAndroid}"
@@ -74,7 +62,7 @@ dependencies {
   compile "${library.appCompat}"
   compile "${library.recyclerView}"
   compile "${library.cardView}"
-  annotationProcessor "${library.butterKnifeCompiler}"
+  apt "${library.butterKnifeCompiler}"
   compile "${library.butterKnife}"
   compile "${library.materialDesignColors}"
 
