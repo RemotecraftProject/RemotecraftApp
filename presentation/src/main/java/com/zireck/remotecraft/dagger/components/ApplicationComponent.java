@@ -6,6 +6,7 @@ import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.navigation.Navigator;
 import com.zireck.remotecraft.view.activity.BaseActivity;
+import com.zireck.remotecraft.view.activity.SearchActivity;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -13,6 +14,7 @@ import javax.inject.Singleton;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
   void inject(BaseActivity baseActivity);
+  void inject(SearchActivity searchActivity);
 
   // Exposed to subgraph
   Context context();
