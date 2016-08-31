@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import butterknife.BindView;
-import com.squareup.picasso.Picasso;
 import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.imageloader.PicassoImageLoader;
@@ -15,7 +14,6 @@ import javax.inject.Inject;
 public class SearchActivity extends BaseActivity {
 
   @Inject SearchPresenter presenter;
-  //ImageLoader picassoImageLoader = new PicassoImageLoader(new Picasso().Builder());
 
   @BindView(R.id.background) ImageView background;
 
@@ -51,6 +49,10 @@ public class SearchActivity extends BaseActivity {
   }
 
   private void initUi() {
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().hide();
+    }
+
     ImageLoader imageLoader = new PicassoImageLoader(this);
     imageLoader.load(R.drawable.mesa, background);
   }
