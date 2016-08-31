@@ -64,6 +64,7 @@ dependencies {
   compile "${library.cardView}"
   apt "${library.butterKnifeCompiler}"
   compile "${library.butterKnife}"
+  compile "${library.picasso}"
   compile "${library.materialDesignColors}"
   compile "${library.androidSpinKit}"
 
