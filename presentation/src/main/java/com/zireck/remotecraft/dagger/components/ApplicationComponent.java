@@ -14,7 +14,6 @@ import javax.inject.Singleton;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
   void inject(BaseActivity baseActivity);
-  void inject(SearchActivity searchActivity);
 
   // Exposed to subgraph
   Context context();

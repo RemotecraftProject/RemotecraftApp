@@ -6,14 +6,19 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import butterknife.BindView;
 import com.zireck.remotecraft.R;
+import com.zireck.remotecraft.dagger.components.DaggerUiComponent;
+import com.zireck.remotecraft.dagger.components.UiComponent;
+import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.imageloader.ImageLoader;
-import com.zireck.remotecraft.imageloader.PicassoImageLoader;
 import com.zireck.remotecraft.presenter.SearchPresenter;
 import javax.inject.Inject;
 
 public class SearchActivity extends BaseActivity {
 
+  private UiComponent uiComponent;
+
   @Inject SearchPresenter presenter;
+  @Inject ImageLoader imageLoader;
 
   @BindView(R.id.background) ImageView background;
 
@@ -45,7 +50,13 @@ public class SearchActivity extends BaseActivity {
   }
 
   private void initInjector() {
-    getApplicationComponent().inject(this);
+    uiComponent = DaggerUiComponent.builder()
+        .applicationComponent(getApplicationComponent())
+        .activityModule(getActivityModule())
+        .uiModule(new UiModule())
+        .build();
+
+    uiComponent.inject(this);
   }
 
   private void initUi() {
@@ -53,7 +64,6 @@ public class SearchActivity extends BaseActivity {
       getSupportActionBar().hide();
     }
 
-    ImageLoader imageLoader = new PicassoImageLoader(this);
     imageLoader.load(R.drawable.mesa, background);
   }
 }
