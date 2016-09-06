@@ -4,8 +4,10 @@ import android.content.Context;
 import com.zireck.remotecraft.RemotecraftApp;
 import com.zireck.remotecraft.UiThread;
 import com.zireck.remotecraft.data.executor.JobExecutor;
+import com.zireck.remotecraft.data.repository.NetworkDataRepository;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.repository.NetworkRepository;
 import com.zireck.remotecraft.navigation.Navigator;
 import dagger.Module;
 import dagger.Provides;
@@ -34,5 +36,10 @@ public class ApplicationModule {
   @Provides @Singleton
   Navigator provideNavigator() {
     return new Navigator();
+  }
+
+  @Provides @Singleton
+  NetworkRepository provideNetworkRepository(NetworkDataRepository networkDataRepository) {
+    return networkDataRepository;
   }
 }
