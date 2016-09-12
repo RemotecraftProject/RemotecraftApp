@@ -5,6 +5,8 @@ apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 def configuration = ext.configuration;
 
 android {
+  defaultPublishConfig "debug"
+
   compileSdkVersion configuration.compileSdkVersion
   buildToolsVersion configuration.buildToolsVersion
 
