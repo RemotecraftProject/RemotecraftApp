@@ -46,6 +46,7 @@ dependencies {
   compile "${library.dagger}"
   compile "${library.rxJava}"
   compile "${library.rxAndroid}"
+  compile "${library.rxReceivers}"
   provided "${library.javaxAnnotation}"
   compile "${library.javaxInject}"
   compile "${library.androidAnnotations}"

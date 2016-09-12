@@ -8,6 +8,8 @@ import com.zireck.remotecraft.data.repository.NetworkDataRepository;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.repository.NetworkRepository;
+import com.zireck.remotecraft.domain.repository.ReceiversManager;
+import com.zireck.remotecraft.infrastructure.receiver.ReceiversDataManager;
 import com.zireck.remotecraft.navigation.Navigator;
 import dagger.Module;
 import dagger.Provides;
@@ -41,5 +43,9 @@ public class ApplicationModule {
   @Provides @Singleton
   NetworkRepository provideNetworkRepository(NetworkDataRepository networkDataRepository) {
     return networkDataRepository;
+  }
+
+  @Provides @Singleton ReceiversManager provideReceiversManager(ReceiversDataManager receiversDataManager) {
+    return receiversDataManager;
   }
 }

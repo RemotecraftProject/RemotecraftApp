@@ -5,9 +5,9 @@ import com.zireck.remotecraft.dagger.modules.ApplicationModule;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.repository.NetworkRepository;
+import com.zireck.remotecraft.domain.repository.ReceiversManager;
 import com.zireck.remotecraft.navigation.Navigator;
 import com.zireck.remotecraft.view.activity.BaseActivity;
-import com.zireck.remotecraft.view.activity.SearchActivity;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -22,4 +22,5 @@ public interface ApplicationComponent {
   PostExecutionThread postExecutionThread();
   Navigator navigator();
   NetworkRepository networkRepository();
+  ReceiversManager receiversManager();
 }

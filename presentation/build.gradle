@@ -52,6 +52,7 @@ dependencies {
 
   compile project(':domain')
   compile project(':data')
+  compile project(':infrastructure')
 
   apt "${library.daggerCompiler}"
   compile "${library.dagger}"
