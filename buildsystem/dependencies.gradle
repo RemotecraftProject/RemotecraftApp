@@ -25,6 +25,21 @@ ext.version = [
 
 def version = ext.version;
 
+ext.infrastructureDependencies = [
+    daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
+    dagger                    : "com.google.dagger:dagger:${version.dagger}",
+    rxJava                    : "io.reactivex:rxjava:${version.rxJava}",
+    rxAndroid                 : "io.reactivex:rxandroid:${version.rxAndroid}",
+    javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
+    javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
+
+    androidAnnotations        : "com.android.support:support-annotations:${version.androidAnnotations}"
+]
+
+ext.infrastructureTestDependencies = [
+    jUnit                     : "junit:junit:${version.jUnit}"
+]
+
 ext.dataDependencies = [
     daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
     dagger                    : "com.google.dagger:dagger:${version.dagger}",

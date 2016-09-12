@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+apply from: "$rootProject.projectDir/buildsystem/config.gradle"
+
+def configuration = ext.configuration;
+
+android {
+  compileSdkVersion configuration.compileSdkVersion
+  buildToolsVersion configuration.buildToolsVersion
+
+  defaultConfig {
+    minSdkVersion configuration.minimumSdkVersion
+    targetSdkVersion configuration.targetSdkVersion
+    versionCode configuration.versionCode
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+
+  packagingOptions {
+    exclude 'LICENSE.txt'
+    exclude 'META-INF/DEPENDENCIES'
+    exclude 'META-INF/ASL2.0'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/LICENSE'
+  }
+
+  lintOptions {
+    quiet true
+    abortOnError false
+    ignoreWarnings true
+    disable 'InvalidPackage'
+    disable 'OldTargetApi'
+  }
+}
+
+dependencies {
+  def library = rootProject.ext.infrastructureDependencies;
+  def libraryTest = rootProject.ext.infrastructureTestDependencies;
+
+  compile project(':domain')
+
+  apt "${library.daggerCompiler}"
+  compile "${library.dagger}"
+  compile "${library.rxJava}"
+  compile "${library.rxAndroid}"
+  provided "${library.javaxAnnotation}"
+  compile "${library.javaxInject}"
+  compile "${library.androidAnnotations}"
+
+  testCompile "${libraryTest.jUnit}"
+}
