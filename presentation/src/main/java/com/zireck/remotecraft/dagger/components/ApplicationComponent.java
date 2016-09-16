@@ -4,8 +4,8 @@ import android.content.Context;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.repository.NetworkRepository;
-import com.zireck.remotecraft.domain.repository.ReceiversManager;
+import com.zireck.remotecraft.domain.manager.NetworkManager;
+import com.zireck.remotecraft.domain.manager.ReceiversManager;
 import com.zireck.remotecraft.navigation.Navigator;
 import com.zireck.remotecraft.view.activity.BaseActivity;
 import dagger.Component;
@@ -21,6 +21,6 @@ public interface ApplicationComponent {
   ThreadExecutor threadExecutor();
   PostExecutionThread postExecutionThread();
   Navigator navigator();
-  NetworkRepository networkRepository();
+  NetworkManager networkManager();
   ReceiversManager receiversManager();
 }

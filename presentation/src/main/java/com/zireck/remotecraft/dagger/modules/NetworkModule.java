@@ -5,7 +5,7 @@ import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.Interactor;
 import com.zireck.remotecraft.domain.interactor.SearchWorldInteractor;
-import com.zireck.remotecraft.domain.repository.NetworkRepository;
+import com.zireck.remotecraft.infrastructure.manager.NetworkDataManager;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
@@ -19,8 +19,8 @@ public class NetworkModule {
 
   @Provides @PerActivity
   @Named("searchWorld")
-  Interactor provideSearchWorldInteractor(NetworkRepository networkRepository,
+  Interactor provideSearchWorldInteractor(NetworkDataManager networkDataManager,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    return new SearchWorldInteractor(networkRepository, threadExecutor, postExecutionThread);
+    return new SearchWorldInteractor(networkDataManager, threadExecutor, postExecutionThread);
   }
 }

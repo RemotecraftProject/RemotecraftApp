@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.domain.repository;
+package com.zireck.remotecraft.domain.manager;
 
 import rx.Observable;
 

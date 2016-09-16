@@ -2,7 +2,7 @@ package com.zireck.remotecraft.domain.interactor;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.repository.ReceiversManager;
+import com.zireck.remotecraft.domain.manager.ReceiversManager;
 import rx.Observable;
 
 public class GetWifiStateInteractor extends Interactor {

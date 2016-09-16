@@ -6,7 +6,7 @@ import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
 import com.zireck.remotecraft.domain.interactor.Interactor;
-import com.zireck.remotecraft.domain.repository.ReceiversManager;
+import com.zireck.remotecraft.domain.manager.ReceiversManager;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.imageloader.PicassoImageLoader;
 import dagger.Module;

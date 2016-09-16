@@ -4,12 +4,12 @@ import android.content.Context;
 import com.zireck.remotecraft.RemotecraftApp;
 import com.zireck.remotecraft.UiThread;
 import com.zireck.remotecraft.data.executor.JobExecutor;
-import com.zireck.remotecraft.data.repository.NetworkDataRepository;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.repository.NetworkRepository;
-import com.zireck.remotecraft.domain.repository.ReceiversManager;
-import com.zireck.remotecraft.infrastructure.receiver.ReceiversDataManager;
+import com.zireck.remotecraft.domain.manager.NetworkManager;
+import com.zireck.remotecraft.domain.manager.ReceiversManager;
+import com.zireck.remotecraft.infrastructure.manager.NetworkDataManager;
+import com.zireck.remotecraft.infrastructure.manager.ReceiversDataManager;
 import com.zireck.remotecraft.navigation.Navigator;
 import dagger.Module;
 import dagger.Provides;
@@ -40,9 +40,8 @@ public class ApplicationModule {
     return new Navigator();
   }
 
-  @Provides @Singleton
-  NetworkRepository provideNetworkRepository(NetworkDataRepository networkDataRepository) {
-    return networkDataRepository;
+  @Provides @Singleton NetworkManager provideNetworkRepository(NetworkDataManager networkDataManager) {
+    return networkDataManager;
   }
 
   @Provides @Singleton ReceiversManager provideReceiversManager(ReceiversDataManager receiversDataManager) {
