@@ -2,20 +2,20 @@ package com.zireck.remotecraft.domain.interactor;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.manager.ReceiversManager;
+import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import rx.Observable;
 
 public class GetWifiStateInteractor extends Interactor {
 
-  private final ReceiversManager receiversManager;
+  private final ReceiversProvider receiversProvider;
 
-  public GetWifiStateInteractor(ReceiversManager receiversManager, ThreadExecutor threadExecutor,
+  public GetWifiStateInteractor(ReceiversProvider receiversProvider, ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
-    this.receiversManager = receiversManager;
+    this.receiversProvider = receiversProvider;
   }
 
   @Override protected Observable buildInteractorObservable() {
-    return receiversManager.getWifiState();
+    return receiversProvider.getWifiState();
   }
 }

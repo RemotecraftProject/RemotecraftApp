@@ -1,16 +1,16 @@
-package com.zireck.remotecraft.infrastructure.manager;
+package com.zireck.remotecraft.infrastructure.provider;
 
 import android.content.Context;
 import com.f2prateek.rx.receivers.wifi.RxWifiManager;
-import com.zireck.remotecraft.domain.manager.ReceiversManager;
+import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class ReceiversDataManager implements ReceiversManager {
+public class ReceiversDataProvider implements ReceiversProvider {
 
   @Inject Context context;
 
-  @Inject public ReceiversDataManager() {
+  @Inject public ReceiversDataProvider() {
 
   }
 

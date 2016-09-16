@@ -6,7 +6,7 @@ import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
 import com.zireck.remotecraft.domain.interactor.Interactor;
-import com.zireck.remotecraft.domain.manager.ReceiversManager;
+import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.imageloader.PicassoImageLoader;
 import dagger.Module;
@@ -27,8 +27,8 @@ public class UiModule {
 
   @Provides @PerActivity
   @Named("wifiState")
-  Interactor provideGetWifiStateInteractor(ReceiversManager receiversManager,
+  Interactor provideGetWifiStateInteractor(ReceiversProvider receiversProvider,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    return new GetWifiStateInteractor(receiversManager, threadExecutor, postExecutionThread);
+    return new GetWifiStateInteractor(receiversProvider, threadExecutor, postExecutionThread);
   }
 }
