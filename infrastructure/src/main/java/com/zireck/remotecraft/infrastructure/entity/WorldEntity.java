@@ -1,9 +1,10 @@
-package com.zireck.remotecraft.data.entity;
+package com.zireck.remotecraft.infrastructure.entity;
 
 public final class WorldEntity {
-  private String version;
   private String ssid;
   private String ip;
+  private String version;
+  private String seed;
   private String name;
   private String player;
 
@@ -14,17 +15,12 @@ public final class WorldEntity {
   public static class Builder {
     private WorldEntity worldEntity;
 
-    Builder() {
+    public Builder() {
       worldEntity = new WorldEntity();
     }
 
     public WorldEntity build() {
       return worldEntity;
-    }
-
-    public Builder version(String version) {
-      worldEntity.version = version;
-      return this;
     }
 
     public Builder ssid(String ssid) {
@@ -34,6 +30,16 @@ public final class WorldEntity {
 
     public Builder ip(String ip) {
       worldEntity.ip = ip;
+      return this;
+    }
+
+    public Builder version(String version) {
+      worldEntity.version = version;
+      return this;
+    }
+
+    public Builder seed(String seed) {
+      worldEntity.seed = seed;
       return this;
     }
 
