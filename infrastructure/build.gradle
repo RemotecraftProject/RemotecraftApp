@@ -52,6 +52,7 @@ dependencies {
   provided "${library.javaxAnnotation}"
   compile "${library.javaxInject}"
   compile "${library.androidAnnotations}"
+  compile "${library.gson}"
 
   testCompile "${libraryTest.jUnit}"
 }

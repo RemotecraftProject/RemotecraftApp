@@ -6,6 +6,7 @@ ext.version = [
     javaxAnnotation           : "1.0",
     javaxInject               : "1",
     rxReceivers               : "0.1.0",
+    gson                      : "2.7",
 
     // Support
     design                    : "24.2.0",
@@ -34,6 +35,7 @@ ext.infrastructureDependencies = [
     rxReceivers               : "com.f2prateek.rx.receivers:rx-receivers:${version.rxReceivers}-SNAPSHOT",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
     javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
+    gson                      : "com.google.code.gson:gson:${version.gson}",
 
     androidAnnotations        : "com.android.support:support-annotations:${version.androidAnnotations}"
 ]
