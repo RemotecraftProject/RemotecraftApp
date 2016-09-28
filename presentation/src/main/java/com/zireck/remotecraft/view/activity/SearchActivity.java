@@ -63,7 +63,5 @@ public class SearchActivity extends BaseActivity {
     if (getSupportActionBar() != null) {
       getSupportActionBar().hide();
     }
-
-    imageLoader.load(R.drawable.mesa, background);
   }
 }

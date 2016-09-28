@@ -8,8 +8,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import javax.inject.Inject;
 
-public class InterfaceManager {
+public class NetworkInterfaceManager {
+
+  @Inject
+  public NetworkInterfaceManager() {
+
+  }
 
   public Collection<InetAddress> getBroadcastAddresses() throws SocketException {
     Collection<NetworkInterface> networkInterfaces = getNetworkInterfaces();

@@ -9,20 +9,30 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
+import javax.inject.Inject;
 
 public class NetworkDiscoveryManager {
 
   private static final int RETRY_COUNT = 5;
 
+  private NetworkInterfaceManager networkInterfaceManager;
+  private NetworkResponseManager networkResponseManager;
+
   private DatagramSocket datagramSocket;
-  private InterfaceManager interfaceManager;
   private boolean receivedValidResponse = false;
   private WorldEntity worldEntity = null;
 
-  public NetworkDiscoveryManager() throws SocketException {
-    datagramSocket = new DatagramSocket();
-    datagramSocket.setBroadcast(true);
-    interfaceManager = new InterfaceManager();
+  @Inject public NetworkDiscoveryManager(NetworkInterfaceManager networkInterfaceManager,
+      NetworkResponseManager networkResponseManager) {
+    this.networkInterfaceManager = networkInterfaceManager;
+    this.networkResponseManager = networkResponseManager;
+
+    try {
+      datagramSocket = new DatagramSocket();
+      datagramSocket.setBroadcast(true);
+    } catch (SocketException e) {
+      e.printStackTrace();
+    }
   }
 
   public void sendDiscoveryRequest() throws IOException {
@@ -67,7 +77,7 @@ public class NetworkDiscoveryManager {
 
   private void sendRequestToEveryInterfaceBroadcastAddress() throws IOException {
     DatagramPacket datagramPacket;
-    Collection<InetAddress> broadcastAddresses = interfaceManager.getBroadcastAddresses();
+    Collection<InetAddress> broadcastAddresses = networkInterfaceManager.getBroadcastAddresses();
 
     for (InetAddress broadcastAddress : broadcastAddresses) {
       datagramPacket = getDatagramPacket(broadcastAddress);

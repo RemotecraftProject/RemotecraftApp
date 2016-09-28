@@ -14,7 +14,7 @@ public class World {
   public static class Builder {
     private World world;
 
-    Builder() {
+    public Builder() {
       world = new World();
     }
 

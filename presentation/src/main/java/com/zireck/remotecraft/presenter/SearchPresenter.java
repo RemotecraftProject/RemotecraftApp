@@ -2,6 +2,7 @@ package com.zireck.remotecraft.presenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.interactor.DefaultSubscriber;
 import com.zireck.remotecraft.domain.interactor.Interactor;
 import com.zireck.remotecraft.view.SearchView;
@@ -14,10 +15,13 @@ public class SearchPresenter implements Presenter<SearchView> {
 
   private SearchView view;
   private Interactor getWifiStateInteractor;
+  private Interactor searchWorldInteractor;
 
   @Inject
-  public SearchPresenter(@Named("wifiState") Interactor getWifiStateInteractor) {
+  public SearchPresenter(@Named("wifiState") Interactor getWifiStateInteractor,
+      @Named("searchWorld") Interactor searchWorldInteractor) {
     this.getWifiStateInteractor = getWifiStateInteractor;
+    this.searchWorldInteractor = searchWorldInteractor;
   }
 
   @Override public void setView(@NonNull SearchView view) {
@@ -26,6 +30,9 @@ public class SearchPresenter implements Presenter<SearchView> {
 
   @Override public void resume() {
     getWifiStateInteractor.execute(new GetWifiStateSubscriber());
+    if (searchWorldInteractor != null) {
+      searchWorldInteractor.execute(new SearchWorldSubscriber());
+    }
   }
 
   @Override public void pause() {
@@ -51,5 +58,9 @@ public class SearchPresenter implements Presenter<SearchView> {
       super.onError(e);
       Log.d(TAG, "onError");
     }
+  }
+
+  private final class SearchWorldSubscriber extends DefaultSubscriber<World> {
+
   }
 }
