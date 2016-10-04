@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
-import javax.inject.Inject;
 
 public class NetworkInterfaceManager {
 
-  @Inject
   public NetworkInterfaceManager() {
 
   }

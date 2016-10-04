@@ -9,7 +9,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
-import javax.inject.Inject;
 
 public class NetworkDiscoveryManager {
 
@@ -22,7 +21,7 @@ public class NetworkDiscoveryManager {
   private boolean receivedValidResponse = false;
   private WorldEntity worldEntity = null;
 
-  @Inject public NetworkDiscoveryManager(NetworkInterfaceManager networkInterfaceManager,
+  public NetworkDiscoveryManager(NetworkInterfaceManager networkInterfaceManager,
       NetworkResponseManager networkResponseManager) {
     this.networkInterfaceManager = networkInterfaceManager;
     this.networkResponseManager = networkResponseManager;

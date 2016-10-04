@@ -6,9 +6,7 @@ import com.zireck.remotecraft.UiThread;
 import com.zireck.remotecraft.data.executor.JobExecutor;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
-import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
 import com.zireck.remotecraft.infrastructure.provider.ReceiversDataProvider;
 import com.zireck.remotecraft.navigation.Navigator;
 import dagger.Module;
@@ -40,11 +38,8 @@ public class ApplicationModule {
     return new Navigator();
   }
 
-  @Provides @Singleton NetworkProvider provideNetworkProvider(NetworkDataProvider networkDataProvider) {
-    return networkDataProvider;
-  }
-
-  @Provides @Singleton ReceiversProvider provideReceiversProvider(ReceiversDataProvider receiversDataProvider) {
+  @Provides @Singleton ReceiversProvider provideReceiversProvider(
+      ReceiversDataProvider receiversDataProvider) {
     return receiversDataProvider;
   }
 }

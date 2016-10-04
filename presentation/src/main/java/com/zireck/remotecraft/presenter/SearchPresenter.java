@@ -6,8 +6,6 @@ import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.interactor.DefaultSubscriber;
 import com.zireck.remotecraft.domain.interactor.Interactor;
 import com.zireck.remotecraft.view.SearchView;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 public class SearchPresenter implements Presenter<SearchView> {
 
@@ -17,9 +15,7 @@ public class SearchPresenter implements Presenter<SearchView> {
   private Interactor getWifiStateInteractor;
   private Interactor searchWorldInteractor;
 
-  @Inject
-  public SearchPresenter(@Named("wifiState") Interactor getWifiStateInteractor,
-      @Named("searchWorld") Interactor searchWorldInteractor) {
+  public SearchPresenter(Interactor getWifiStateInteractor, Interactor searchWorldInteractor) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchWorldInteractor = searchWorldInteractor;
   }
