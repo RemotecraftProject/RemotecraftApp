@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import butterknife.BindView;
 import com.zireck.remotecraft.R;
+import com.zireck.remotecraft.dagger.HasComponent;
 import com.zireck.remotecraft.dagger.components.DaggerSearchComponent;
 import com.zireck.remotecraft.dagger.components.SearchComponent;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
@@ -14,7 +15,7 @@ import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.presenter.SearchPresenter;
 import javax.inject.Inject;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements HasComponent<SearchComponent> {
 
   private SearchComponent searchComponent;
 
@@ -48,6 +49,10 @@ public class SearchActivity extends BaseActivity {
   @Override protected void onDestroy() {
     super.onDestroy();
     presenter.destroy();
+  }
+
+  @Override public SearchComponent getComponent() {
+    return searchComponent;
   }
 
   private void initInjector() {
