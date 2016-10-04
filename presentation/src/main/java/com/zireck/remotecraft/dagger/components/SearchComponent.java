@@ -2,7 +2,8 @@ package com.zireck.remotecraft.dagger.components;
 
 import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.dagger.modules.ActivityModule;
-import com.zireck.remotecraft.dagger.modules.NetworkModule;
+import com.zireck.remotecraft.dagger.modules.InteractorsModule;
+import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.view.activity.SearchActivity;
 import dagger.Component;
 
@@ -11,9 +12,10 @@ import dagger.Component;
     dependencies = ApplicationComponent.class,
     modules = {
         ActivityModule.class,
-        NetworkModule.class
+        UiModule.class,
+        InteractorsModule.class
     }
 )
-public interface NetworkComponent extends ActivityComponent {
-  //void inject(SearchActivity searchActivity);
+public interface SearchComponent extends ActivityComponent {
+  void inject(SearchActivity searchActivity);
 }

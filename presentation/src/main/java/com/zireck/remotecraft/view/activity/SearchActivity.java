@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import butterknife.BindView;
 import com.zireck.remotecraft.R;
-import com.zireck.remotecraft.dagger.components.DaggerUiComponent;
-import com.zireck.remotecraft.dagger.components.UiComponent;
+import com.zireck.remotecraft.dagger.components.DaggerSearchComponent;
+import com.zireck.remotecraft.dagger.components.SearchComponent;
+import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.presenter.SearchPresenter;
@@ -15,7 +16,7 @@ import javax.inject.Inject;
 
 public class SearchActivity extends BaseActivity {
 
-  private UiComponent uiComponent;
+  private SearchComponent searchComponent;
 
   @Inject SearchPresenter presenter;
   @Inject ImageLoader imageLoader;
@@ -50,13 +51,14 @@ public class SearchActivity extends BaseActivity {
   }
 
   private void initInjector() {
-    uiComponent = DaggerUiComponent.builder()
+    searchComponent = DaggerSearchComponent.builder()
         .applicationComponent(getApplicationComponent())
         .activityModule(getActivityModule())
         .uiModule(new UiModule())
+        .interactorsModule(new InteractorsModule())
         .build();
 
-    uiComponent.inject(this);
+    searchComponent.inject(this);
   }
 
   private void initUi() {
