@@ -1,5 +1,6 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
+import android.util.Log;
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
 import com.zireck.remotecraft.infrastructure.helper.NetworkProtocolHelper;
 import java.io.IOException;
@@ -16,15 +17,18 @@ public class NetworkDiscoveryManager {
 
   private NetworkInterfaceManager networkInterfaceManager;
   private NetworkResponseManager networkResponseManager;
+  private NetworkProtocolManager networkProtocolManager;
 
   private DatagramSocket datagramSocket;
   private boolean receivedValidResponse = false;
   private WorldEntity worldEntity = null;
 
   public NetworkDiscoveryManager(NetworkInterfaceManager networkInterfaceManager,
-      NetworkResponseManager networkResponseManager) {
+      NetworkResponseManager networkResponseManager,
+      NetworkProtocolManager networkProtocolManager) {
     this.networkInterfaceManager = networkInterfaceManager;
     this.networkResponseManager = networkResponseManager;
+    this.networkProtocolManager = networkProtocolManager;
 
     try {
       datagramSocket = new DatagramSocket();
@@ -85,8 +89,12 @@ public class NetworkDiscoveryManager {
   }
 
   private DatagramPacket getDatagramPacket(InetAddress inetAddress) {
-    byte[] discoveryCommand = NetworkProtocolHelper.DISCOVERY_REQUEST.getBytes();
-    return new DatagramPacket(discoveryCommand, discoveryCommand.length, inetAddress, NetworkProtocolHelper.DISCOVERY_PORT);
+    String discoveryRequest = networkProtocolManager.getDiscoveryRequest();
+    Log.d("k9d3", "Sending JSON: ");
+    Log.d("k9d3", discoveryRequest);
+    byte[] discoveryCommand = discoveryRequest.getBytes();
+    return new DatagramPacket(discoveryCommand, discoveryCommand.length, inetAddress,
+        NetworkProtocolHelper.DISCOVERY_PORT);
   }
 
   // TODO clean this mess up
@@ -96,7 +104,8 @@ public class NetworkDiscoveryManager {
     }
 
     String responseMessage = new String(responsePacket.getData()).trim();
-    receivedValidResponse = NetworkProtocolHelper.getCommand(responseMessage).equals(NetworkProtocolHelper.DISCOVERY_RESPONSE);
+    receivedValidResponse = NetworkProtocolHelper.getCommand(responseMessage)
+        .equals(NetworkProtocolHelper.DISCOVERY_RESPONSE);
     if (!receivedValidResponse) {
       return null;
     }
@@ -114,12 +123,8 @@ public class NetworkDiscoveryManager {
 
     String ip = responsePacket.getAddress().toString().replace("/", "");
 
-    WorldEntity worldEntity = new WorldEntity.Builder()
-        .ip(ip)
-        .seed(seed)
-        .name(worldName)
-        .player(playerName)
-        .build();
+    WorldEntity worldEntity =
+        new WorldEntity.Builder().ip(ip).seed(seed).name(worldName).player(playerName).build();
 
     return worldEntity;
   }

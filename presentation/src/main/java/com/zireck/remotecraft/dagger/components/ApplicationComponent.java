@@ -1,8 +1,10 @@
 package com.zireck.remotecraft.dagger.components;
 
 import android.content.Context;
+import com.google.gson.Gson;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
 import com.zireck.remotecraft.dagger.modules.NetworkModule;
+import com.zireck.remotecraft.dagger.modules.ToolsModule;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
@@ -18,7 +20,8 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = {
     ApplicationModule.class,
-    NetworkModule.class
+    NetworkModule.class,
+    ToolsModule.class
 })
 public interface ApplicationComponent {
   void inject(BaseActivity baseActivity);
@@ -33,4 +36,5 @@ public interface ApplicationComponent {
   NetworkInterfaceManager networkInterfaceManager();
   NetworkResponseManager networkResponseManager();
   NetworkDiscoveryManager networkDiscoveryManager();
+  Gson gson();
 }

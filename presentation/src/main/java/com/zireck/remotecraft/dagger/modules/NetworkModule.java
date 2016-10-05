@@ -1,16 +1,17 @@
 package com.zireck.remotecraft.dagger.modules;
 
+import com.google.gson.Gson;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.infrastructure.manager.NetworkDiscoveryManager;
 import com.zireck.remotecraft.infrastructure.manager.NetworkInterfaceManager;
+import com.zireck.remotecraft.infrastructure.manager.NetworkProtocolManager;
 import com.zireck.remotecraft.infrastructure.manager.NetworkResponseManager;
 import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module
-public class NetworkModule {
+@Module public class NetworkModule {
 
   public NetworkModule() {
 
@@ -31,7 +32,13 @@ public class NetworkModule {
 
   @Provides @Singleton NetworkDiscoveryManager provideNetworkDiscoveryManager(
       NetworkInterfaceManager networkInterfaceManager,
-      NetworkResponseManager networkResponseManager) {
-    return new NetworkDiscoveryManager(networkInterfaceManager, networkResponseManager);
+      NetworkResponseManager networkResponseManager,
+      NetworkProtocolManager networkProtocolManager) {
+    return new NetworkDiscoveryManager(networkInterfaceManager, networkResponseManager,
+        networkProtocolManager);
+  }
+
+  @Provides @Singleton NetworkProtocolManager provideNetworkProtocolManager(Gson gson) {
+    return new NetworkProtocolManager(gson);
   }
 }
