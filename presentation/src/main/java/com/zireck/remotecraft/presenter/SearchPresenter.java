@@ -58,5 +58,13 @@ public class SearchPresenter implements Presenter<SearchView> {
 
   private final class SearchWorldSubscriber extends DefaultSubscriber<World> {
 
+    @Override public void onNext(World world) {
+      Log.d(TAG, "Received World: " + world.getName());
+      view.renderWorld(world);
+    }
+
+    @Override public void onError(Throwable e) {
+      e.printStackTrace();
+    }
   }
 }

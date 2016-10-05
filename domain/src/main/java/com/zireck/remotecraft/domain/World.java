@@ -11,6 +11,26 @@ public class World {
 
   }
 
+  public String getVersion() {
+    return version;
+  }
+
+  public String getSsid() {
+    return ssid;
+  }
+
+  public String getIp() {
+    return ip;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getPlayer() {
+    return player;
+  }
+
   public static class Builder {
     private World world;
 

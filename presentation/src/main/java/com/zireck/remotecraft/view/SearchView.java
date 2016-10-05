@@ -1,5 +1,7 @@
 package com.zireck.remotecraft.view;
 
-public interface SearchView extends BaseView {
+import com.zireck.remotecraft.domain.World;
 
+public interface SearchView extends BaseView {
+  void renderWorld(World world);
 }

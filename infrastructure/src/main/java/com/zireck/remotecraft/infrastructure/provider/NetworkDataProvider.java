@@ -3,10 +3,11 @@ package com.zireck.remotecraft.infrastructure.provider;
 import android.content.Context;
 import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
+import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
 import com.zireck.remotecraft.infrastructure.manager.NetworkDiscoveryManager;
+import java.io.IOException;
 import javax.inject.Inject;
 import rx.Observable;
-import rx.Subscriber;
 
 public class NetworkDataProvider implements NetworkProvider {
 
@@ -18,10 +19,21 @@ public class NetworkDataProvider implements NetworkProvider {
   }
 
   @Override public Observable<World> searchWorld() {
-    return Observable.create(new Observable.OnSubscribe<World>() {
+    return Observable.create(subscriber -> {
+      try {
+        networkDiscoveryManager.sendDiscoveryRequest();
+        WorldEntity worldEntity = networkDiscoveryManager.discover();
+        World world = new World.Builder()
+            .version(worldEntity.getVersion())
+            .ssid(worldEntity.getSsid())
+            .ip(worldEntity.getIp())
+            .name(worldEntity.getName())
+            .player(worldEntity.getPlayer())
+            .build();
 
-      @Override public void call(Subscriber<? super World> subscriber) {
-        subscriber.onNext(new World.Builder().name("mock").build());
+        subscriber.onNext(world);
+      } catch (IOException e) {
+        subscriber.onError(e);
       }
     });
   }

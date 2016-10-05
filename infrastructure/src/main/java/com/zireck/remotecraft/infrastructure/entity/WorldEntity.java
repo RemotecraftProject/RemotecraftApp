@@ -12,6 +12,30 @@ public final class WorldEntity {
 
   }
 
+  public String getSsid() {
+    return ssid;
+  }
+
+  public String getIp() {
+    return ip;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public String getSeed() {
+    return seed;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getPlayer() {
+    return player;
+  }
+
   public static class Builder {
     private WorldEntity worldEntity;
 
