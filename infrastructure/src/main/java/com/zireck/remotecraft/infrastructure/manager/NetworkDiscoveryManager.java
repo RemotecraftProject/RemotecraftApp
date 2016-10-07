@@ -2,7 +2,7 @@ package com.zireck.remotecraft.infrastructure.manager;
 
 import android.util.Log;
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
-import com.zireck.remotecraft.infrastructure.helper.NetworkProtocolHelper;
+import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

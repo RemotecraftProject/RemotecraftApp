@@ -1,6 +1,8 @@
-package com.zireck.remotecraft.infrastructure.helper;
+package com.zireck.remotecraft.infrastructure.protocol;
 
+// TODO: clean up this class
 public class NetworkProtocolHelper {
+
   public static final int DISCOVERY_PORT = 9998;
   public static final String DISCOVERY_REQUEST = "REMOTECRAFT_DISCOVERY_REQUEST";
   public static final String DISCOVERY_RESPONSE = "REMOTECRAFT_DISCOVERY_RESPONSE";
@@ -8,6 +10,9 @@ public class NetworkProtocolHelper {
 
   public static final String COMMAND_SEPARATOR = ":";
   public static final String COMMAND_SEPARATOR_SECONDARY = "_";
+
+  public static final String MESSAGE_TYPE_REQUEST = "request";
+  public static final String MESSAGE_TYPE_RESPONSE = "response";
 
   public static String getCommand(String message) {
     String command = "";

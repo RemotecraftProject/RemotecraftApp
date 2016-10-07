@@ -13,7 +13,7 @@ public class NetworkProtocolManager {
   }
 
   public String getDiscoveryRequest() {
-    DiscoveryRequest discoveryRequest = new DiscoveryRequest("remotecraft", "request", new Command("discovery", 0));
+    DiscoveryRequest discoveryRequest = new DiscoveryRequest(new Command("discovery", 0));
     return gson.toJson(discoveryRequest);
   }
 }

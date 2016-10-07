@@ -41,6 +41,7 @@ public class MockNetworkDiscovery implements Runnable {
           System.out.println(TAG + "> Request received!");
 
           String receiveMessage = new String(datagramPacket.getData()).trim();
+          System.out.println(receiveMessage);
 
           // TODO check if it's asking for server info
           reply(datagramSocket, datagramPacket);

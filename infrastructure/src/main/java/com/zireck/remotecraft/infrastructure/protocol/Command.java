@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class Command {
+
   @SerializedName("name") private String name;
   @SerializedName("argument_count") private Integer argumentCount;
   @SerializedName("arguments") private List<String> arguments;
