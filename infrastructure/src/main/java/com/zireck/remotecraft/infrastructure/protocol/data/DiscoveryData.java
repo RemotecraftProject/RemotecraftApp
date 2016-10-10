@@ -1,17 +1,18 @@
-package com.zireck.remotecraft.infrastructure.protocol.response;
+package com.zireck.remotecraft.infrastructure.protocol.data;
 
 import com.google.gson.annotations.SerializedName;
-import com.zireck.remotecraft.infrastructure.protocol.BaseMessage;
+import com.zireck.remotecraft.infrastructure.protocol.BaseData;
 
-public class DiscoveryResponse extends BaseMessage {
+public class DiscoveryData extends BaseData {
 
   @SerializedName("ssid") private String ssid;
   @SerializedName("ip") private String ip;
   @SerializedName("version") private String version;
+  @SerializedName("seed") private String seed;
   @SerializedName("world_name") private String worldName;
   @SerializedName("player_name") private String playerName;
 
-  public DiscoveryResponse() {
+  public DiscoveryData() {
 
   }
 
@@ -25,6 +26,10 @@ public class DiscoveryResponse extends BaseMessage {
 
   public String getVersion() {
     return version;
+  }
+
+  public String getSeed() {
+    return seed;
   }
 
   public String getWorldName() {

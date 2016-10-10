@@ -1,9 +1,14 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
 import android.util.Log;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
+import com.zireck.remotecraft.infrastructure.protocol.BaseMessage;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
+import com.zireck.remotecraft.infrastructure.protocol.data.DiscoveryData;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -15,6 +20,7 @@ public class NetworkDiscoveryManager {
 
   private static final int RETRY_COUNT = 5;
 
+  private Gson gson;
   private NetworkInterfaceManager networkInterfaceManager;
   private NetworkResponseManager networkResponseManager;
   private NetworkProtocolManager networkProtocolManager;
@@ -23,9 +29,10 @@ public class NetworkDiscoveryManager {
   private boolean receivedValidResponse = false;
   private WorldEntity worldEntity = null;
 
-  public NetworkDiscoveryManager(NetworkInterfaceManager networkInterfaceManager,
+  public NetworkDiscoveryManager(Gson gson, NetworkInterfaceManager networkInterfaceManager,
       NetworkResponseManager networkResponseManager,
       NetworkProtocolManager networkProtocolManager) {
+    this.gson = gson;
     this.networkInterfaceManager = networkInterfaceManager;
     this.networkResponseManager = networkResponseManager;
     this.networkProtocolManager = networkProtocolManager;
@@ -106,9 +113,13 @@ public class NetworkDiscoveryManager {
     String responseMessage = new String(responsePacket.getData()).trim();
     receivedValidResponse = NetworkProtocolHelper.getCommand(responseMessage)
         .equals(NetworkProtocolHelper.DISCOVERY_RESPONSE);
-    if (!receivedValidResponse) {
-      return null;
-    }
+    //if (!receivedValidResponse) {
+    //  return null;
+    //}
+
+    //DiscoveryResponse discoveryResponse = gson.fromJson(responseMessage, DiscoveryResponse.class);
+    Type responseType = new TypeToken<BaseMessage<DiscoveryData>>(){}.getType();
+    BaseMessage<DiscoveryData> response = gson.fromJson(responseMessage, responseType);
 
     String seedAndWorldName = NetworkProtocolHelper.getArg(responseMessage);
 
@@ -124,7 +135,12 @@ public class NetworkDiscoveryManager {
     String ip = responsePacket.getAddress().toString().replace("/", "");
 
     WorldEntity worldEntity =
-        new WorldEntity.Builder().ip(ip).seed(seed).name(worldName).player(playerName).build();
+        new WorldEntity.Builder()
+            .ip(response.getData().getIp())
+            .seed(response.getData().getSeed())
+            .name(response.getData().getWorldName())
+            .player(response.getData().getPlayerName())
+            .build();
 
     return worldEntity;
   }

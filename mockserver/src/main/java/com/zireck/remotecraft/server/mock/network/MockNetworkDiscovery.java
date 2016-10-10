@@ -1,5 +1,9 @@
 package com.zireck.remotecraft.server.mock.network;
 
+import com.google.gson.Gson;
+import com.zireck.remotecraft.server.mock.protocol.BaseMessage;
+import com.zireck.remotecraft.server.mock.protocol.DiscoveryData;
+import com.zireck.remotecraft.server.mock.protocol.ResponseBuilder;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -57,15 +61,32 @@ public class MockNetworkDiscovery implements Runnable {
 
   private void reply(DatagramSocket datagramSocket, DatagramPacket datagramPacket)
       throws IOException {
-    String responseMessage =
-        "REMOTECRAFT_DISCOVERY_RESPONSE:0123456789_MockWorldName_MockPlayerName";
+    DiscoveryData discoveryData = new DiscoveryData()
+        .setSsid("MOVISTAR_C33")
+        .setIp("127.0.0.2")
+        .setVersion("2.3.4")
+        .setSeed("0123456789")
+        .setWorldName("The New World")
+        .setPlayerName("Zireck");
+
+    BaseMessage baseMessage = new ResponseBuilder<DiscoveryData>()
+        .success()
+        .setData(discoveryData)
+        .build();
+
+    Gson gson = new Gson();
+    String responseMessage = gson.toJson(baseMessage);
+
+    //String responseMessage =
+    //    "REMOTECRAFT_DISCOVERY_RESPONSE:0123456789_MockWorldName_MockPlayerName";
     byte[] sendData = responseMessage.getBytes();
 
     DatagramPacket sendPacket =
         new DatagramPacket(sendData, sendData.length, datagramPacket.getAddress(),
             datagramPacket.getPort());
     if (datagramSocket.isBound()) {
-      System.out.println(TAG + "> Sending to client: " + responseMessage);
+      System.out.println(TAG + "> Sending to client: ");
+      System.out.println(TAG + responseMessage);
       datagramSocket.send(sendPacket);
     }
   }

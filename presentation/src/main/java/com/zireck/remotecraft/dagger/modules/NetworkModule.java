@@ -31,10 +31,11 @@ import javax.inject.Singleton;
   }
 
   @Provides @Singleton NetworkDiscoveryManager provideNetworkDiscoveryManager(
+      Gson gson,
       NetworkInterfaceManager networkInterfaceManager,
       NetworkResponseManager networkResponseManager,
       NetworkProtocolManager networkProtocolManager) {
-    return new NetworkDiscoveryManager(networkInterfaceManager, networkResponseManager,
+    return new NetworkDiscoveryManager(gson, networkInterfaceManager, networkResponseManager,
         networkProtocolManager);
   }
 

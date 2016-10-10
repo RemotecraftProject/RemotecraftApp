@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.infrastructure.protocol;
+package com.zireck.remotecraft.server.mock.protocol;
 
 import com.google.gson.annotations.SerializedName;
 
