@@ -32,7 +32,7 @@ ext.infrastructureDependencies = [
     dagger                    : "com.google.dagger:dagger:${version.dagger}",
     rxJava                    : "io.reactivex:rxjava:${version.rxJava}",
     rxAndroid                 : "io.reactivex:rxandroid:${version.rxAndroid}",
-    rxReceivers               : "com.f2prateek.rx.receivers:rx-receivers:${version.rxReceivers}-SNAPSHOT",
+    rxReceivers               : "com.f2prateek.rx.receivers:rx-receivers:${version.rxReceivers}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
     javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
     gson                      : "com.google.code.gson:gson:${version.gson}",
