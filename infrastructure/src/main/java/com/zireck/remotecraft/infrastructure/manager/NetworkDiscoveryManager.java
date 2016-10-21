@@ -2,13 +2,12 @@ package com.zireck.remotecraft.infrastructure.manager;
 
 import android.util.Log;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
-import com.zireck.remotecraft.infrastructure.protocol.BaseMessage;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
-import com.zireck.remotecraft.infrastructure.protocol.data.DiscoveryData;
+import com.zireck.remotecraft.infrastructure.protocol.base.Message;
+import com.zireck.remotecraft.infrastructure.protocol.data.Server;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -21,18 +20,20 @@ public class NetworkDiscoveryManager {
   private static final int RETRY_COUNT = 5;
 
   private Gson gson;
+  private GsonBuilder gsonBuilder;
   private NetworkInterfaceManager networkInterfaceManager;
   private NetworkResponseManager networkResponseManager;
   private NetworkProtocolManager networkProtocolManager;
 
   private DatagramSocket datagramSocket;
-  private boolean receivedValidResponse = false;
   private WorldEntity worldEntity = null;
 
-  public NetworkDiscoveryManager(Gson gson, NetworkInterfaceManager networkInterfaceManager,
+  public NetworkDiscoveryManager(Gson gson, GsonBuilder gsonBuilder,
+      NetworkInterfaceManager networkInterfaceManager,
       NetworkResponseManager networkResponseManager,
       NetworkProtocolManager networkProtocolManager) {
     this.gson = gson;
+    this.gsonBuilder = gsonBuilder;
     this.networkInterfaceManager = networkInterfaceManager;
     this.networkResponseManager = networkResponseManager;
     this.networkProtocolManager = networkProtocolManager;
@@ -104,44 +105,26 @@ public class NetworkDiscoveryManager {
         NetworkProtocolHelper.DISCOVERY_PORT);
   }
 
-  // TODO clean this mess up
   private WorldEntity parseResponse(DatagramPacket responsePacket) {
-    if (responsePacket == null) {
+    if (responsePacket == null || responsePacket.getData() == null) {
+      Log.e(getClass().getSimpleName(), "Response Packet cannot be null.");
       return null;
     }
 
-    String responseMessage = new String(responsePacket.getData()).trim();
-    receivedValidResponse = NetworkProtocolHelper.getCommand(responseMessage)
-        .equals(NetworkProtocolHelper.DISCOVERY_RESPONSE);
-    //if (!receivedValidResponse) {
-    //  return null;
-    //}
+    String response = new String(responsePacket.getData()).trim();
+    Message message = gson.fromJson(response, Message.class);
 
-    //DiscoveryResponse discoveryResponse = gson.fromJson(responseMessage, DiscoveryResponse.class);
-    Type responseType = new TypeToken<BaseMessage<DiscoveryData>>(){}.getType();
-    BaseMessage<DiscoveryData> response = gson.fromJson(responseMessage, responseType);
-
-    String seedAndWorldName = NetworkProtocolHelper.getArg(responseMessage);
-
-    String seed = "", worldName = "", playerName = "";
-    try {
-      seed = seedAndWorldName.split("_")[0];
-      worldName = seedAndWorldName.split("_")[1];
-      playerName = seedAndWorldName.split("_")[2];
-    } catch (Exception e) {
-      e.printStackTrace();
+    if (message == null || !message.isSuccess() || !message.isServer()) {
+      Log.e(getClass().getSimpleName(), "Invalid message received.");
+      return null;
     }
 
-    String ip = responsePacket.getAddress().toString().replace("/", "");
+    Server server = message.getServer();
 
-    WorldEntity worldEntity =
-        new WorldEntity.Builder()
-            .ip(response.getData().getIp())
-            .seed(response.getData().getSeed())
-            .name(response.getData().getWorldName())
-            .player(response.getData().getPlayerName())
-            .build();
-
-    return worldEntity;
+    return new WorldEntity.Builder().ip(server.getIp())
+        .seed(server.getSeed())
+        .name(server.getWorldName())
+        .player(server.getPlayerName())
+        .build();
   }
 }

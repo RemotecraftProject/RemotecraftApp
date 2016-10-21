@@ -1,10 +1,10 @@
 package com.zireck.remotecraft.infrastructure.protocol.request;
 
 import com.google.gson.annotations.SerializedName;
-import com.zireck.remotecraft.infrastructure.protocol.BaseMessage;
-import com.zireck.remotecraft.infrastructure.protocol.Command;
+import com.zireck.remotecraft.infrastructure.protocol.base.Message;
+import com.zireck.remotecraft.infrastructure.protocol.data.Command;
 
-public final class DiscoveryRequest extends BaseMessage {
+public final class DiscoveryRequest extends Message {
 
   @SerializedName("command") private Command command;
 

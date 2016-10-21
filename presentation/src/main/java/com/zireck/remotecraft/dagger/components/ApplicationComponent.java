@@ -2,6 +2,7 @@ package com.zireck.remotecraft.dagger.components;
 
 import android.content.Context;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
 import com.zireck.remotecraft.dagger.modules.NetworkModule;
 import com.zireck.remotecraft.dagger.modules.ToolsModule;
@@ -37,4 +38,5 @@ public interface ApplicationComponent {
   NetworkResponseManager networkResponseManager();
   NetworkDiscoveryManager networkDiscoveryManager();
   Gson gson();
+  GsonBuilder gsonBuilder();
 }

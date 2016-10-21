@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
 import com.google.gson.Gson;
-import com.zireck.remotecraft.infrastructure.protocol.Command;
+import com.zireck.remotecraft.infrastructure.protocol.data.Command;
 import com.zireck.remotecraft.infrastructure.protocol.request.DiscoveryRequest;
 
 public class NetworkProtocolManager {
