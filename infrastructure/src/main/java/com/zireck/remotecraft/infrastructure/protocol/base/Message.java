@@ -5,14 +5,14 @@ import com.zireck.remotecraft.infrastructure.protocol.data.Command;
 import com.zireck.remotecraft.infrastructure.protocol.data.Info;
 import com.zireck.remotecraft.infrastructure.protocol.data.Server;
 
-public class Message {
+public abstract class Message {
 
-  @SerializedName("success") private boolean isSuccess;
-  @SerializedName("type") private String type;
-  @SerializedName("command") private Command command;
-  @SerializedName("info") private Info info;
-  @SerializedName("server") private Server server;
-  @SerializedName("error") private Error error;
+  @SerializedName("success") protected boolean isSuccess;
+  @SerializedName("type") protected String type;
+  @SerializedName("command") protected Command command;
+  @SerializedName("info") protected Info info;
+  @SerializedName("server") protected Server server;
+  @SerializedName("error") protected Error error;
 
   public boolean isSuccess() {
     return isSuccess;

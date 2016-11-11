@@ -11,7 +11,9 @@ public abstract class ParameterizedData {
 
   public ParameterizedData(Integer argumentsCount, String... arguments) {
     this.argumentsCount = argumentsCount;
-    this.arguments = Arrays.asList(arguments);
+    if (!(argumentsCount <= 0 || arguments.length <= 0)) {
+      this.arguments = Arrays.asList(arguments);
+    }
   }
 
   public Integer getArgumentsCount() {
