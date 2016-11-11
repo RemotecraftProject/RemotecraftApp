@@ -1,8 +1,9 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
 import com.google.gson.Gson;
+import com.zireck.remotecraft.infrastructure.protocol.CommandType;
 import com.zireck.remotecraft.infrastructure.protocol.data.Command;
-import com.zireck.remotecraft.infrastructure.protocol.request.DiscoveryRequest;
+import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
 
 public class NetworkProtocolManager {
 
@@ -13,7 +14,9 @@ public class NetworkProtocolManager {
   }
 
   public String getDiscoveryRequest() {
-    DiscoveryRequest discoveryRequest = new DiscoveryRequest(new Command("discovery", 0));
-    return gson.toJson(discoveryRequest);
+    CommandMessage getWorldInfo = new CommandMessage.Builder().success(true)
+        .command(new Command(CommandType.GET_WORLD_INFO.toString(), 0))
+        .build();
+    return gson.toJson(getWorldInfo);
   }
 }
