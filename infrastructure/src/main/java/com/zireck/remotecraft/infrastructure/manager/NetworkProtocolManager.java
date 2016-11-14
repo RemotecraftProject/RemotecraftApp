@@ -15,7 +15,7 @@ public class NetworkProtocolManager {
 
   public String getDiscoveryRequest() {
     CommandMessage getWorldInfo = new CommandMessage.Builder().success(true)
-        .command(new Command(CommandType.GET_WORLD_INFO.toString(), 0))
+        .command(new Command(CommandType.GET_WORLD_INFO))
         .build();
     return gson.toJson(getWorldInfo);
   }
