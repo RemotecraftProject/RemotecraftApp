@@ -4,6 +4,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
+import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.data.Server;
@@ -52,7 +53,7 @@ public class NetworkDiscoveryManager {
     sendRequestToEveryInterfaceBroadcastAddress();
   }
 
-  public WorldEntity discover() throws IOException {
+  public WorldEntity discover() throws IOException, NoResponseException {
     DatagramPacket responsePacket;
     byte[] responseBuffer;
     int failCount = 0;
@@ -78,6 +79,10 @@ public class NetworkDiscoveryManager {
 
     datagramSocket.disconnect();
     datagramSocket.close();
+
+    if (worldEntity == null && failCount >= RETRY_COUNT) {
+      throw new NoResponseException();
+    }
 
     return worldEntity;
   }

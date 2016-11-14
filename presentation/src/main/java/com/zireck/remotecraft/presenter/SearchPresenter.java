@@ -1,10 +1,10 @@
 package com.zireck.remotecraft.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.interactor.DefaultSubscriber;
 import com.zireck.remotecraft.domain.interactor.Interactor;
+import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.view.SearchView;
 import timber.log.Timber;
 
@@ -60,7 +60,7 @@ public class SearchPresenter implements Presenter<SearchView> {
     }
 
     @Override public void onError(Throwable e) {
-      e.printStackTrace();
+      view.showError((Exception) e);
     }
   }
 }

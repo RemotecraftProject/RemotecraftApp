@@ -3,6 +3,7 @@ package com.zireck.remotecraft.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -13,19 +14,18 @@ import com.zireck.remotecraft.dagger.components.SearchComponent;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.domain.World;
+import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.presenter.SearchPresenter;
 import com.zireck.remotecraft.view.SearchView;
 import javax.inject.Inject;
+import timber.log.Timber;
 
-public class SearchActivity extends BaseActivity implements HasComponent<SearchComponent>,
-    SearchView {
-
-  private SearchComponent searchComponent;
+public class SearchActivity extends BaseActivity
+    implements HasComponent<SearchComponent>, SearchView {
 
   @Inject SearchPresenter presenter;
   @Inject ImageLoader imageLoader;
-
   @BindView(R.id.background) ImageView background;
   @BindView(R.id.found) TextView found;
   @BindView(R.id.ssid) TextView ssid;
@@ -33,6 +33,7 @@ public class SearchActivity extends BaseActivity implements HasComponent<SearchC
   @BindView(R.id.version) TextView version;
   @BindView(R.id.world) TextView world;
   @BindView(R.id.player) TextView player;
+  private SearchComponent searchComponent;
 
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, SearchActivity.class);
@@ -95,6 +96,11 @@ public class SearchActivity extends BaseActivity implements HasComponent<SearchC
     ip.setText(world.getIp());
     this.world.setText(world.getName());
     player.setText(world.getPlayer());
+  }
 
+  @Override public void showError(Exception exception) {
+    String errorMessage = ErrorMessageFactory.create(this, exception);
+    Timber.e(errorMessage);
+    Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
   }
 }

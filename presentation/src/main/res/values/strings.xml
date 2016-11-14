@@ -1,3 +1,8 @@
 <resources>
   <string name="app_name">Remotecraft</string>
+
+  <string name="exception_generic">Unknown error.</string>
+  <string name="exception_no_internet_connection">No Internet connection.</string>
+  <string name="exception_no_response">No response.</string>
+  <string name="exception_invalid_world">Invalid world.</string>
 </resources>
