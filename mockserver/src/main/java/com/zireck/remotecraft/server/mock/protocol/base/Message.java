@@ -1,9 +1,9 @@
-package com.zireck.remotecraft.infrastructure.protocol.base;
+package com.zireck.remotecraft.server.mock.protocol.base;
 
 import com.google.gson.annotations.SerializedName;
-import com.zireck.remotecraft.infrastructure.protocol.data.Command;
-import com.zireck.remotecraft.infrastructure.protocol.data.Info;
-import com.zireck.remotecraft.infrastructure.protocol.data.Server;
+import com.zireck.remotecraft.server.mock.protocol.data.Command;
+import com.zireck.remotecraft.server.mock.protocol.data.Info;
+import com.zireck.remotecraft.server.mock.protocol.data.Server;
 
 public class Message {
 

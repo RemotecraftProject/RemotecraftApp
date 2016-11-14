@@ -1,7 +1,7 @@
-package com.zireck.remotecraft.infrastructure.protocol.data;
+package com.zireck.remotecraft.server.mock.protocol.data;
 
 import com.google.gson.annotations.SerializedName;
-import com.zireck.remotecraft.infrastructure.protocol.CommandType;
+import com.zireck.remotecraft.server.mock.protocol.CommandType;
 
 public final class Command extends ParameterizedData {
 

@@ -1,9 +1,10 @@
 package com.zireck.remotecraft.server.mock.network;
 
 import com.google.gson.Gson;
-import com.zireck.remotecraft.server.mock.protocol.BaseMessage;
-import com.zireck.remotecraft.server.mock.protocol.DiscoveryData;
-import com.zireck.remotecraft.server.mock.protocol.ResponseBuilder;
+import com.zireck.remotecraft.server.mock.protocol.CommandType;
+import com.zireck.remotecraft.server.mock.protocol.base.Message;
+import com.zireck.remotecraft.server.mock.provider.MockDataProvider;
+import com.zireck.remotecraft.server.mock.provider.ServerProvider;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -15,10 +16,14 @@ public class MockNetworkDiscovery implements Runnable {
   private final static int PORT = 9998;
   private static MockNetworkDiscovery INSTANCE;
 
+  private ServerProvider serverProvider;
+  private Gson gson;
   private Thread thread;
   private DatagramSocket datagramSocket;
 
   private MockNetworkDiscovery() {
+    serverProvider = new MockDataProvider();
+    gson = new Gson();
     thread = new Thread(this);
     thread.start();
   }
@@ -47,8 +52,11 @@ public class MockNetworkDiscovery implements Runnable {
           String receiveMessage = new String(datagramPacket.getData()).trim();
           System.out.println(receiveMessage);
 
-          // TODO check if it's asking for server info
-          reply(datagramSocket, datagramPacket);
+          Message message = gson.fromJson(receiveMessage, Message.class);
+          if (message != null && message.isCommand() && message.getCommand()
+              .equals(CommandType.GET_WORLD_INFO)) {
+            reply(datagramSocket, datagramPacket);
+          }
         }
       } catch (IOException e) {
         e.printStackTrace();
@@ -61,24 +69,7 @@ public class MockNetworkDiscovery implements Runnable {
 
   private void reply(DatagramSocket datagramSocket, DatagramPacket datagramPacket)
       throws IOException {
-    DiscoveryData discoveryData = new DiscoveryData()
-        .setSsid("MOVISTAR_C33")
-        .setIp("127.0.0.2")
-        .setVersion("2.3.4")
-        .setSeed("0123456789")
-        .setWorldName("The New World")
-        .setPlayerName("Zireck");
-
-    BaseMessage baseMessage = new ResponseBuilder<DiscoveryData>()
-        .success()
-        .setData(discoveryData)
-        .build();
-
-    Gson gson = new Gson();
-    String responseMessage = gson.toJson(baseMessage);
-
-    //String responseMessage =
-    //    "REMOTECRAFT_DISCOVERY_RESPONSE:0123456789_MockWorldName_MockPlayerName";
+    String responseMessage = gson.toJson(serverProvider.getServerData());
     byte[] sendData = responseMessage.getBytes();
 
     DatagramPacket sendPacket =

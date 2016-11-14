@@ -11,8 +11,9 @@ public class NetworkProtocolHelper {
   public static final String COMMAND_SEPARATOR = ":";
   public static final String COMMAND_SEPARATOR_SECONDARY = "_";
 
-  public static final String MESSAGE_TYPE_REQUEST = "request";
-  public static final String MESSAGE_TYPE_RESPONSE = "response";
+  public static final String MESSAGE_TYPE_COMMAND = "command";
+  public static final String MESSAGE_TYPE_INFO = "info";
+  public static final String MESSAGE_TYPE_SERVER = "server";
 
   public static String getCommand(String message) {
     String command = "";
