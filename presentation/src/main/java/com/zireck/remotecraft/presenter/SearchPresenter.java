@@ -6,10 +6,9 @@ import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.interactor.DefaultSubscriber;
 import com.zireck.remotecraft.domain.interactor.Interactor;
 import com.zireck.remotecraft.view.SearchView;
+import timber.log.Timber;
 
 public class SearchPresenter implements Presenter<SearchView> {
-
-  private static final String TAG = SearchPresenter.class.getSimpleName();
 
   private SearchView view;
   private Interactor getWifiStateInteractor;
@@ -42,24 +41,21 @@ public class SearchPresenter implements Presenter<SearchView> {
   private final class GetWifiStateSubscriber extends DefaultSubscriber<Integer> {
     @Override public void onNext(Integer integer) {
       super.onNext(integer);
-      Log.d(TAG, "onNext: " + integer);
     }
 
     @Override public void onCompleted() {
       super.onCompleted();
-      Log.d(TAG, "onCompleted");
     }
 
     @Override public void onError(Throwable e) {
       super.onError(e);
-      Log.d(TAG, "onError");
     }
   }
 
   private final class SearchWorldSubscriber extends DefaultSubscriber<World> {
 
     @Override public void onNext(World world) {
-      Log.d(TAG, "Received World: " + world.getName());
+      Timber.d("Received World: %s", world.getName());
       view.renderWorld(world);
     }
 

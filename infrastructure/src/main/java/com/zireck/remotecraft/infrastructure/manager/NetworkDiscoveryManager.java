@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
+import timber.log.Timber;
 
 public class NetworkDiscoveryManager {
 
@@ -98,8 +99,8 @@ public class NetworkDiscoveryManager {
 
   private DatagramPacket getDatagramPacket(InetAddress inetAddress) {
     String discoveryRequest = networkProtocolManager.getDiscoveryRequest();
-    Log.d("k9d3", "Sending JSON: ");
-    Log.d("k9d3", discoveryRequest);
+    Timber.d("Sending JSON:");
+    Timber.d(discoveryRequest);
     byte[] discoveryCommand = discoveryRequest.getBytes();
     return new DatagramPacket(discoveryCommand, discoveryCommand.length, inetAddress,
         NetworkProtocolHelper.DISCOVERY_PORT);
@@ -107,7 +108,7 @@ public class NetworkDiscoveryManager {
 
   private WorldEntity parseResponse(DatagramPacket responsePacket) {
     if (responsePacket == null || responsePacket.getData() == null) {
-      Log.e(getClass().getSimpleName(), "Response Packet cannot be null.");
+      Timber.e("Response Packet cannot be null.");
       return null;
     }
 
@@ -115,7 +116,7 @@ public class NetworkDiscoveryManager {
     Message message = gson.fromJson(response, Message.class);
 
     if (message == null || !message.isSuccess() || !message.isServer()) {
-      Log.e(getClass().getSimpleName(), "Invalid message received.");
+      Timber.e("Invalid message received");
       return null;
     }
 

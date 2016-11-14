@@ -55,6 +55,7 @@ dependencies {
   compile project(':data')
   compile project(':infrastructure')
 
+  compile "${library.timber}"
   apt "${library.daggerCompiler}"
   compile "${library.dagger}"
   compile "${library.rxJava}"
