@@ -1,13 +1,14 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
-import android.util.Log;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
+import com.zireck.remotecraft.infrastructure.exception.InvalidWorldException;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.data.Server;
+import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
+import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
+import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -15,30 +16,30 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
+import rx.Observable;
 import timber.log.Timber;
 
 public class NetworkDiscoveryManager {
 
   private static final int RETRY_COUNT = 5;
 
-  private Gson gson;
-  private GsonBuilder gsonBuilder;
   private NetworkInterfaceManager networkInterfaceManager;
-  private NetworkResponseManager networkResponseManager;
   private NetworkProtocolManager networkProtocolManager;
+  private MessageJsonMapper messageJsonMapper;
+  private ServerMapper serverMapper;
+  private ServerMessageValidator serverValidator;
 
   private DatagramSocket datagramSocket;
-  private WorldEntity worldEntity = null;
+  private Message message = null;
 
-  public NetworkDiscoveryManager(Gson gson, GsonBuilder gsonBuilder,
-      NetworkInterfaceManager networkInterfaceManager,
-      NetworkResponseManager networkResponseManager,
-      NetworkProtocolManager networkProtocolManager) {
-    this.gson = gson;
-    this.gsonBuilder = gsonBuilder;
+  public NetworkDiscoveryManager(NetworkInterfaceManager networkInterfaceManager,
+      NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
+      ServerMapper serverMapper, ServerMessageValidator serverValidator) {
     this.networkInterfaceManager = networkInterfaceManager;
-    this.networkResponseManager = networkResponseManager;
     this.networkProtocolManager = networkProtocolManager;
+    this.messageJsonMapper = messageJsonMapper;
+    this.serverMapper = serverMapper;
+    this.serverValidator = serverValidator;
 
     try {
       datagramSocket = new DatagramSocket();
@@ -48,12 +49,37 @@ public class NetworkDiscoveryManager {
     }
   }
 
-  public void sendDiscoveryRequest() throws IOException {
+  public Observable<WorldEntity> discoverWorld() {
+    Observable<Server> serverObservable = Observable.create(subscriber -> {
+      Message message = null;
+
+      try {
+        sendDiscoveryRequest();
+        message = waitForServerResponse();
+      } catch (NoResponseException | IOException e) {
+        subscriber.onError(e);
+        return;
+      }
+
+      if (!serverValidator.isValid(message)) {
+        subscriber.onError(new InvalidWorldException());
+      }
+
+      Server server = serverValidator.cast(message);
+
+      subscriber.onNext(server);
+      subscriber.onCompleted();
+    });
+
+    return serverObservable.map(serverMapper::transform);
+  }
+
+  private void sendDiscoveryRequest() throws IOException {
     sendRequestToDefaultBroadcastAddress();
     sendRequestToEveryInterfaceBroadcastAddress();
   }
 
-  public WorldEntity discover() throws IOException, NoResponseException {
+  private Message waitForServerResponse() throws IOException, NoResponseException {
     DatagramPacket responsePacket;
     byte[] responseBuffer;
     int failCount = 0;
@@ -69,8 +95,8 @@ public class NetworkDiscoveryManager {
         continue;
       }
 
-      worldEntity = parseResponse(responsePacket);
-      if (worldEntity != null) {
+      message = parseResponse(responsePacket);
+      if (message != null) {
         break;
       }
 
@@ -80,11 +106,11 @@ public class NetworkDiscoveryManager {
     datagramSocket.disconnect();
     datagramSocket.close();
 
-    if (worldEntity == null && failCount >= RETRY_COUNT) {
+    if (message == null && failCount >= RETRY_COUNT) {
       throw new NoResponseException();
     }
 
-    return worldEntity;
+    return message;
   }
 
   private void sendRequestToDefaultBroadcastAddress() throws IOException {
@@ -111,26 +137,20 @@ public class NetworkDiscoveryManager {
         NetworkProtocolHelper.DISCOVERY_PORT);
   }
 
-  private WorldEntity parseResponse(DatagramPacket responsePacket) {
+  private Message parseResponse(DatagramPacket responsePacket) {
     if (responsePacket == null || responsePacket.getData() == null) {
       Timber.e("Response Packet cannot be null.");
       return null;
     }
 
-    String response = new String(responsePacket.getData()).trim();
-    Message message = gson.fromJson(response, Message.class);
+    String messageJsonResponse = new String(responsePacket.getData()).trim();
+    Message message = messageJsonMapper.transformMessage(messageJsonResponse);
 
     if (message == null || !message.isSuccess() || !message.isServer()) {
       Timber.e("Invalid message received");
       return null;
     }
 
-    Server server = message.getServer();
-
-    return new WorldEntity.Builder().ip(server.getIp())
-        .seed(server.getSeed())
-        .name(server.getWorldName())
-        .player(server.getPlayerName())
-        .build();
+    return message;
   }
 }

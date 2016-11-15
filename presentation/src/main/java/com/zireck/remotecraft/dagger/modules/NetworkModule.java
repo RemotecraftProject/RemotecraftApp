@@ -1,13 +1,14 @@
 package com.zireck.remotecraft.dagger.modules;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.infrastructure.manager.NetworkDiscoveryManager;
 import com.zireck.remotecraft.infrastructure.manager.NetworkInterfaceManager;
 import com.zireck.remotecraft.infrastructure.manager.NetworkProtocolManager;
-import com.zireck.remotecraft.infrastructure.manager.NetworkResponseManager;
+import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
+import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
 import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
+import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -27,16 +28,12 @@ import javax.inject.Singleton;
     return new NetworkInterfaceManager();
   }
 
-  @Provides @Singleton NetworkResponseManager provideNetworkResponseManager() {
-    return new NetworkResponseManager();
-  }
-
-  @Provides @Singleton NetworkDiscoveryManager provideNetworkDiscoveryManager(Gson gson,
-      GsonBuilder gsonBuilder, NetworkInterfaceManager networkInterfaceManager,
-      NetworkResponseManager networkResponseManager,
-      NetworkProtocolManager networkProtocolManager) {
-    return new NetworkDiscoveryManager(gson, gsonBuilder, networkInterfaceManager,
-        networkResponseManager, networkProtocolManager);
+  @Provides @Singleton NetworkDiscoveryManager provideNetworkDiscoveryManager(
+      NetworkInterfaceManager networkInterfaceManager,
+      NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
+      ServerMapper serverMapper, ServerMessageValidator serverValidator) {
+    return new NetworkDiscoveryManager(networkInterfaceManager, networkProtocolManager,
+        messageJsonMapper, serverMapper, serverValidator);
   }
 
   @Provides @Singleton NetworkProtocolManager provideNetworkProtocolManager(Gson gson) {
