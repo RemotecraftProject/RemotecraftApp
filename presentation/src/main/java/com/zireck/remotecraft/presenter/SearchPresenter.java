@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.interactor.DefaultSubscriber;
 import com.zireck.remotecraft.domain.interactor.Interactor;
-import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.view.SearchView;
 import timber.log.Timber;
 

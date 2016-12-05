@@ -1,7 +1,6 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
-import com.zireck.remotecraft.infrastructure.exception.InvalidWorldException;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
@@ -14,27 +13,27 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.Collection;
 import rx.Observable;
 import timber.log.Timber;
 
-public class NetworkDiscoveryManager {
+public class ServerSearchManager {
 
+  private static final String BROADCAST_ADDRESS = "255.255.255.255";
   private static final int RETRY_COUNT = 5;
 
+  private DatagramSocket datagramSocket;
   private NetworkInterfaceManager networkInterfaceManager;
   private NetworkProtocolManager networkProtocolManager;
   private MessageJsonMapper messageJsonMapper;
   private ServerMapper serverMapper;
   private ServerMessageValidator serverValidator;
 
-  private DatagramSocket datagramSocket;
-  private Message message = null;
-
-  public NetworkDiscoveryManager(NetworkInterfaceManager networkInterfaceManager,
+  public ServerSearchManager(DatagramSocket datagramSocket,
+      NetworkInterfaceManager networkInterfaceManager,
       NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
       ServerMapper serverMapper, ServerMessageValidator serverValidator) {
+    this.datagramSocket = datagramSocket;
     this.networkInterfaceManager = networkInterfaceManager;
     this.networkProtocolManager = networkProtocolManager;
     this.messageJsonMapper = messageJsonMapper;
@@ -42,15 +41,18 @@ public class NetworkDiscoveryManager {
     this.serverValidator = serverValidator;
 
     try {
-      datagramSocket = new DatagramSocket();
       datagramSocket.setBroadcast(true);
     } catch (SocketException e) {
       e.printStackTrace();
     }
   }
 
-  public Observable<WorldEntity> discoverWorld() {
-    Observable<Server> serverObservable = Observable.create(subscriber -> {
+  public Observable<WorldEntity> searchWorld() {
+    return searchServer().map(serverMapper::transform);
+  }
+
+  private Observable<Server> searchServer() {
+    return Observable.<Message>create(subscriber -> {
       Message message = null;
 
       try {
@@ -58,20 +60,18 @@ public class NetworkDiscoveryManager {
         message = waitForServerResponse();
       } catch (NoResponseException | IOException e) {
         subscriber.onError(e);
-        return;
       }
 
-      if (!serverValidator.isValid(message)) {
-        subscriber.onError(new InvalidWorldException());
-      }
-
-      Server server = serverValidator.cast(message);
-
-      subscriber.onNext(server);
+      subscriber.onNext(message);
       subscriber.onCompleted();
-    });
-
-    return serverObservable.map(serverMapper::transform);
+    })
+      .retryWhen(errors ->
+        errors
+          .zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
+          .flatMap(retryCount -> Observable.empty())
+      )
+      .takeFirst(serverValidator::isValid)
+      .map(serverValidator::cast);
   }
 
   private void sendDiscoveryRequest() throws IOException {
@@ -79,42 +79,8 @@ public class NetworkDiscoveryManager {
     sendRequestToEveryInterfaceBroadcastAddress();
   }
 
-  private Message waitForServerResponse() throws IOException, NoResponseException {
-    DatagramPacket responsePacket;
-    byte[] responseBuffer;
-    int failCount = 0;
-    while (failCount < RETRY_COUNT) {
-      responseBuffer = new byte[15000];
-      responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
-
-      datagramSocket.setSoTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
-
-      try {
-        datagramSocket.receive(responsePacket);
-      } catch (SocketTimeoutException e) {
-        continue;
-      }
-
-      message = parseResponse(responsePacket);
-      if (message != null) {
-        break;
-      }
-
-      failCount++;
-    }
-
-    datagramSocket.disconnect();
-    datagramSocket.close();
-
-    if (message == null && failCount >= RETRY_COUNT) {
-      throw new NoResponseException();
-    }
-
-    return message;
-  }
-
   private void sendRequestToDefaultBroadcastAddress() throws IOException {
-    DatagramPacket datagramPacket = getDatagramPacket(InetAddress.getByName("255.255.255.255"));
+    DatagramPacket datagramPacket = getDatagramPacket(InetAddress.getByName(BROADCAST_ADDRESS));
     datagramSocket.send(datagramPacket);
   }
 
@@ -137,7 +103,22 @@ public class NetworkDiscoveryManager {
         NetworkProtocolHelper.DISCOVERY_PORT);
   }
 
-  private Message parseResponse(DatagramPacket responsePacket) {
+  private Message waitForServerResponse() throws IOException, NoResponseException {
+    byte[] responseBuffer = new byte[15000];
+    DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
+
+    datagramSocket.setSoTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
+    datagramSocket.receive(responsePacket);
+
+    Message message = parseResponse(responsePacket);
+
+    datagramSocket.disconnect();
+    datagramSocket.close();
+
+    return message;
+  }
+
+  private Message parseResponse(DatagramPacket responsePacket) throws NoResponseException {
     if (responsePacket == null || responsePacket.getData() == null) {
       Timber.e("Response Packet cannot be null.");
       return null;
@@ -148,7 +129,7 @@ public class NetworkDiscoveryManager {
 
     if (message == null || !message.isSuccess() || !message.isServer()) {
       Timber.e("Invalid message received");
-      return null;
+      throw new NoResponseException();
     }
 
     return message;
