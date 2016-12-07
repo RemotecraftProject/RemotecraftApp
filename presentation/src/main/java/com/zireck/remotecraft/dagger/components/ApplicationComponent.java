@@ -14,6 +14,7 @@ import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import com.zireck.remotecraft.infrastructure.manager.NetworkInterfaceManager;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
+import com.zireck.remotecraft.infrastructure.tool.NetworkTransmitter;
 import com.zireck.remotecraft.navigation.Navigator;
 import com.zireck.remotecraft.view.activity.BaseActivity;
 import dagger.Component;
@@ -35,7 +36,7 @@ public interface ApplicationComponent {
   ThreadExecutor threadExecutor();
   PostExecutionThread postExecutionThread();
   Navigator navigator();
-  DatagramSocket datagramSocket();
+  NetworkTransmitter networkTransmitter();
   NetworkProvider networkProvider();
   ReceiversProvider receiversProvider();
   NetworkInterfaceManager networkInterfaceManager();

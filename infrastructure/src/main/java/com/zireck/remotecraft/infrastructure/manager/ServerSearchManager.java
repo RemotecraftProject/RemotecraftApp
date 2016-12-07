@@ -7,10 +7,10 @@ import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.data.Server;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
+import com.zireck.remotecraft.infrastructure.tool.NetworkTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Collection;
@@ -22,18 +22,18 @@ public class ServerSearchManager {
   private static final String BROADCAST_ADDRESS = "255.255.255.255";
   private static final int RETRY_COUNT = 5;
 
-  private DatagramSocket datagramSocket;
+  private NetworkTransmitter networkTransmitter;
   private NetworkInterfaceManager networkInterfaceManager;
   private NetworkProtocolManager networkProtocolManager;
   private MessageJsonMapper messageJsonMapper;
   private ServerMapper serverMapper;
   private ServerMessageValidator serverValidator;
 
-  public ServerSearchManager(DatagramSocket datagramSocket,
+  public ServerSearchManager(NetworkTransmitter networkTransmitter,
       NetworkInterfaceManager networkInterfaceManager,
       NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
       ServerMapper serverMapper, ServerMessageValidator serverValidator) {
-    this.datagramSocket = datagramSocket;
+    this.networkTransmitter = networkTransmitter;
     this.networkInterfaceManager = networkInterfaceManager;
     this.networkProtocolManager = networkProtocolManager;
     this.messageJsonMapper = messageJsonMapper;
@@ -41,7 +41,7 @@ public class ServerSearchManager {
     this.serverValidator = serverValidator;
 
     try {
-      datagramSocket.setBroadcast(true);
+      networkTransmitter.setBroadcast(true);
     } catch (SocketException e) {
       e.printStackTrace();
     }
@@ -64,14 +64,10 @@ public class ServerSearchManager {
 
       subscriber.onNext(message);
       subscriber.onCompleted();
-    })
-      .retryWhen(errors ->
-        errors
-          .zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
-          .flatMap(retryCount -> Observable.empty())
-      )
-      .takeFirst(serverValidator::isValid)
-      .map(serverValidator::cast);
+    }).retryWhen(errors -> errors.zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
+        .flatMap(retryCount -> Observable.empty()))
+        .takeFirst(serverValidator::isValid)
+        .map(serverValidator::cast);
   }
 
   private void sendDiscoveryRequest() throws IOException {
@@ -81,7 +77,7 @@ public class ServerSearchManager {
 
   private void sendRequestToDefaultBroadcastAddress() throws IOException {
     DatagramPacket datagramPacket = getDatagramPacket(InetAddress.getByName(BROADCAST_ADDRESS));
-    datagramSocket.send(datagramPacket);
+    networkTransmitter.send(datagramPacket);
   }
 
   private void sendRequestToEveryInterfaceBroadcastAddress() throws IOException {
@@ -90,7 +86,7 @@ public class ServerSearchManager {
 
     for (InetAddress broadcastAddress : broadcastAddresses) {
       datagramPacket = getDatagramPacket(broadcastAddress);
-      datagramSocket.send(datagramPacket);
+      networkTransmitter.send(datagramPacket);
     }
   }
 
@@ -107,13 +103,12 @@ public class ServerSearchManager {
     byte[] responseBuffer = new byte[15000];
     DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
 
-    datagramSocket.setSoTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
-    datagramSocket.receive(responsePacket);
+    networkTransmitter.setTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
+    networkTransmitter.receive(responsePacket);
 
     Message message = parseResponse(responsePacket);
 
-    datagramSocket.disconnect();
-    datagramSocket.close();
+    networkTransmitter.shutdown();
 
     return message;
   }
