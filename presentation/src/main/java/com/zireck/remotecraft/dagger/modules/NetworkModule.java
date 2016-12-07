@@ -21,9 +21,8 @@ import javax.inject.Singleton;
 
   }
 
-  @Provides @Singleton NetworkTransmitter provideNetworkTransmitter(
-      NetworkDatagramTransmitter networkDatagramTransmitter) {
-    return networkDatagramTransmitter;
+  @Provides @Singleton NetworkTransmitter provideNetworkTransmitter() {
+    return new NetworkDatagramTransmitter();
   }
 
   @Provides @Singleton NetworkProvider provideNetworkProvider(

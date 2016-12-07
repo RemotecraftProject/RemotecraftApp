@@ -13,7 +13,7 @@ public class NetworkProtocolManager {
     this.jsonSerializer = jsonSerializer;
   }
 
-  public String getDiscoveryRequest() {
+  public String composeServerSearchRequest() {
     CommandMessage getWorldInfo = new CommandMessage.Builder().success(true)
         .command(new Command(CommandType.GET_WORLD_INFO))
         .build();

@@ -19,6 +19,7 @@ import timber.log.Timber;
 
 public class ServerSearchManager {
 
+  private static final int SEARCH_PORT = 9998;
   private static final String BROADCAST_ADDRESS = "255.255.255.255";
   private static final int RETRY_COUNT = 5;
 
@@ -91,12 +92,11 @@ public class ServerSearchManager {
   }
 
   private DatagramPacket getDatagramPacket(InetAddress inetAddress) {
-    String discoveryRequest = networkProtocolManager.getDiscoveryRequest();
+    String serverSearchRequest = networkProtocolManager.composeServerSearchRequest();
     Timber.d("Sending JSON:");
-    Timber.d(discoveryRequest);
-    byte[] discoveryCommand = discoveryRequest.getBytes();
-    return new DatagramPacket(discoveryCommand, discoveryCommand.length, inetAddress,
-        NetworkProtocolHelper.DISCOVERY_PORT);
+    Timber.d(serverSearchRequest);
+    byte[] discoveryCommand = serverSearchRequest.getBytes();
+    return new DatagramPacket(discoveryCommand, discoveryCommand.length, inetAddress, SEARCH_PORT);
   }
 
   private Message waitForServerResponse() throws IOException, NoResponseException {

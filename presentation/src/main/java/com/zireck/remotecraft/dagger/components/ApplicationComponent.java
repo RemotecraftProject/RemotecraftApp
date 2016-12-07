@@ -7,13 +7,8 @@ import com.zireck.remotecraft.dagger.modules.NetworkModule;
 import com.zireck.remotecraft.dagger.modules.ToolsModule;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
-import com.zireck.remotecraft.infrastructure.manager.NetworkInterfaceManager;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
-import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
-import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
-import com.zireck.remotecraft.infrastructure.tool.NetworkTransmitter;
 import com.zireck.remotecraft.navigation.Navigator;
 import com.zireck.remotecraft.view.activity.BaseActivity;
 import dagger.Component;
@@ -34,11 +29,6 @@ public interface ApplicationComponent {
   ThreadExecutor threadExecutor();
   PostExecutionThread postExecutionThread();
   Navigator navigator();
-  NetworkTransmitter networkTransmitter();
-  NetworkProvider networkProvider();
   ReceiversProvider receiversProvider();
-  NetworkInterfaceManager networkInterfaceManager();
   ServerSearchManager serverSearchManager();
-  JsonSerializer jsonSerializer();
-  MessageJsonMapper messageJsonMapper();
 }

@@ -11,7 +11,7 @@ public class NetworkDatagramTransmitter implements NetworkTransmitter {
 
   private DatagramSocket datagramSocket;
 
-  @Inject public NetworkDatagramTransmitter() {
+  public NetworkDatagramTransmitter() {
     try {
       datagramSocket = new DatagramSocket();
     } catch (SocketException e) {
