@@ -1,6 +1,5 @@
 package com.zireck.remotecraft.dagger.modules;
 
-import com.google.gson.Gson;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.infrastructure.manager.NetworkInterfaceManager;
 import com.zireck.remotecraft.infrastructure.manager.NetworkProtocolManager;
@@ -8,6 +7,7 @@ import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
 import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
+import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import com.zireck.remotecraft.infrastructure.tool.NetworkDatagramTransmitter;
 import com.zireck.remotecraft.infrastructure.tool.NetworkTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
@@ -43,7 +43,8 @@ import javax.inject.Singleton;
         networkProtocolManager, messageJsonMapper, serverMapper, serverValidator);
   }
 
-  @Provides @Singleton NetworkProtocolManager provideNetworkProtocolManager(Gson gson) {
-    return new NetworkProtocolManager(gson);
+  @Provides @Singleton NetworkProtocolManager provideNetworkProtocolManager(
+      JsonSerializer jsonSerializer) {
+    return new NetworkProtocolManager(jsonSerializer);
   }
 }

@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.dagger.modules;
 
-import com.google.gson.Gson;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
+import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 
   }
 
-  @Provides @Singleton MessageJsonMapper provideMessageJsonMapper(Gson gson) {
-    return new MessageJsonMapper(gson);
+  @Provides @Singleton MessageJsonMapper provideMessageJsonMapper(JsonSerializer jsonSerializer) {
+    return new MessageJsonMapper(jsonSerializer);
   }
 }

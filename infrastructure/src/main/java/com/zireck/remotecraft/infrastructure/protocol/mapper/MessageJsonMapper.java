@@ -1,25 +1,21 @@
 package com.zireck.remotecraft.infrastructure.protocol.mapper;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import java.lang.reflect.Type;
+import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import javax.inject.Inject;
 
 public class MessageJsonMapper {
 
-  private final Gson gson;
+  private final JsonSerializer jsonSerializer;
 
-  @Inject
-  public MessageJsonMapper(Gson gson) {
-    this.gson = gson;
+  @Inject public MessageJsonMapper(JsonSerializer jsonSerializer) {
+    this.jsonSerializer = jsonSerializer;
   }
 
   public Message transformMessage(String messageJsonResponse) {
     try {
-      Type messageType = new TypeToken<Message>(){}.getType();
-      Message message = gson.fromJson(messageJsonResponse, messageType);
+      Message message = jsonSerializer.fromJson(messageJsonResponse, Message.class);
 
       return message;
     } catch (JsonSyntaxException jsonException) {
