@@ -3,10 +3,8 @@ ext.configuration = [
   versionMajor                : 1,
   versionMinor                : 0,
   versionPatch                : 0,
+  versionBuild                : -1,
   versionClassifier           : "",
-
-  versionCode                 : 1,
-  versionName                 : "1.0.0",
 
   minimumSdkVersion           : 15,
   compileSdkVersion           : 24,
@@ -15,9 +13,13 @@ ext.configuration = [
 ]
 
 def configuration = ext.configuration;
+def versionPropertiesFilePath = "$rootProject.projectDir/buildsystem/version.properties"
 
 ext.buildVersionCode = {
-  return configuration.minimumSdkVersion * 10000000 + configuration.versionMajor * 10000 + configuration.versionMinor * 100 + configuration.versionPatch
+  return configuration.minimumSdkVersion * 10000000 +
+      configuration.versionMajor * 10000 +
+      configuration.versionMinor * 100 +
+      configuration.versionPatch
 }
 
 ext.buildVersionName = {
@@ -26,4 +28,33 @@ ext.buildVersionName = {
     versionName = versionName + "-" + configuration.versionClassifier
   }
   return versionName;
+}
+
+ext.buildVersionNameWithoutClassifier = {
+  configuration.versionBuild = ext.readVersionBuild()
+  return "${configuration.versionMajor}.${configuration.versionMinor}.${configuration.versionPatch}.${configuration.versionBuild}"
+}
+
+ext.readVersionBuild = {
+  def versionPropertiesFile = file(versionPropertiesFilePath)
+  if (!versionPropertiesFile.canRead()) {
+    throw new GradleException("Could not read version.properties")
+  } else {
+    def Properties versionProperties = new Properties()
+    versionProperties.load(new FileInputStream(versionPropertiesFile))
+    return versionProperties['VERSION_BUILD'].toInteger()
+  }
+}
+
+ext.incrementVersionBuild = {
+  def versionPropertiesFile = file(versionPropertiesFilePath)
+  if (!versionPropertiesFile.canRead()) {
+    throw new GradleException("Could not read version.properties")
+  } else {
+    def Properties versionProperties = new Properties()
+    versionProperties.load(new FileInputStream(versionPropertiesFile))
+    def versionBuild = versionProperties['VERSION_BUILD'].toInteger() + 1
+    versionProperties['VERSION_BUILD'] = versionBuild.toString()
+    versionProperties.store(versionPropertiesFile.newWriter(), null)
+  }
 }

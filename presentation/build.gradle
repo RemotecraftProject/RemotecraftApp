@@ -14,8 +14,8 @@ android {
     targetSdkVersion configuration.targetSdkVersion
 
     applicationId configuration.applicationId
-    versionCode configuration.versionCode
-    versionName configuration.versionName
+    versionCode buildVersionCode()
+    versionName buildVersionName()
   }
 
   compileOptions {
@@ -43,6 +43,14 @@ android {
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+afterEvaluate { project ->
+  if (project.tasks.findByName("generateReleaseBuildConfig")) {
+    project.tasks.generateReleaseBuildConfig << {
+      incrementVersionBuild()
     }
   }
 }
