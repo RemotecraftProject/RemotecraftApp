@@ -24,11 +24,12 @@ public abstract class CompletableInteractor
   protected abstract Completable buildReactiveStream();
 
   @Override public void execute(DisposableCompletableObserver observer) {
-    DisposableCompletableObserver completableObserver = buildReactiveStream()
-            .subscribeOn(Schedulers.from(threadExecutor))
-            .observeOn(postExecutionThread.getScheduler())
-            .subscribeWith(observer);
-    disposables.add(completableObserver);
+    buildReactiveStream()
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribeWith(observer);
+
+    disposables.add(observer);
   }
 
   @Override public void dispose() {

@@ -3,7 +3,6 @@ package com.zireck.remotecraft.domain.interactor.base;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -24,11 +23,12 @@ public abstract class ObservableInteractor implements Interactor<DisposableObser
   protected abstract Observable buildReactiveStream();
 
   @Override public void execute(DisposableObserver observer) {
-    Observer observableObserver = buildReactiveStream()
+    buildReactiveStream()
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribeWith(observer);
-    disposables.add((DisposableObserver) observableObserver);
+
+    disposables.add(observer);
   }
 
   @Override public void dispose() {
