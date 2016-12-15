@@ -9,12 +9,13 @@ import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
 import com.zireck.remotecraft.infrastructure.tool.NetworkTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Collection;
-import rx.Observable;
 import timber.log.Timber;
 
 public class ServerSearchManager {
@@ -48,11 +49,11 @@ public class ServerSearchManager {
     }
   }
 
-  public Observable<WorldEntity> searchWorld() {
+  public Maybe<WorldEntity> searchWorld() {
     return searchServer().map(serverMapper::transform);
   }
 
-  private Observable<Server> searchServer() {
+  private Maybe<Server> searchServer() {
     return Observable.<Message>create(subscriber -> {
       Message message = null;
 
@@ -64,10 +65,11 @@ public class ServerSearchManager {
       }
 
       subscriber.onNext(message);
-      subscriber.onCompleted();
+      subscriber.onComplete();
     }).retryWhen(errors -> errors.zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
         .flatMap(retryCount -> Observable.empty()))
-        .takeFirst(serverValidator::isValid)
+        .filter(serverValidator::isValid)
+        .firstElement()
         .map(serverValidator::cast);
   }
 

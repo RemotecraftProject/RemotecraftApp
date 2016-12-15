@@ -3,9 +3,9 @@ package com.zireck.remotecraft.domain.interactor;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
-import rx.Observable;
+import io.reactivex.Maybe;
 
-public class SearchWorldInteractor extends Interactor {
+public class SearchWorldInteractor extends MaybeInteractor {
 
   private final NetworkProvider networkProvider;
 
@@ -15,7 +15,7 @@ public class SearchWorldInteractor extends Interactor {
     this.networkProvider = networkProvider;
   }
 
-  @Override protected Observable buildInteractorObservable() {
+  @Override protected Maybe buildReactiveStream() {
     return networkProvider.searchWorld();
   }
 }

@@ -2,8 +2,8 @@ ext.version = [
     // Tools
     timber                    : "4.3.1",
     dagger                    : "2.6",
-    rxJava                    : "1.1.9",
-    rxAndroid                 : "1.2.1",
+    rxJava                    : "2.0.2",
+    rxAndroid                 : "2.0.1",
     javaxAnnotation           : "1.0",
     javaxInject               : "1",
     rxReceivers               : "0.1.0",
@@ -32,8 +32,8 @@ ext.infrastructureDependencies = [
     timber                    : "com.jakewharton.timber:timber:${version.timber}",
     daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
     dagger                    : "com.google.dagger:dagger:${version.dagger}",
-    rxJava                    : "io.reactivex:rxjava:${version.rxJava}",
-    rxAndroid                 : "io.reactivex:rxandroid:${version.rxAndroid}",
+    rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
+    rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
     rxReceivers               : "com.f2prateek.rx.receivers:rx-receivers:${version.rxReceivers}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
     javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
@@ -50,8 +50,8 @@ ext.dataDependencies = [
     timber                    : "com.jakewharton.timber:timber:${version.timber}",
     daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
     dagger                    : "com.google.dagger:dagger:${version.dagger}",
-    rxJava                    : "io.reactivex:rxjava:${version.rxJava}",
-    rxAndroid                 : "io.reactivex:rxandroid:${version.rxAndroid}",
+    rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
+    rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
     javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
 
@@ -64,7 +64,7 @@ ext.dataTestDependencies = [
 
 ext.domainDependencies = [
     timber                    : "com.jakewharton.timber:timber:${version.timber}",
-    rxJava                    : "io.reactivex:rxjava:${version.rxJava}",
+    rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
     javaxInject               : "javax.inject:javax.inject:${version.javaxInject}"
 ]
@@ -77,8 +77,8 @@ ext.presentationDependencies = [
     timber                    : "com.jakewharton.timber:timber:${version.timber}",
     daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
     dagger                    : "com.google.dagger:dagger:${version.dagger}",
-    rxJava                    : "io.reactivex:rxjava:${version.rxJava}",
-    rxAndroid                 : "io.reactivex:rxandroid:${version.rxAndroid}",
+    rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
+    rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
 
     design                    : "com.android.support:design:${version.design}",

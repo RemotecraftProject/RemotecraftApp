@@ -1,6 +1,6 @@
 package com.zireck.remotecraft.domain.executor;
 
-import rx.Scheduler;
+import io.reactivex.Scheduler;
 
 public interface PostExecutionThread {
   Scheduler getScheduler();

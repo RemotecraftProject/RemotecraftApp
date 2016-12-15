@@ -1,8 +1,8 @@
 package com.zireck.remotecraft.domain.provider;
 
 import com.zireck.remotecraft.domain.World;
-import rx.Observable;
+import io.reactivex.Maybe;
 
 public interface NetworkProvider {
-  Observable<World> searchWorld();
+  Maybe<World> searchWorld();
 }

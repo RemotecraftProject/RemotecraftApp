@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.domain.provider;
 
-import rx.Observable;
+import io.reactivex.Maybe;
 
 public interface ReceiversProvider {
-  Observable<Integer> getWifiState();
+  Maybe<Integer> getWifiState();
 }

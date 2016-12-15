@@ -1,10 +1,9 @@
 package com.zireck.remotecraft.infrastructure.provider;
 
 import android.content.Context;
-import com.f2prateek.rx.receivers.wifi.RxWifiManager;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
+import io.reactivex.Maybe;
 import javax.inject.Inject;
-import rx.Observable;
 
 public class ReceiversDataProvider implements ReceiversProvider {
 
@@ -14,7 +13,9 @@ public class ReceiversDataProvider implements ReceiversProvider {
 
   }
 
-  @Override public Observable<Integer> getWifiState() {
-    return RxWifiManager.wifiStateChanges(context);
+  @Override public Maybe<Integer> getWifiState() {
+    // TODO wait until RxReceivers library updates to RxJava 2
+    //return RxWifiManager.wifiStateChanges(context);
+    return Maybe.empty();
   }
 }

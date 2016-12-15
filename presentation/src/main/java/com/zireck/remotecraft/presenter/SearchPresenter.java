@@ -2,18 +2,18 @@ package com.zireck.remotecraft.presenter;
 
 import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.World;
-import com.zireck.remotecraft.domain.interactor.DefaultSubscriber;
-import com.zireck.remotecraft.domain.interactor.Interactor;
+import com.zireck.remotecraft.domain.interactor.MaybeInteractor;
+import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
 import com.zireck.remotecraft.view.SearchView;
 import timber.log.Timber;
 
 public class SearchPresenter implements Presenter<SearchView> {
 
   private SearchView view;
-  private Interactor getWifiStateInteractor;
-  private Interactor searchWorldInteractor;
+  private MaybeInteractor getWifiStateInteractor;
+  private MaybeInteractor searchWorldInteractor;
 
-  public SearchPresenter(Interactor getWifiStateInteractor, Interactor searchWorldInteractor) {
+  public SearchPresenter(MaybeInteractor getWifiStateInteractor, MaybeInteractor searchWorldInteractor) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchWorldInteractor = searchWorldInteractor;
   }
@@ -23,9 +23,8 @@ public class SearchPresenter implements Presenter<SearchView> {
   }
 
   @Override public void resume() {
-    getWifiStateInteractor.execute(new GetWifiStateSubscriber());
     if (searchWorldInteractor != null) {
-      searchWorldInteractor.execute(new SearchWorldSubscriber());
+      searchWorldInteractor.execute(new SearchWorldObserver());
     }
   }
 
@@ -34,26 +33,11 @@ public class SearchPresenter implements Presenter<SearchView> {
   }
 
   @Override public void destroy() {
-
+    searchWorldInteractor.dispose();
   }
 
-  private final class GetWifiStateSubscriber extends DefaultSubscriber<Integer> {
-    @Override public void onNext(Integer integer) {
-      super.onNext(integer);
-    }
-
-    @Override public void onCompleted() {
-      super.onCompleted();
-    }
-
-    @Override public void onError(Throwable e) {
-      super.onError(e);
-    }
-  }
-
-  private final class SearchWorldSubscriber extends DefaultSubscriber<World> {
-
-    @Override public void onNext(World world) {
+  private final class SearchWorldObserver extends DefaultMaybeObserver<World> {
+    @Override public void onSuccess(World world) {
       Timber.d("Received World: %s", world.getName());
       view.renderWorld(world);
     }

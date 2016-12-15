@@ -3,9 +3,9 @@ package com.zireck.remotecraft.domain.interactor;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
-import rx.Observable;
+import io.reactivex.Maybe;
 
-public class GetWifiStateInteractor extends Interactor {
+public class GetWifiStateInteractor extends MaybeInteractor {
 
   private final ReceiversProvider receiversProvider;
 
@@ -15,7 +15,7 @@ public class GetWifiStateInteractor extends Interactor {
     this.receiversProvider = receiversProvider;
   }
 
-  @Override protected Observable buildInteractorObservable() {
+  @Override protected Maybe buildReactiveStream() {
     return receiversProvider.getWifiState();
   }
 }
