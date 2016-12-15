@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.domain.interactor;
+package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
@@ -8,7 +8,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableMaybeObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class MaybeInteractor implements BaseInteractor<DisposableMaybeObserver> {
+public abstract class MaybeInteractor implements Interactor<DisposableMaybeObserver> {
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;

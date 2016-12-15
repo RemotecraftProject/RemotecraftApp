@@ -2,6 +2,7 @@ package com.zireck.remotecraft.domain.interactor;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import io.reactivex.Maybe;
 

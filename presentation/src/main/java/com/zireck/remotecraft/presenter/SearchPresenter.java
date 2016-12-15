@@ -2,7 +2,7 @@ package com.zireck.remotecraft.presenter;
 
 import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.World;
-import com.zireck.remotecraft.domain.interactor.MaybeInteractor;
+import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
 import com.zireck.remotecraft.view.SearchView;
 import timber.log.Timber;
@@ -13,7 +13,8 @@ public class SearchPresenter implements Presenter<SearchView> {
   private MaybeInteractor getWifiStateInteractor;
   private MaybeInteractor searchWorldInteractor;
 
-  public SearchPresenter(MaybeInteractor getWifiStateInteractor, MaybeInteractor searchWorldInteractor) {
+  public SearchPresenter(MaybeInteractor getWifiStateInteractor,
+      MaybeInteractor searchWorldInteractor) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchWorldInteractor = searchWorldInteractor;
   }
