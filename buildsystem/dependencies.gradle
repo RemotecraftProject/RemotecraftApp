@@ -23,7 +23,8 @@ ext.version = [
     androidSpinKit            : "1.0.5",
 
     // Testing
-    jUnit                     : "4.12"
+    jUnit                     : "4.12",
+    mockito                   : "2.+"
 ]
 
 def version = ext.version;
@@ -70,7 +71,8 @@ ext.domainDependencies = [
 ]
 
 ext.domainTestDependencies = [
-
+    jUnit                     : "junit:junit:${version.jUnit}",
+    mockito                   : "org.mockito:mockito-core:${version.mockito}"
 ]
 
 ext.presentationDependencies = [
