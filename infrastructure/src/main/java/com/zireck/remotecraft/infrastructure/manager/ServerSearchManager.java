@@ -64,7 +64,9 @@ public class ServerSearchManager {
         subscriber.onError(e);
       }
 
-      subscriber.onNext(message);
+      if (message != null) {
+        subscriber.onNext(message);
+      }
       subscriber.onComplete();
     }).retryWhen(errors -> errors.zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
         .flatMap(retryCount -> Observable.empty()))
