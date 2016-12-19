@@ -19,10 +19,20 @@ public class SearchWorldForIpInteractor extends MaybeInteractor {
   }
 
   public void setIpAddress(String ipAddress) {
+    // TODO check if it's a valid ip address
+    if (ipAddress == null || ipAddress.isEmpty()) {
+      throw new IllegalArgumentException("Invalid IP Address");
+    }
+
     this.ipAddress = ipAddress;
   }
 
   @Override protected Maybe buildReactiveStream() {
+    // TODO check if it's a valid ip address
+    if (ipAddress == null || ipAddress.isEmpty()) {
+      throw new RuntimeException("Invalid IP Address");
+    }
+
     return networkProvider.searchWorld(ipAddress);
   }
 }
