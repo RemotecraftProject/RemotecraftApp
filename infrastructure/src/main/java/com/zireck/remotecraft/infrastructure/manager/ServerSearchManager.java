@@ -1,5 +1,7 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
+import android.text.TextUtils;
+
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
@@ -30,6 +32,7 @@ public class ServerSearchManager {
   private MessageJsonMapper messageJsonMapper;
   private ServerMapper serverMapper;
   private ServerMessageValidator serverValidator;
+  private String ipAddressToFind;
 
   public ServerSearchManager(NetworkTransmitter networkTransmitter,
       NetworkInterfaceManager networkInterfaceManager,
@@ -41,16 +44,22 @@ public class ServerSearchManager {
     this.messageJsonMapper = messageJsonMapper;
     this.serverMapper = serverMapper;
     this.serverValidator = serverValidator;
+  }
 
+  public void findServerIn(String ipAddressToFind) {
+    this.ipAddressToFind = ipAddressToFind;
+  }
+
+  public Maybe<WorldEntity> searchWorld() {
+    return searchServer().map(serverMapper::transform);
+  }
+
+  private void enableBroadcast() {
     try {
       networkTransmitter.setBroadcast(true);
     } catch (SocketException e) {
       e.printStackTrace();
     }
-  }
-
-  public Maybe<WorldEntity> searchWorld() {
-    return searchServer().map(serverMapper::transform);
   }
 
   private Maybe<Server> searchServer() {
@@ -76,12 +85,17 @@ public class ServerSearchManager {
   }
 
   private void sendDiscoveryRequest() throws IOException {
-    sendRequestToDefaultBroadcastAddress();
-    sendRequestToEveryInterfaceBroadcastAddress();
+    if (!TextUtils.isEmpty(ipAddressToFind)) {
+      sendRequestTo(ipAddressToFind);
+    } else {
+      enableBroadcast();
+      sendRequestTo(BROADCAST_ADDRESS);
+      sendRequestToEveryInterfaceBroadcastAddress();
+    }
   }
 
-  private void sendRequestToDefaultBroadcastAddress() throws IOException {
-    DatagramPacket datagramPacket = getDatagramPacket(InetAddress.getByName(BROADCAST_ADDRESS));
+  private void sendRequestTo(String ip) throws IOException {
+    DatagramPacket datagramPacket = getDatagramPacket(InetAddress.getByName(ip));
     networkTransmitter.send(datagramPacket);
   }
 
