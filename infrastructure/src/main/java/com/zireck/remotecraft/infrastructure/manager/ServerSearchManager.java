@@ -9,7 +9,7 @@ import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.data.Server;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
-import com.zireck.remotecraft.infrastructure.tool.NetworkTransmitter;
+import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -25,20 +25,21 @@ public class ServerSearchManager {
   private static final int SEARCH_PORT = 9998;
   private static final String BROADCAST_ADDRESS = "255.255.255.255";
   private static final int RETRY_COUNT = 5;
+  private static final int RESPONSE_BUFFER_SIZE = 15000;
 
-  private NetworkTransmitter networkTransmitter;
+  private NetworkConnectionlessTransmitter networkConnectionlessTransmitter;
   private NetworkInterfaceManager networkInterfaceManager;
   private NetworkProtocolManager networkProtocolManager;
   private MessageJsonMapper messageJsonMapper;
   private ServerMapper serverMapper;
   private ServerMessageValidator serverValidator;
-  private String ipAddressToFind;
+  private String ipAddress;
 
-  public ServerSearchManager(NetworkTransmitter networkTransmitter,
+  public ServerSearchManager(NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
       NetworkInterfaceManager networkInterfaceManager,
       NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
       ServerMapper serverMapper, ServerMessageValidator serverValidator) {
-    this.networkTransmitter = networkTransmitter;
+    this.networkConnectionlessTransmitter = networkConnectionlessTransmitter;
     this.networkInterfaceManager = networkInterfaceManager;
     this.networkProtocolManager = networkProtocolManager;
     this.messageJsonMapper = messageJsonMapper;
@@ -46,20 +47,13 @@ public class ServerSearchManager {
     this.serverValidator = serverValidator;
   }
 
-  public void findServerIn(String ipAddressToFind) {
-    this.ipAddressToFind = ipAddressToFind;
-  }
-
   public Maybe<WorldEntity> searchWorld() {
     return searchServer().map(serverMapper::transform);
   }
 
-  private void enableBroadcast() {
-    try {
-      networkTransmitter.setBroadcast(true);
-    } catch (SocketException e) {
-      e.printStackTrace();
-    }
+  public Maybe<WorldEntity> searchWorld(String ipAddress) {
+    this.ipAddress = ipAddress;
+    return searchWorld();
   }
 
   private Maybe<Server> searchServer() {
@@ -85,8 +79,8 @@ public class ServerSearchManager {
   }
 
   private void sendDiscoveryRequest() throws IOException {
-    if (!TextUtils.isEmpty(ipAddressToFind)) {
-      sendRequestTo(ipAddressToFind);
+    if (!TextUtils.isEmpty(ipAddress)) {
+      sendRequestTo(ipAddress);
     } else {
       enableBroadcast();
       sendRequestTo(BROADCAST_ADDRESS);
@@ -96,7 +90,11 @@ public class ServerSearchManager {
 
   private void sendRequestTo(String ip) throws IOException {
     DatagramPacket datagramPacket = getDatagramPacket(InetAddress.getByName(ip));
-    networkTransmitter.send(datagramPacket);
+    networkConnectionlessTransmitter.send(datagramPacket);
+  }
+
+  private void enableBroadcast() throws SocketException {
+    networkConnectionlessTransmitter.setBroadcast(true);
   }
 
   private void sendRequestToEveryInterfaceBroadcastAddress() throws IOException {
@@ -105,7 +103,7 @@ public class ServerSearchManager {
 
     for (InetAddress broadcastAddress : broadcastAddresses) {
       datagramPacket = getDatagramPacket(broadcastAddress);
-      networkTransmitter.send(datagramPacket);
+      networkConnectionlessTransmitter.send(datagramPacket);
     }
   }
 
@@ -118,15 +116,15 @@ public class ServerSearchManager {
   }
 
   private Message waitForServerResponse() throws IOException, NoResponseException {
-    byte[] responseBuffer = new byte[15000];
+    byte[] responseBuffer = new byte[RESPONSE_BUFFER_SIZE];
     DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
 
-    networkTransmitter.setTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
-    networkTransmitter.receive(responsePacket);
+    networkConnectionlessTransmitter.setTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
+    networkConnectionlessTransmitter.receive(responsePacket);
 
     Message message = parseResponse(responsePacket);
 
-    networkTransmitter.shutdown();
+    networkConnectionlessTransmitter.shutdown();
 
     return message;
   }

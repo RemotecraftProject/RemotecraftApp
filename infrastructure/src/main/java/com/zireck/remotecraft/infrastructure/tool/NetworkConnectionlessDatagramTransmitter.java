@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-import javax.inject.Inject;
+
 import timber.log.Timber;
 
-public class NetworkDatagramTransmitter implements NetworkTransmitter {
+public class NetworkConnectionlessDatagramTransmitter implements NetworkConnectionlessTransmitter {
 
   private DatagramSocket datagramSocket;
 
-  public NetworkDatagramTransmitter() {
+  public NetworkConnectionlessDatagramTransmitter() {
     try {
       datagramSocket = new DatagramSocket();
     } catch (SocketException e) {
