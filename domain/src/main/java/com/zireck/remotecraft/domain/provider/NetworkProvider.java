@@ -5,4 +5,5 @@ import io.reactivex.Maybe;
 
 public interface NetworkProvider {
   Maybe<World> searchWorld();
+  Maybe<World> searchWorld(String ipAddress);
 }

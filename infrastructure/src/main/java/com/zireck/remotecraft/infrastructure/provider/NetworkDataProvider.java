@@ -23,4 +23,8 @@ public class NetworkDataProvider implements NetworkProvider {
   @Override public Maybe<World> searchWorld() {
     return serverSearchManager.searchWorld().map(worldEntityDataMapper::transform);
   }
+
+  @Override public Maybe<World> searchWorld(String ipAddress) {
+    return serverSearchManager.searchWorld(ipAddress).map(worldEntityDataMapper::transform);
+  }
 }

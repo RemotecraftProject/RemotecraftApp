@@ -4,7 +4,9 @@ import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
+import com.zireck.remotecraft.domain.interactor.SearchWorldForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchWorldInteractor;
+import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
 import dagger.Module;
@@ -27,5 +29,11 @@ public class InteractorsModule {
   SearchWorldInteractor provideSearchWorldInteractor(NetworkDataProvider networkDataProvider,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     return new SearchWorldInteractor(networkDataProvider, threadExecutor, postExecutionThread);
+  }
+
+  @Provides @PerActivity SearchWorldForIpInteractor provideSearchWorldForIpInteractor(
+      NetworkProvider networkProvider, ThreadExecutor threadExecutor,
+      PostExecutionThread postExecutionThread) {
+    return new SearchWorldForIpInteractor(networkProvider, threadExecutor, postExecutionThread);
   }
 }
