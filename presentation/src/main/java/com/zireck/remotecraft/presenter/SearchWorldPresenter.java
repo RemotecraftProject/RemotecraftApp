@@ -4,16 +4,17 @@ import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
+import com.zireck.remotecraft.model.WorldModel;
 import com.zireck.remotecraft.view.SearchView;
 import timber.log.Timber;
 
-public class SearchPresenter implements Presenter<SearchView> {
+public class SearchWorldPresenter implements Presenter<SearchView> {
 
   private SearchView view;
   private MaybeInteractor getWifiStateInteractor;
   private MaybeInteractor searchWorldInteractor;
 
-  public SearchPresenter(MaybeInteractor getWifiStateInteractor,
+  public SearchWorldPresenter(MaybeInteractor getWifiStateInteractor,
       MaybeInteractor searchWorldInteractor) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchWorldInteractor = searchWorldInteractor;
@@ -24,9 +25,7 @@ public class SearchPresenter implements Presenter<SearchView> {
   }
 
   @Override public void resume() {
-    if (searchWorldInteractor != null) {
-      searchWorldInteractor.execute(new SearchWorldObserver());
-    }
+    searchWorldInteractor.execute(new SearchWorldObserver());
   }
 
   @Override public void pause() {
@@ -40,7 +39,9 @@ public class SearchPresenter implements Presenter<SearchView> {
   private final class SearchWorldObserver extends DefaultMaybeObserver<World> {
     @Override public void onSuccess(World world) {
       Timber.d("Received World: %s", world.getName());
-      view.renderWorld(world);
+
+      // TODO map World -> WorldModel
+      view.navigateToWorldDetail(new WorldModel.Builder().build());
     }
 
     @Override public void onError(Throwable e) {

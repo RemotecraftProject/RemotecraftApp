@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <ImageView
+      android:id="@+id/image_header"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      tools:background="@color/md_grey_800"
+      />
+
+  <TextView
+      android:id="@+id/world_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/image_header"
+      />
+
+  <TextView
+      android:id="@+id/player_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/world_name"
+      />
+
+  <TextView
+      android:id="@+id/network_info"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/player_name"
+      />
+
+  <Button
+      android:id="@+id/button_accept"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/button_cancel"
+      />
+
+  <Button
+      android:id="@+id/button_cancel"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      />
+
+</RelativeLayout>

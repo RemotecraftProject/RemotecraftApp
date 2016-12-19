@@ -3,7 +3,7 @@ package com.zireck.remotecraft.dagger.modules;
 import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchWorldInteractor;
-import com.zireck.remotecraft.presenter.SearchPresenter;
+import com.zireck.remotecraft.presenter.SearchWorldPresenter;
 import dagger.Module;
 import dagger.Provides;
 
@@ -14,10 +14,9 @@ public class PresentersModule {
 
   }
 
-  @Provides @PerActivity
-  SearchPresenter provideSearchPresenter(
+  @Provides @PerActivity SearchWorldPresenter provideSearchPresenter(
       GetWifiStateInteractor getWifiStateInteractor,
       SearchWorldInteractor searchWorldInteractor) {
-    return new SearchPresenter(getWifiStateInteractor, searchWorldInteractor);
+    return new SearchWorldPresenter(getWifiStateInteractor, searchWorldInteractor);
   }
 }

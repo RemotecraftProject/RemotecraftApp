@@ -13,18 +13,18 @@ import com.zireck.remotecraft.dagger.components.DaggerSearchComponent;
 import com.zireck.remotecraft.dagger.components.SearchComponent;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
-import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.imageloader.ImageLoader;
-import com.zireck.remotecraft.presenter.SearchPresenter;
+import com.zireck.remotecraft.model.WorldModel;
+import com.zireck.remotecraft.presenter.SearchWorldPresenter;
 import com.zireck.remotecraft.view.SearchView;
 import javax.inject.Inject;
 import timber.log.Timber;
 
-public class SearchActivity extends BaseActivity
+public class SearchWorldActivity extends BaseActivity
     implements HasComponent<SearchComponent>, SearchView {
 
-  @Inject SearchPresenter presenter;
+  @Inject SearchWorldPresenter presenter;
   @Inject ImageLoader imageLoader;
   @BindView(R.id.background) ImageView background;
   @BindView(R.id.found) TextView found;
@@ -36,12 +36,12 @@ public class SearchActivity extends BaseActivity
   private SearchComponent searchComponent;
 
   public static Intent getCallingIntent(Context context) {
-    return new Intent(context, SearchActivity.class);
+    return new Intent(context, SearchWorldActivity.class);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_search);
+    setContentView(R.layout.activity_search_world);
 
     initInjector();
     initUi();
@@ -84,6 +84,8 @@ public class SearchActivity extends BaseActivity
     }
   }
 
+  // TODO Reuse whatever is necessary from this code and delete
+  /*
   @Override public void renderWorld(World world) {
     if (world == null) {
       found.setText("Not Found!");
@@ -96,6 +98,10 @@ public class SearchActivity extends BaseActivity
     ip.setText(world.getIp());
     this.world.setText(world.getName());
     player.setText(world.getPlayer());
+  }*/
+
+  @Override public void navigateToWorldDetail(WorldModel worldModel) {
+    navigator.navigateToWorldFoundActivity(this, worldModel);
   }
 
   @Override public void showError(Exception exception) {
