@@ -8,6 +8,7 @@ ext.version = [
     javaxInject               : "1",
     rxReceivers               : "0.1.0",
     gson                      : "2.7",
+    lightweightStreamApi      : "1.1.4",
 
     // Support
     design                    : "24.2.0",
@@ -39,6 +40,7 @@ ext.infrastructureDependencies = [
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
     javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
     gson                      : "com.google.code.gson:gson:${version.gson}",
+    lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}",
 
     androidAnnotations        : "com.android.support:support-annotations:${version.androidAnnotations}"
 ]
@@ -55,6 +57,7 @@ ext.dataDependencies = [
     rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
     javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
+    lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}",
 
     androidAnnotations        : "com.android.support:support-annotations:${version.androidAnnotations}"
 ]
@@ -67,7 +70,8 @@ ext.domainDependencies = [
     timber                    : "com.jakewharton.timber:timber:${version.timber}",
     rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
-    javaxInject               : "javax.inject:javax.inject:${version.javaxInject}"
+    javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
+    lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}"
 ]
 
 ext.domainTestDependencies = [
@@ -82,6 +86,7 @@ ext.presentationDependencies = [
     rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
     rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
     javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
+    lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}",
 
     design                    : "com.android.support:design:${version.design}",
     appCompat                 : "com.android.support:appcompat-v7:${version.appCompat}",

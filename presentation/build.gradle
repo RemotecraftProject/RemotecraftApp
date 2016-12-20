@@ -70,6 +70,7 @@ dependencies {
   compile "${library.rxJava}"
   compile "${library.rxAndroid}"
   provided "${library.javaxAnnotation}"
+  compile "${library.lightweightStreamApi}"
   compile "${library.design}"
   compile "${library.appCompat}"
   compile "${library.recyclerView}"

@@ -55,6 +55,7 @@ dependencies {
   compile "${library.javaxInject}"
   compile "${library.androidAnnotations}"
   compile "${library.gson}"
+  compile "${library.lightweightStreamApi}"
 
   testCompile "${libraryTest.jUnit}"
 }

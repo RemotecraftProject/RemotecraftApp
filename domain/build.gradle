@@ -21,6 +21,7 @@ dependencies {
   compile "${library.rxJava}"
   provided "${library.javaxAnnotation}"
   compile "${library.javaxInject}"
+  compile "${library.lightweightStreamApi}"
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.mockito}"

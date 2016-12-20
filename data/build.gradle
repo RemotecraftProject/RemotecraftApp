@@ -53,6 +53,7 @@ dependencies {
   provided "${library.javaxAnnotation}"
   compile "${library.javaxInject}"
   compile "${library.androidAnnotations}"
+  compile "${library.lightweightStreamApi}"
 
   testCompile "${libraryTest.jUnit}"
 }
