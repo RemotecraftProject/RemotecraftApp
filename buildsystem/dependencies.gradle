@@ -101,5 +101,6 @@ ext.presentationDependencies = [
 ]
 
 ext.presentationTestDependencies = [
-    jUnit                     : "junit:junit:${version.jUnit}"
+    jUnit                     : "junit:junit:${version.jUnit}",
+    mockito                   : "org.mockito:mockito-core:${version.mockito}"
 ]

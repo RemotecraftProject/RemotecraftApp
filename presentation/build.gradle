@@ -82,4 +82,5 @@ dependencies {
   compile "${library.androidSpinKit}"
 
   testCompile "${libraryTest.jUnit}"
+  testCompile "${libraryTest.mockito}"
 }
