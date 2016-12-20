@@ -9,20 +9,20 @@ import android.widget.TextView;
 import butterknife.BindView;
 import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.dagger.HasComponent;
-import com.zireck.remotecraft.dagger.components.DaggerSearchComponent;
-import com.zireck.remotecraft.dagger.components.SearchComponent;
+import com.zireck.remotecraft.dagger.components.DaggerSearchWorldComponent;
+import com.zireck.remotecraft.dagger.components.SearchWorldComponent;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.model.WorldModel;
 import com.zireck.remotecraft.presenter.SearchWorldPresenter;
-import com.zireck.remotecraft.view.SearchView;
+import com.zireck.remotecraft.view.SearchWorldView;
 import javax.inject.Inject;
 import timber.log.Timber;
 
 public class SearchWorldActivity extends BaseActivity
-    implements HasComponent<SearchComponent>, SearchView {
+    implements HasComponent<SearchWorldComponent>, SearchWorldView {
 
   @Inject SearchWorldPresenter presenter;
   @Inject ImageLoader imageLoader;
@@ -33,7 +33,7 @@ public class SearchWorldActivity extends BaseActivity
   @BindView(R.id.version) TextView version;
   @BindView(R.id.world) TextView world;
   @BindView(R.id.player) TextView player;
-  private SearchComponent searchComponent;
+  private SearchWorldComponent searchWorldComponent;
 
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, SearchWorldActivity.class);
@@ -63,19 +63,19 @@ public class SearchWorldActivity extends BaseActivity
     presenter.destroy();
   }
 
-  @Override public SearchComponent getComponent() {
-    return searchComponent;
+  @Override public SearchWorldComponent getComponent() {
+    return searchWorldComponent;
   }
 
   private void initInjector() {
-    searchComponent = DaggerSearchComponent.builder()
+    searchWorldComponent = DaggerSearchWorldComponent.builder()
         .applicationComponent(getApplicationComponent())
         .activityModule(getActivityModule())
         .uiModule(new UiModule())
         .interactorsModule(new InteractorsModule())
         .build();
 
-    searchComponent.inject(this);
+    searchWorldComponent.inject(this);
   }
 
   private void initUi() {
@@ -83,22 +83,6 @@ public class SearchWorldActivity extends BaseActivity
       getSupportActionBar().hide();
     }
   }
-
-  // TODO Reuse whatever is necessary from this code and delete
-  /*
-  @Override public void renderWorld(World world) {
-    if (world == null) {
-      found.setText("Not Found!");
-      return;
-    }
-
-    found.setText("Found!");
-    version.setText(world.getVersion());
-    ssid.setText(world.getSsid());
-    ip.setText(world.getIp());
-    this.world.setText(world.getName());
-    player.setText(world.getPlayer());
-  }*/
 
   @Override public void navigateToWorldDetail(WorldModel worldModel) {
     navigator.navigateToWorldFoundActivity(this, worldModel);

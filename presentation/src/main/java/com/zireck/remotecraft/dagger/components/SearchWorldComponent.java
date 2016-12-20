@@ -18,6 +18,6 @@ import dagger.Component;
         PresentersModule.class
     }
 )
-public interface SearchComponent extends ActivityComponent {
+public interface SearchWorldComponent extends ActivityComponent {
   void inject(SearchWorldActivity searchWorldActivity);
 }

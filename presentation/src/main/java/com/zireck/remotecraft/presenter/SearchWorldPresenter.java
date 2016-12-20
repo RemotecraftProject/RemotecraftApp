@@ -5,12 +5,12 @@ import com.zireck.remotecraft.domain.World;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
 import com.zireck.remotecraft.model.WorldModel;
-import com.zireck.remotecraft.view.SearchView;
+import com.zireck.remotecraft.view.SearchWorldView;
 import timber.log.Timber;
 
-public class SearchWorldPresenter implements Presenter<SearchView> {
+public class SearchWorldPresenter implements Presenter<SearchWorldView> {
 
-  private SearchView view;
+  private SearchWorldView view;
   private MaybeInteractor getWifiStateInteractor;
   private MaybeInteractor searchWorldInteractor;
 
@@ -20,7 +20,7 @@ public class SearchWorldPresenter implements Presenter<SearchView> {
     this.searchWorldInteractor = searchWorldInteractor;
   }
 
-  @Override public void setView(@NonNull SearchView view) {
+  @Override public void setView(@NonNull SearchWorldView view) {
     this.view = view;
   }
 
