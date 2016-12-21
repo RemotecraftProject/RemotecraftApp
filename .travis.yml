@@ -22,7 +22,7 @@ before_install:
   - export JAVA_HOME=$JAVA8_HOME
 
 #Build, and run tests
-script: "./gradlew clean build"
+script: "./gradlew clean build jacocoTestReport"
 sudo: false
 
 before_cache:
@@ -33,3 +33,6 @@ cache:
     - $HOME/.gradle/wrapper/
 env:
   - GRADLE_OPTS="-XX:MaxPermSize=1024m -XX:+CMSClassUnloadingEnabled -XX:+HeapDumpOnOutOfMemoryError -Xmx2048m"
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
