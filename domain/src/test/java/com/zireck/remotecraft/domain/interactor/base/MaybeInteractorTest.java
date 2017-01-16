@@ -17,7 +17,6 @@ import static org.mockito.BDDMockito.given;
 public class MaybeInteractorTest {
 
   private MaybeInteractorTestClass maybeInteractor;
-
   private TestDisposableMaybeObserver testDisposableMaybeObserver;
 
   @Mock private ThreadExecutor mockThreadExecutor;
@@ -32,10 +31,12 @@ public class MaybeInteractorTest {
     given(mockPostExecutionThread.getScheduler()).willReturn(new TestScheduler());
   }
 
+  // TODO test non-empty stream
+
   @Test public void shouldReturnEmptyStream() throws Exception {
     maybeInteractor.execute(testDisposableMaybeObserver);
 
-    assertEquals(testDisposableMaybeObserver.valuesCount, 0);
+    assertEquals(0, testDisposableMaybeObserver.valuesCount);
   }
 
   @Test public void shouldProperlyDisposeObserver() throws Exception {
