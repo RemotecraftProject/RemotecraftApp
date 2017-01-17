@@ -1,5 +1,6 @@
 apply from: 'buildsystem/ci.gradle'
 apply from: 'buildsystem/dependencies.gradle'
+apply from: 'buildsystem/jacoco.gradle'
 
 buildscript {
   repositories {
@@ -9,7 +10,6 @@ buildscript {
     classpath 'com.android.tools.build:gradle:2.2.3'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
     classpath 'me.tatarka:gradle-retrolambda:3.3.0'
-    classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
   }
 }
 
