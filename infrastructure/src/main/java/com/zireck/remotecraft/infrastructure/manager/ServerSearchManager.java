@@ -1,7 +1,6 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
 import android.text.TextUtils;
-
 import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
@@ -9,6 +8,7 @@ import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.data.Server;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
+import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
 import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import io.reactivex.Maybe;
@@ -28,7 +28,7 @@ public class ServerSearchManager {
   private static final int RESPONSE_BUFFER_SIZE = 15000;
 
   private NetworkConnectionlessTransmitter networkConnectionlessTransmitter;
-  private NetworkInterfaceManager networkInterfaceManager;
+  private BroadcastAddressProvider broadcastAddressProvider;
   private NetworkProtocolManager networkProtocolManager;
   private MessageJsonMapper messageJsonMapper;
   private ServerMapper serverMapper;
@@ -36,11 +36,11 @@ public class ServerSearchManager {
   private String ipAddress;
 
   public ServerSearchManager(NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
-      NetworkInterfaceManager networkInterfaceManager,
+      BroadcastAddressProvider broadcastAddressProvider,
       NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
       ServerMapper serverMapper, ServerMessageValidator serverValidator) {
     this.networkConnectionlessTransmitter = networkConnectionlessTransmitter;
-    this.networkInterfaceManager = networkInterfaceManager;
+    this.broadcastAddressProvider = broadcastAddressProvider;
     this.networkProtocolManager = networkProtocolManager;
     this.messageJsonMapper = messageJsonMapper;
     this.serverMapper = serverMapper;
@@ -99,7 +99,7 @@ public class ServerSearchManager {
 
   private void sendRequestToEveryInterfaceBroadcastAddress() throws IOException {
     DatagramPacket datagramPacket;
-    Collection<InetAddress> broadcastAddresses = networkInterfaceManager.getBroadcastAddresses();
+    Collection<InetAddress> broadcastAddresses = broadcastAddressProvider.getBroadcastAddresses();
 
     for (InetAddress broadcastAddress : broadcastAddresses) {
       datagramPacket = getDatagramPacket(broadcastAddress);

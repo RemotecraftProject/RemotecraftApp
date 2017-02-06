@@ -7,7 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import butterknife.BindView;
 import com.zireck.remotecraft.R;
+import com.zireck.remotecraft.dagger.components.DaggerWorldFoundComponent;
 import com.zireck.remotecraft.dagger.components.WorldFoundComponent;
+import com.zireck.remotecraft.dagger.modules.PresentersModule;
 import com.zireck.remotecraft.model.WorldModel;
 import com.zireck.remotecraft.presenter.WorldFoundPresenter;
 import com.zireck.remotecraft.view.WorldFoundView;
@@ -40,14 +42,19 @@ public class WorldFoundActivity extends BaseActivity implements WorldFoundView {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_world_found);
 
-
+    initInjector();
     presenter.setView(this);
-
     mapExtras();
   }
 
   private void initInjector() {
+    worldFoundComponent = DaggerWorldFoundComponent.builder()
+        .applicationComponent(getApplicationComponent())
+        .activityModule(getActivityModule())
+        .presentersModule(new PresentersModule())
+        .build();
 
+    worldFoundComponent.inject(this);
   }
 
   private void mapExtras() {

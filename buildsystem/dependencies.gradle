@@ -25,7 +25,10 @@ ext.version = [
 
     // Testing
     jUnit                     : "4.12",
-    mockito                   : "2.+"
+    mockito                   : "2.7.1",
+    powermock                 : "1.6.5",
+    powermockrunner           : "1.6.1",
+    powermockito              : "1.6.1"
 ]
 
 def version = ext.version;
@@ -46,7 +49,11 @@ ext.infrastructureDependencies = [
 ]
 
 ext.infrastructureTestDependencies = [
-    jUnit                     : "junit:junit:${version.jUnit}"
+    jUnit                     : "junit:junit:${version.jUnit}",
+    mockito                   : "org.mockito:mockito-core:${version.mockito}",
+    powermock                 : "org.powermock:powermock:${version.powermock}",
+    powermockrunner           : "org.powermock:powermock-module-junit4:${version.powermockrunner}",
+    powermockito              : "org.powermock:powermock-api-mockito:${version.powermockito}"
 ]
 
 ext.dataDependencies = [
