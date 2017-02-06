@@ -1,5 +1,5 @@
 ext.version = [
-    // Tools
+    // General Purpose
     timber                    : "4.3.1",
     dagger                    : "2.6",
     rxJava                    : "2.0.2",
@@ -10,7 +10,7 @@ ext.version = [
     gson                      : "2.7",
     lightweightStreamApi      : "1.1.4",
 
-    // Support
+    // Android Specific
     design                    : "24.2.0",
     appCompat                 : "24.2.0",
     recyclerView              : "24.2.0",
@@ -25,18 +25,18 @@ ext.version = [
 
     // Testing
     jUnit                     : "4.12",
-    mockito                   : "2.7.1",
-    powermock                 : "1.6.5",
+    mockito                   : "1.9.0",
+    powermock                 : "1.6.1",
     powermockrunner           : "1.6.1",
     powermockito              : "1.6.1"
 ]
 
 def version = ext.version;
 
-ext.infrastructureDependencies = [
+ext.dependency = [
     timber                    : "com.jakewharton.timber:timber:${version.timber}",
-    daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
     dagger                    : "com.google.dagger:dagger:${version.dagger}",
+    daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
     rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
     rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
     rxReceivers               : "com.f2prateek.rx.receivers:rx-receivers:${version.rxReceivers}",
@@ -45,10 +45,18 @@ ext.infrastructureDependencies = [
     gson                      : "com.google.code.gson:gson:${version.gson}",
     lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}",
 
-    androidAnnotations        : "com.android.support:support-annotations:${version.androidAnnotations}"
-]
+    design                    : "com.android.support:design:${version.design}",
+    appCompat                 : "com.android.support:appcompat-v7:${version.appCompat}",
+    recyclerView              : "com.android.support:recyclerview-v7:${version.recyclerView}",
+    cardView                  : "com.android.support:cardview-v7:${version.cardView}",
+    androidAnnotations        : "com.android.support:support-annotations:${version.androidAnnotations}",
 
-ext.infrastructureTestDependencies = [
+    butterKnife               : "com.jakewharton:butterknife:${version.butterKnife}",
+    butterKnifeCompiler       : "com.jakewharton:butterknife-compiler:${version.butterKnife}",
+    picasso                   : "com.squareup.picasso:picasso:${version.picasso}",
+    materialDesignColors      : "com.wada811:android-material-design-colors:${version.materialDesignColors}",
+    androidSpinKit            : "com.github.ybq:Android-SpinKit:${version.androidSpinKit}",
+
     jUnit                     : "junit:junit:${version.jUnit}",
     mockito                   : "org.mockito:mockito-core:${version.mockito}",
     powermock                 : "org.powermock:powermock:${version.powermock}",
@@ -56,58 +64,82 @@ ext.infrastructureTestDependencies = [
     powermockito              : "org.powermock:powermock-api-mockito:${version.powermockito}"
 ]
 
-ext.dataDependencies = [
-    timber                    : "com.jakewharton.timber:timber:${version.timber}",
-    daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
-    dagger                    : "com.google.dagger:dagger:${version.dagger}",
-    rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
-    rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
-    javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
-    javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
-    lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}",
+def dependency = ext.dependency;
 
-    androidAnnotations        : "com.android.support:support-annotations:${version.androidAnnotations}"
+ext.infrastructureDependencies = [
+    timber                    : "${dependency.timber}",
+    daggerCompiler            : "${dependency.daggerCompiler}",
+    dagger                    : "${dependency.dagger}",
+    rxJava                    : "${dependency.rxJava}",
+    rxAndroid                 : "${dependency.rxAndroid}",
+    rxReceivers               : "${dependency.rxReceivers}",
+    javaxAnnotation           : "${dependency.javaxAnnotation}",
+    javaxInject               : "${dependency.javaxInject}",
+    gson                      : "${dependency.gson}",
+    lightweightStreamApi      : "${dependency.lightweightStreamApi}",
+
+    androidAnnotations        : "${dependency.androidAnnotations}"
+]
+
+ext.infrastructureTestDependencies = [
+    jUnit                     : "${dependency.jUnit}",
+    powermock                 : "${dependency.powermock}",
+    powermockrunner           : "${dependency.powermockrunner}",
+    powermockito              : "${dependency.powermockito}"
+]
+
+ext.dataDependencies = [
+    timber                    : "${dependency.timber}",
+    daggerCompiler            : "${dependency.daggerCompiler}",
+    dagger                    : "${dependency.dagger}",
+    rxJava                    : "${dependency.rxJava}",
+    rxAndroid                 : "${dependency.rxAndroid}",
+    javaxAnnotation           : "${dependency.javaxAnnotation}",
+    javaxInject               : "${dependency.javaxInject}",
+    lightweightStreamApi      : "${dependency.lightweightStreamApi}",
+
+    androidAnnotations        : "${dependency.androidAnnotations}"
 ]
 
 ext.dataTestDependencies = [
-    jUnit                     : "junit:junit:${version.jUnit}"
+    jUnit                     : "${dependency.jUnit}"
 ]
 
 ext.domainDependencies = [
-    timber                    : "com.jakewharton.timber:timber:${version.timber}",
-    rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
-    javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
-    javaxInject               : "javax.inject:javax.inject:${version.javaxInject}",
-    lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}"
+    timber                    : "${dependency.timber}",
+    rxJava                    : "${dependency.rxJava}",
+    javaxAnnotation           : "${dependency.javaxAnnotation}",
+    javaxInject               : "${dependency.javaxInject}",
+    lightweightStreamApi      : "${dependency.lightweightStreamApi}"
 ]
 
 ext.domainTestDependencies = [
-    jUnit                     : "junit:junit:${version.jUnit}",
-    mockito                   : "org.mockito:mockito-core:${version.mockito}"
+    jUnit                     : "${dependency.jUnit}",
+    mockito                   : "${dependency.mockito}"
 ]
 
 ext.presentationDependencies = [
-    timber                    : "com.jakewharton.timber:timber:${version.timber}",
-    daggerCompiler            : "com.google.dagger:dagger-compiler:${version.dagger}",
-    dagger                    : "com.google.dagger:dagger:${version.dagger}",
-    rxJava                    : "io.reactivex.rxjava2:rxjava:${version.rxJava}",
-    rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${version.rxAndroid}",
-    javaxAnnotation           : "javax.annotation:jsr250-api:${version.javaxAnnotation}",
-    lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}",
+    timber                    : "${dependency.timber}",
+    daggerCompiler            : "${dependency.daggerCompiler}",
+    dagger                    : "${dependency.dagger}",
+    rxJava                    : "${dependency.rxJava}",
+    rxAndroid                 : "${dependency.rxAndroid}",
+    javaxAnnotation           : "${dependency.javaxAnnotation}",
+    lightweightStreamApi      : "${dependency.lightweightStreamApi}",
 
-    design                    : "com.android.support:design:${version.design}",
-    appCompat                 : "com.android.support:appcompat-v7:${version.appCompat}",
-    recyclerView              : "com.android.support:recyclerview-v7:${version.recyclerView}",
-    cardView                  : "com.android.support:cardview-v7:${version.cardView}",
+    design                    : "${dependency.design}",
+    appCompat                 : "${dependency.appCompat}",
+    recyclerView              : "${dependency.recyclerView}",
+    cardView                  : "${dependency.cardView}",
 
-    butterKnifeCompiler       : "com.jakewharton:butterknife-compiler:${version.butterKnife}",
-    butterKnife               : "com.jakewharton:butterknife:${version.butterKnife}",
-    picasso                   : "com.squareup.picasso:picasso:${version.picasso}",
-    materialDesignColors      : "com.wada811:android-material-design-colors:${version.materialDesignColors}",
-    androidSpinKit            : "com.github.ybq:Android-SpinKit:${version.androidSpinKit}"
+    butterKnifeCompiler       : "${dependency.butterKnifeCompiler}",
+    butterKnife               : "${dependency.butterKnife}",
+    picasso                   : "${dependency.picasso}",
+    materialDesignColors      : "${dependency.materialDesignColors}",
+    androidSpinKit            : "${dependency.androidSpinKit}"
 ]
 
 ext.presentationTestDependencies = [
-    jUnit                     : "junit:junit:${version.jUnit}",
-    mockito                   : "org.mockito:mockito-core:${version.mockito}"
+    jUnit                     : "${dependency.jUnit}",
+    mockito                   : "${dependency.mockito}"
 ]

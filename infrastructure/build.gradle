@@ -58,7 +58,6 @@ dependencies {
   compile "${library.lightweightStreamApi}"
 
   testCompile "${libraryTest.jUnit}"
-  testCompile "${libraryTest.mockito}"
   testCompile "${libraryTest.powermock}"
   testCompile "${libraryTest.powermockrunner}"
   testCompile "${libraryTest.powermockito}"
