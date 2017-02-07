@@ -6,7 +6,6 @@ import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.model.ServerModel;
 import java.util.Collection;
-import java.util.Collections;
 import javax.inject.Inject;
 
 @PerActivity public class ServerModelDataMapper {
@@ -31,17 +30,8 @@ import javax.inject.Inject;
   }
 
   public Collection<ServerModel> transform(Collection<Server> serversCollection) {
-    Collection<ServerModel> serverModelsCollection;
-
-    if (serversCollection == null || serversCollection.isEmpty()) {
-      serverModelsCollection = Collections.emptyList();
-    } else {
-      serverModelsCollection =
-          Stream.of(serversCollection)
-              .map(this::transform)
-              .collect(Collectors.toList());
-    }
-
-    return serverModelsCollection;
+    return Stream.of(serversCollection)
+        .map(this::transform)
+        .collect(Collectors.toList());
   }
 }

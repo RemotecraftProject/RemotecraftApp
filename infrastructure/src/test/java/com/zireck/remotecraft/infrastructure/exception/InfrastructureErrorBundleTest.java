@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 
     String errorMessage = infrastructureErrorBundle.getErrorMessage();
 
-    verify(mockException, times(1)).getMessage();
+    verify(mockException, times(2)).getMessage();
     verifyNoMoreInteractions(mockException);
     assertThat(errorMessage, notNullValue());
     assertThat(errorMessage, is(instanceOf(String.class)));
@@ -61,6 +61,14 @@ import static org.mockito.Mockito.when;
     InfrastructureErrorBundle infrastructureErrorBundleWithNullException =
         new InfrastructureErrorBundle(null);
     String errorMessage = infrastructureErrorBundleWithNullException.getErrorMessage();
+
+    assertThat(errorMessage, is(""));
+  }
+
+  @Test public void shouldReturnEmptyErrorMessageGivenAnExceptionWithoutMessage() throws Exception {
+    InfrastructureErrorBundle infrastructureErrorBundle =
+        new InfrastructureErrorBundle(new NoInternetConnectionException());
+    String errorMessage = infrastructureErrorBundle.getErrorMessage();
 
     assertThat(errorMessage, is(""));
   }
