@@ -6,10 +6,10 @@ import java.lang.reflect.Type;
 
 public class GsonSerializer implements JsonSerializer {
 
-  private Gson gson;
+  private final Gson gson;
 
-  public GsonSerializer() {
-    gson = new Gson();
+  public GsonSerializer(Gson gson) {
+    this.gson = gson;
   }
 
   @Override public <T> T fromJson(String json, Class<T> targetClass) {

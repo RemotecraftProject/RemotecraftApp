@@ -9,15 +9,10 @@ import timber.log.Timber;
 
 public class NetworkConnectionlessDatagramTransmitter implements NetworkConnectionlessTransmitter {
 
-  private DatagramSocket datagramSocket;
+  private final DatagramSocket datagramSocket;
 
-  public NetworkConnectionlessDatagramTransmitter() {
-    try {
-      datagramSocket = new DatagramSocket();
-    } catch (SocketException e) {
-      Timber.e("Error instantiating DatagramSocket");
-      Timber.e(e.getMessage());
-    }
+  public NetworkConnectionlessDatagramTransmitter(DatagramSocket datagramSocket) {
+    this.datagramSocket = datagramSocket;
   }
 
   @Override public boolean isReady() {

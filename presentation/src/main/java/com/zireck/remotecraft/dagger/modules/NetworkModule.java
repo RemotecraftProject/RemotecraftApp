@@ -17,6 +17,8 @@ import com.zireck.remotecraft.infrastructure.validation.NetworkInterfaceValidato
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import dagger.Module;
 import dagger.Provides;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import javax.inject.Singleton;
 
 @Module public class NetworkModule {
@@ -25,9 +27,21 @@ import javax.inject.Singleton;
 
   }
 
-  @Provides @Singleton
-  NetworkConnectionlessTransmitter provideNetworkConnectionlessTransmitter() {
-    return new NetworkConnectionlessDatagramTransmitter();
+  @Provides @Singleton DatagramSocket provideDatagramSocket() {
+    // TODO use Optional
+    DatagramSocket datagramSocket;
+    try {
+      datagramSocket = new DatagramSocket();
+    } catch (SocketException e) {
+      datagramSocket = null;
+    }
+
+    return datagramSocket;
+  }
+
+  @Provides @Singleton NetworkConnectionlessTransmitter provideNetworkConnectionlessTransmitter(
+      DatagramSocket datagramSocket) {
+    return new NetworkConnectionlessDatagramTransmitter(datagramSocket);
   }
 
   @Provides @Singleton NetworkProvider provideNetworkProvider(
