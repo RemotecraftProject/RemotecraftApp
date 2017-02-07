@@ -1,6 +1,6 @@
 package com.zireck.remotecraft.infrastructure.validation;
 
-public enum InvalidData {
+public enum InvalidServerData {
   SERVER_NULL,
   SERVER_NO_IP,
   SERVER_NO_SEED

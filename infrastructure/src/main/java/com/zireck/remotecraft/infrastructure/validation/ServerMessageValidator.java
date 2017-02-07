@@ -1,6 +1,5 @@
 package com.zireck.remotecraft.infrastructure.validation;
 
-import android.text.TextUtils;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.data.Server;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import javax.inject.Inject;
 
 public class ServerMessageValidator implements MessageValidator<Server> {
 
-  private List<InvalidData> invalidData;
+  private List<InvalidServerData> invalidServerData;
 
   @Inject
   public ServerMessageValidator() {
@@ -17,36 +16,36 @@ public class ServerMessageValidator implements MessageValidator<Server> {
   }
 
   @Override public boolean isValid(Message message) {
-    invalidData = validate(message);
-    return invalidData.size() == 0;
+    invalidServerData = validate(message);
+    return invalidServerData.size() == 0;
   }
 
   @Override public Server cast(Message message) {
     return message.getServer();
   }
 
-  @Override public List<InvalidData> getInvalidData() {
-    return invalidData;
+  public List<InvalidServerData> getInvalidServerData() {
+    return invalidServerData;
   }
 
-  private List<InvalidData> validate(Message message) {
-    List<InvalidData> invalidData = new ArrayList<>();
+  private List<InvalidServerData> validate(Message message) {
+    List<InvalidServerData> invalidServerData = new ArrayList<>();
 
     if (message == null || !message.isSuccess() || !message.isServer()) {
-      invalidData.add(InvalidData.SERVER_NULL);
-      return invalidData;
+      invalidServerData.add(InvalidServerData.SERVER_NULL);
+      return invalidServerData;
     }
 
     Server server = cast(message);
 
-    if (TextUtils.isEmpty(server.getIp())) {
-      invalidData.add(InvalidData.SERVER_NO_IP);
+    if (server.getIp() == null || server.getIp().length() <= 0) {
+      invalidServerData.add(InvalidServerData.SERVER_NO_IP);
     }
 
-    if (TextUtils.isEmpty(server.getSeed())) {
-      invalidData.add(InvalidData.SERVER_NO_SEED);
+    if (server.getSeed() == null || server.getSeed().length() <= 0) {
+      invalidServerData.add(InvalidServerData.SERVER_NO_SEED);
     }
 
-    return invalidData;
+    return invalidServerData;
   }
 }

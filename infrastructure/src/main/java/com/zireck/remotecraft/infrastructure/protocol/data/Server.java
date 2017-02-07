@@ -11,6 +11,16 @@ public class Server {
   @SerializedName("world_name") private String worldName;
   @SerializedName("player_name") private String playerName;
 
+  public Server(String ssid, String ip, String version, String seed, String worldName,
+      String playerName) {
+    this.ssid = ssid;
+    this.ip = ip;
+    this.version = version;
+    this.seed = seed;
+    this.worldName = worldName;
+    this.playerName = playerName;
+  }
+
   public String getSsid() {
     return ssid;
   }

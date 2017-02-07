@@ -15,13 +15,12 @@ public class WorldEntityDataMapper {
       return null;
     }
 
-    World world = new World.Builder().version(worldEntity.getVersion())
+    return new World.Builder()
+        .version(worldEntity.getVersion())
         .ssid(worldEntity.getSsid())
         .ip(worldEntity.getIp())
         .name(worldEntity.getName())
         .player(worldEntity.getPlayer())
         .build();
-
-    return world;
   }
 }

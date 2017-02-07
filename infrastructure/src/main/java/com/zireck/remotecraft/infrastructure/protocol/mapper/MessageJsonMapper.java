@@ -15,9 +15,7 @@ public class MessageJsonMapper {
 
   public Message transformMessage(String messageJsonResponse) {
     try {
-      Message message = jsonSerializer.fromJson(messageJsonResponse, Message.class);
-
-      return message;
+      return jsonSerializer.fromJson(messageJsonResponse, Message.class);
     } catch (JsonSyntaxException jsonException) {
       throw jsonException;
     }

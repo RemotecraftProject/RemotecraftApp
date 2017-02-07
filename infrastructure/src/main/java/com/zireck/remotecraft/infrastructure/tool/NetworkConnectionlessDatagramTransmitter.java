@@ -5,8 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-import timber.log.Timber;
-
 public class NetworkConnectionlessDatagramTransmitter implements NetworkConnectionlessTransmitter {
 
   private final DatagramSocket datagramSocket;

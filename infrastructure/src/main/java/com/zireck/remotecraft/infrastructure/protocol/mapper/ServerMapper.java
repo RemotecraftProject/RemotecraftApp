@@ -15,12 +15,13 @@ public class ServerMapper {
       return null;
     }
 
-    WorldEntity worldEntity = new WorldEntity.Builder().ip(server.getIp())
+    return new WorldEntity.Builder()
+        .ip(server.getIp())
+        .ssid(server.getSsid())
+        .version(server.getVersion())
         .seed(server.getSeed())
         .name(server.getWorldName())
         .player(server.getPlayerName())
         .build();
-
-    return worldEntity;
   }
 }
