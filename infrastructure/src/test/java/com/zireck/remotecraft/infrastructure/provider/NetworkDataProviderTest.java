@@ -1,9 +1,9 @@
 package com.zireck.remotecraft.infrastructure.provider;
 
-import com.zireck.remotecraft.domain.World;
+import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
-import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
-import com.zireck.remotecraft.infrastructure.entity.mapper.WorldEntityDataMapper;
+import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
+import com.zireck.remotecraft.infrastructure.entity.mapper.ServerEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import io.reactivex.Maybe;
 import io.reactivex.observers.TestObserver;
@@ -25,96 +25,97 @@ import static org.mockito.Mockito.when;
   private NetworkProvider networkProvider;
 
   @Mock private ServerSearchManager mockServerSearchManager;
-  @Mock private WorldEntityDataMapper mockWorldEntityDataMapper;
+  @Mock private ServerEntityDataMapper mockServerEntityDataMapper;
 
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    networkProvider = new NetworkDataProvider(mockServerSearchManager, mockWorldEntityDataMapper);
+    networkProvider = new NetworkDataProvider(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
   @Test public void shouldReturnValidWorld() throws Exception {
-    WorldEntity worldEntity = getWorldEntity();
-    World world = getWorld();
-    Maybe<WorldEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(worldEntity));
-    when(mockServerSearchManager.searchWorld()).thenReturn(maybe);
-    when(mockWorldEntityDataMapper.transform(worldEntity)).thenReturn(world);
+    ServerEntity serverEntity = getWorldEntity();
+    Server server = getWorld();
+    Maybe<ServerEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(serverEntity));
+    when(mockServerSearchManager.searchServer()).thenReturn(maybe);
+    when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Maybe<World> worldMaybe = networkProvider.searchWorld();
+    Maybe<Server> worldMaybe = networkProvider.searchServer();
 
-    TestObserver<World> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = worldMaybe.test();
     testObserver.assertNoErrors();
     testObserver.assertComplete();
-    testObserver.assertResult(world);
-    verify(mockServerSearchManager, times(1)).searchWorld();
-    verify(mockWorldEntityDataMapper, times(1)).transform(worldEntity);
-    verifyNoMoreInteractions(mockServerSearchManager, mockWorldEntityDataMapper);
+    testObserver.assertResult(server);
+    verify(mockServerSearchManager, times(1)).searchServer();
+    verify(mockServerEntityDataMapper, times(1)).transform(serverEntity);
+    verifyNoMoreInteractions(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
   @Test public void shouldNotReturnAnyWorld() throws Exception {
-    when(mockServerSearchManager.searchWorld()).thenReturn(Maybe.never());
+    when(mockServerSearchManager.searchServer()).thenReturn(Maybe.never());
 
-    Maybe<World> worldMaybe = networkProvider.searchWorld();
+    Maybe<Server> worldMaybe = networkProvider.searchServer();
 
-    TestObserver<World> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = worldMaybe.test();
     testObserver.assertEmpty();
     testObserver.assertNotComplete();
-    verify(mockServerSearchManager, times(1)).searchWorld();
-    verifyZeroInteractions(mockWorldEntityDataMapper);
+    verify(mockServerSearchManager, times(1)).searchServer();
+    verifyZeroInteractions(mockServerEntityDataMapper);
     verifyNoMoreInteractions(mockServerSearchManager);
   }
 
   @Test public void shouldReturnWorldForAGivenIpAddress() throws Exception {
     String ipAddress = "192.168.1.1";
-    WorldEntity worldEntity = getWorldEntity();
-    World world = getWorld();
-    Maybe<WorldEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(worldEntity));
-    when(mockServerSearchManager.searchWorld(ipAddress)).thenReturn(maybe);
-    when(mockWorldEntityDataMapper.transform(worldEntity)).thenReturn(world);
+    ServerEntity serverEntity = getWorldEntity();
+    Server server = getWorld();
+    Maybe<ServerEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(serverEntity));
+    when(mockServerSearchManager.searchServer(ipAddress)).thenReturn(maybe);
+    when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Maybe<World> worldMaybe = networkProvider.searchWorld(ipAddress);
+    Maybe<Server> worldMaybe = networkProvider.searchServer(ipAddress);
 
-    TestObserver<World> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = worldMaybe.test();
     testObserver.assertNoErrors();
     testObserver.assertComplete();
-    testObserver.assertResult(world);
-    verify(mockServerSearchManager, times(1)).searchWorld(ipAddress);
-    verify(mockWorldEntityDataMapper, times(1)).transform(worldEntity);
-    verifyNoMoreInteractions(mockServerSearchManager, mockWorldEntityDataMapper);
+    testObserver.assertResult(server);
+    verify(mockServerSearchManager, times(1)).searchServer(ipAddress);
+    verify(mockServerEntityDataMapper, times(1)).transform(serverEntity);
+    verifyNoMoreInteractions(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
   @Test public void shouldNotReturnAnyWorldForACertainIpAddress() throws Exception {
     String ipAddress = "192.168.1.435";
-    when(mockServerSearchManager.searchWorld(ipAddress)).thenReturn(Maybe.never());
+    when(mockServerSearchManager.searchServer(ipAddress)).thenReturn(Maybe.never());
 
-    Maybe<World> worldMaybe = networkProvider.searchWorld(ipAddress);
+    Maybe<Server> worldMaybe = networkProvider.searchServer(ipAddress);
 
-    TestObserver<World> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = worldMaybe.test();
     testObserver.assertEmpty();
     testObserver.assertNotComplete();
-    verify(mockServerSearchManager, times(1)).searchWorld(ipAddress);
-    verifyZeroInteractions(mockWorldEntityDataMapper);
+    verify(mockServerSearchManager, times(1)).searchServer(ipAddress);
+    verifyZeroInteractions(mockServerEntityDataMapper);
     verifyNoMoreInteractions(mockServerSearchManager);
   }
 
-  private WorldEntity getWorldEntity() {
-    return new WorldEntity.Builder()
-        .ip("192.168.1.1")
-        .name("The name")
-        .player("The player")
-        .seed("354523456")
+  private ServerEntity getWorldEntity() {
+    return new ServerEntity.Builder()
         .ssid("WLAN_346Q")
+        .ip("192.168.1.1")
         .version("1.8")
+        .seed("354523456")
+        .worldName("The name")
+        .playerName("The player")
         .build();
   }
 
-  private World getWorld() {
-    return new World.Builder()
-        .ip("192.168.1.1")
-        .name("The name")
-        .player("The player")
+  private Server getWorld() {
+    return new Server.Builder()
         .ssid("WLAN_346Q")
+        .ip("192.168.1.1")
         .version("1.8")
+        .seed("354523456")
+        .worldName("The name")
+        .playerName("The player")
         .build();
   }
 }

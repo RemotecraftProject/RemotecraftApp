@@ -4,8 +4,8 @@ import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
-import com.zireck.remotecraft.domain.interactor.SearchWorldForIpInteractor;
-import com.zireck.remotecraft.domain.interactor.SearchWorldInteractor;
+import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
+import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
@@ -25,15 +25,14 @@ public class InteractorsModule {
     return new GetWifiStateInteractor(receiversProvider, threadExecutor, postExecutionThread);
   }
 
-  @Provides @PerActivity
-  SearchWorldInteractor provideSearchWorldInteractor(NetworkDataProvider networkDataProvider,
+  @Provides @PerActivity SearchServerInteractor provideSearchServerInteractor(NetworkDataProvider networkDataProvider,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    return new SearchWorldInteractor(networkDataProvider, threadExecutor, postExecutionThread);
+    return new SearchServerInteractor(networkDataProvider, threadExecutor, postExecutionThread);
   }
 
-  @Provides @PerActivity SearchWorldForIpInteractor provideSearchWorldForIpInteractor(
+  @Provides @PerActivity SearchServerForIpInteractor provideSearchServerForIpInteractor(
       NetworkProvider networkProvider, ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {
-    return new SearchWorldForIpInteractor(networkProvider, threadExecutor, postExecutionThread);
+    return new SearchServerForIpInteractor(networkProvider, threadExecutor, postExecutionThread);
   }
 }

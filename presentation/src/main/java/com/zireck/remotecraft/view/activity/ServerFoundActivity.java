@@ -7,20 +7,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import butterknife.BindView;
 import com.zireck.remotecraft.R;
-import com.zireck.remotecraft.dagger.components.DaggerWorldFoundComponent;
-import com.zireck.remotecraft.dagger.components.WorldFoundComponent;
+import com.zireck.remotecraft.dagger.components.DaggerServerFoundComponent;
+import com.zireck.remotecraft.dagger.components.ServerFoundComponent;
 import com.zireck.remotecraft.dagger.modules.PresentersModule;
-import com.zireck.remotecraft.model.WorldModel;
-import com.zireck.remotecraft.presenter.WorldFoundPresenter;
-import com.zireck.remotecraft.view.WorldFoundView;
+import com.zireck.remotecraft.model.ServerModel;
+import com.zireck.remotecraft.presenter.ServerFoundPresenter;
+import com.zireck.remotecraft.view.ServerFoundView;
 import javax.inject.Inject;
 
-public class WorldFoundActivity extends BaseActivity implements WorldFoundView {
+public class ServerFoundActivity extends BaseActivity implements ServerFoundView {
 
-  public static final String KEY_WORLD = "world";
+  public static final String KEY_SERVER = "server";
 
-  @Inject WorldFoundPresenter presenter;
-  private WorldFoundComponent worldFoundComponent;
+  @Inject ServerFoundPresenter presenter;
+  private ServerFoundComponent serverFoundComponent;
 
   @BindView(R.id.world_name) TextView worldNameView;
   @BindView(R.id.player_name) TextView playerNameView;
@@ -28,11 +28,11 @@ public class WorldFoundActivity extends BaseActivity implements WorldFoundView {
   @BindView(R.id.button_accept) Button acceptButton;
   @BindView(R.id.button_cancel) Button cancelButton;
 
-  public static Intent getCallingIntent(Context context, WorldModel worldModel) {
-    Intent intent = new Intent(context, WorldFoundActivity.class);
+  public static Intent getCallingIntent(Context context, ServerModel serverModel) {
+    Intent intent = new Intent(context, ServerFoundActivity.class);
 
     Bundle bundle = new Bundle();
-    bundle.putParcelable(KEY_WORLD, worldModel);
+    bundle.putParcelable(KEY_SERVER, serverModel);
     intent.putExtras(bundle);
 
     return intent;
@@ -40,7 +40,7 @@ public class WorldFoundActivity extends BaseActivity implements WorldFoundView {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_world_found);
+    setContentView(R.layout.activity_server_found);
 
     initInjector();
     presenter.setView(this);
@@ -48,19 +48,19 @@ public class WorldFoundActivity extends BaseActivity implements WorldFoundView {
   }
 
   private void initInjector() {
-    worldFoundComponent = DaggerWorldFoundComponent.builder()
+    serverFoundComponent = DaggerServerFoundComponent.builder()
         .applicationComponent(getApplicationComponent())
         .activityModule(getActivityModule())
         .presentersModule(new PresentersModule())
         .build();
 
-    worldFoundComponent.inject(this);
+    serverFoundComponent.inject(this);
   }
 
   private void mapExtras() {
     if (getIntent() != null && getIntent().getExtras() != null) {
-      WorldModel worldModel = getIntent().getExtras().getParcelable(KEY_WORLD);
-      presenter.setWorld(worldModel);
+      ServerModel serverModel = getIntent().getExtras().getParcelable(KEY_SERVER);
+      presenter.setServer(serverModel);
     }
   }
 

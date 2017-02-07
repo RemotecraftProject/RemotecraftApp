@@ -1,6 +1,6 @@
 package com.zireck.remotecraft.domain.interactor;
 
-import com.zireck.remotecraft.domain.World;
+import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
@@ -17,9 +17,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class SearchWorldInteractorTest {
+public class SearchServerInteractorTest {
 
-  private SearchWorldInteractor searchWorldInteractor;
+  private SearchServerInteractor searchServerInteractor;
 
   @Mock private NetworkProvider mockNetworkProvider;
   @Mock private ThreadExecutor mockThreadExecutor;
@@ -27,52 +27,52 @@ public class SearchWorldInteractorTest {
 
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
-    searchWorldInteractor =
-        new SearchWorldInteractor(mockNetworkProvider, mockThreadExecutor, mockPostExecutionThread);
+    searchServerInteractor =
+        new SearchServerInteractor(mockNetworkProvider, mockThreadExecutor, mockPostExecutionThread);
   }
 
   @Test public void shouldBuildReactiveStreamProperly() throws Exception {
-    searchWorldInteractor.buildReactiveStream();
+    searchServerInteractor.buildReactiveStream();
 
-    verify(mockNetworkProvider).searchWorld();
+    verify(mockNetworkProvider).searchServer();
     verifyNoMoreInteractions(mockNetworkProvider);
     verifyZeroInteractions(mockThreadExecutor);
     verifyZeroInteractions(mockPostExecutionThread);
   }
 
   @Test public void shoulNotReturnInvalidReactiveStreamWhenValidWorldFound() throws Exception {
-    when(mockNetworkProvider.searchWorld()).thenReturn(getValidWorldReactiveStream());
+    when(mockNetworkProvider.searchServer()).thenReturn(getValidWorldReactiveStream());
 
-    Maybe reactiveStream = searchWorldInteractor.buildReactiveStream();
+    Maybe reactiveStream = searchServerInteractor.buildReactiveStream();
 
     assertNotNull(reactiveStream);
   }
 
   @Test public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
-    when(mockNetworkProvider.searchWorld()).thenReturn(Maybe.empty());
+    when(mockNetworkProvider.searchServer()).thenReturn(Maybe.empty());
 
-    Maybe reactiveStream = searchWorldInteractor.buildReactiveStream();
+    Maybe reactiveStream = searchServerInteractor.buildReactiveStream();
 
     assertNotNull(reactiveStream);
   }
 
   @Test public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
-    when(mockNetworkProvider.searchWorld()).thenReturn(Maybe.empty());
+    when(mockNetworkProvider.searchServer()).thenReturn(Maybe.empty());
 
-    Maybe reactiveStream = searchWorldInteractor.buildReactiveStream();
+    Maybe reactiveStream = searchServerInteractor.buildReactiveStream();
 
     assertEquals(getEmptyReactiveStream(), reactiveStream);
   }
 
-  private Maybe<World> getValidWorldReactiveStream() {
+  private Maybe<Server> getValidWorldReactiveStream() {
     return Maybe.just(getFakeWorld());
   }
 
-  private World getFakeWorld() {
-    return new World.Builder().build();
+  private Server getFakeWorld() {
+    return new Server.Builder().build();
   }
 
-  private Maybe<World> getEmptyReactiveStream() {
+  private Maybe<Server> getEmptyReactiveStream() {
     return Maybe.empty();
   }
 }

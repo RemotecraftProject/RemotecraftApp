@@ -21,8 +21,8 @@
     </activity>
 
     <activity
-        android:name=".view.activity.SearchWorldActivity" />
-    <activity android:name=".view.activity.WorldFoundActivity"/>
+        android:name=".view.activity.SearchServerActivity" />
+    <activity android:name=".view.activity.ServerFoundActivity"/>
   </application>
 
 </manifest>

@@ -1,7 +1,7 @@
 # Remotecraft for Android [![Build Status](https://travis-ci.org/RemotecraftProject/RemotecraftApp.svg?branch=feature/search_server)](https://travis-ci.org/RemotecraftProject/RemotecraftApp) [![codecov](https://codecov.io/gh/RemotecraftProject/RemotecraftApp/branch/feature%2Fsearch_server/graph/badge.svg)](https://codecov.io/gh/RemotecraftProject/RemotecraftApp)
 **(Work in progress)**
 
-Connect and remotely manage your Minecraft world using cutting edge technology!
+Connect and remotely manage your Minecraft server using cutting edge technology!
 
 ## How it works
 I wrote a fake server so you don't actually need to be running the videogame itself or install extra stuff.

@@ -1,6 +1,6 @@
 package com.zireck.remotecraft.domain.interactor;
 
-import com.zireck.remotecraft.domain.World;
+import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
@@ -18,9 +18,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class SearchWorldForIpInteractorTest {
+public class SearchServerForIpInteractorTest {
 
-  private SearchWorldForIpInteractor searchWorldForIpInteractor;
+  private SearchServerForIpInteractor searchServerForIpInteractor;
 
   @Mock private NetworkProvider mockNetworkProvider;
   @Mock private ThreadExecutor mockThreadExecutor;
@@ -28,73 +28,73 @@ public class SearchWorldForIpInteractorTest {
 
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
-    searchWorldForIpInteractor =
-        new SearchWorldForIpInteractor(mockNetworkProvider, mockThreadExecutor,
+    searchServerForIpInteractor =
+        new SearchServerForIpInteractor(mockNetworkProvider, mockThreadExecutor,
             mockPostExecutionThread);
   }
 
   @Test public void shouldBuildReactiveStreamProperly() throws Exception {
-    searchWorldForIpInteractor.setIpAddress("127.0.0.1");
-    searchWorldForIpInteractor.buildReactiveStream();
+    searchServerForIpInteractor.setIpAddress("127.0.0.1");
+    searchServerForIpInteractor.buildReactiveStream();
 
-    verify(mockNetworkProvider, only()).searchWorld("127.0.0.1");
+    verify(mockNetworkProvider, only()).searchServer("127.0.0.1");
     verifyNoMoreInteractions(mockNetworkProvider);
     verifyZeroInteractions(mockThreadExecutor);
     verifyZeroInteractions(mockPostExecutionThread);
   }
 
   @Test public void shoulNotReturnInvalidReactiveStreamWhenValidWorldFound() throws Exception {
-    when(mockNetworkProvider.searchWorld("192.168.1.40")).thenReturn(getValidWorldReactiveStream());
+    when(mockNetworkProvider.searchServer("192.168.1.40")).thenReturn(getValidWorldReactiveStream());
 
-    searchWorldForIpInteractor.setIpAddress("192.168.1.40");
-    Maybe reactiveStream = searchWorldForIpInteractor.buildReactiveStream();
+    searchServerForIpInteractor.setIpAddress("192.168.1.40");
+    Maybe reactiveStream = searchServerForIpInteractor.buildReactiveStream();
 
     assertNotNull(reactiveStream);
   }
 
   @Test public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
-    when(mockNetworkProvider.searchWorld("192.168.1.40")).thenReturn(Maybe.empty());
+    when(mockNetworkProvider.searchServer("192.168.1.40")).thenReturn(Maybe.empty());
 
-    searchWorldForIpInteractor.setIpAddress("192.168.1.40");
-    Maybe reactiveStream = searchWorldForIpInteractor.buildReactiveStream();
+    searchServerForIpInteractor.setIpAddress("192.168.1.40");
+    Maybe reactiveStream = searchServerForIpInteractor.buildReactiveStream();
 
     assertNotNull(reactiveStream);
   }
 
   @Test public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
-    when(mockNetworkProvider.searchWorld("192.168.1.40")).thenReturn(Maybe.empty());
+    when(mockNetworkProvider.searchServer("192.168.1.40")).thenReturn(Maybe.empty());
 
-    searchWorldForIpInteractor.setIpAddress("192.168.1.40");
-    Maybe reactiveStream = searchWorldForIpInteractor.buildReactiveStream();
+    searchServerForIpInteractor.setIpAddress("192.168.1.40");
+    Maybe reactiveStream = searchServerForIpInteractor.buildReactiveStream();
 
     assertEquals(getEmptyReactiveStream(), reactiveStream);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void shouldThrowExceptionWhenNullIpAddressIsSet() throws Exception {
-    searchWorldForIpInteractor.setIpAddress(null);
+    searchServerForIpInteractor.setIpAddress(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void shouldThrowExceptionWhenEmptyIpAddressIsSet() throws Exception {
-    searchWorldForIpInteractor.setIpAddress("");
+    searchServerForIpInteractor.setIpAddress("");
   }
 
   @Test(expected = RuntimeException.class)
   public void shouldThrowExceptionWhenBuildingReactiveStreamWithoutPreviouslySettingAnIpAddress()
       throws Exception {
-    searchWorldForIpInteractor.buildReactiveStream();
+    searchServerForIpInteractor.buildReactiveStream();
   }
 
-  private Maybe<World> getValidWorldReactiveStream() {
+  private Maybe<Server> getValidWorldReactiveStream() {
     return Maybe.just(getFakeWorld());
   }
 
-  private World getFakeWorld() {
-    return new World.Builder().build();
+  private Server getFakeWorld() {
+    return new Server.Builder().build();
   }
 
-  private Maybe<World> getEmptyReactiveStream() {
+  private Maybe<Server> getEmptyReactiveStream() {
     return Maybe.empty();
   }
 }

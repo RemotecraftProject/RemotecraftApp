@@ -2,10 +2,10 @@ package com.zireck.remotecraft.dagger.modules;
 
 import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
-import com.zireck.remotecraft.domain.interactor.SearchWorldInteractor;
-import com.zireck.remotecraft.mapper.WorldModelDataMapper;
-import com.zireck.remotecraft.presenter.SearchWorldPresenter;
-import com.zireck.remotecraft.presenter.WorldFoundPresenter;
+import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
+import com.zireck.remotecraft.mapper.ServerModelDataMapper;
+import com.zireck.remotecraft.presenter.SearchServerPresenter;
+import com.zireck.remotecraft.presenter.ServerFoundPresenter;
 import dagger.Module;
 import dagger.Provides;
 
@@ -16,14 +16,14 @@ public class PresentersModule {
 
   }
 
-  @Provides @PerActivity SearchWorldPresenter provideSearchWorldPresenter(
-      GetWifiStateInteractor getWifiStateInteractor, SearchWorldInteractor searchWorldInteractor,
-      WorldModelDataMapper worldModelDataMapper) {
-    return new SearchWorldPresenter(getWifiStateInteractor, searchWorldInteractor,
-        worldModelDataMapper);
+  @Provides @PerActivity SearchServerPresenter provideSearchWorldPresenter(
+      GetWifiStateInteractor getWifiStateInteractor, SearchServerInteractor searchServerInteractor,
+      ServerModelDataMapper serverModelDataMapper) {
+    return new SearchServerPresenter(getWifiStateInteractor, searchServerInteractor,
+        serverModelDataMapper);
   }
 
-  @Provides @PerActivity WorldFoundPresenter provideWorldFoundPresenter() {
-    return new WorldFoundPresenter();
+  @Provides @PerActivity ServerFoundPresenter provideWorldFoundPresenter() {
+    return new ServerFoundPresenter();
   }
 }

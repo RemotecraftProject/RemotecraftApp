@@ -9,22 +9,22 @@ import android.widget.TextView;
 import butterknife.BindView;
 import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.dagger.HasComponent;
-import com.zireck.remotecraft.dagger.components.DaggerSearchWorldComponent;
-import com.zireck.remotecraft.dagger.components.SearchWorldComponent;
+import com.zireck.remotecraft.dagger.components.DaggerSearchServerComponent;
+import com.zireck.remotecraft.dagger.components.SearchServerComponent;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.imageloader.ImageLoader;
-import com.zireck.remotecraft.model.WorldModel;
-import com.zireck.remotecraft.presenter.SearchWorldPresenter;
-import com.zireck.remotecraft.view.SearchWorldView;
+import com.zireck.remotecraft.model.ServerModel;
+import com.zireck.remotecraft.presenter.SearchServerPresenter;
+import com.zireck.remotecraft.view.SearchServerView;
 import javax.inject.Inject;
 import timber.log.Timber;
 
-public class SearchWorldActivity extends BaseActivity
-    implements HasComponent<SearchWorldComponent>, SearchWorldView {
+public class SearchServerActivity extends BaseActivity
+    implements HasComponent<SearchServerComponent>, SearchServerView {
 
-  @Inject SearchWorldPresenter presenter;
+  @Inject SearchServerPresenter presenter;
   @Inject ImageLoader imageLoader;
   @BindView(R.id.background) ImageView background;
   @BindView(R.id.found) TextView found;
@@ -33,15 +33,15 @@ public class SearchWorldActivity extends BaseActivity
   @BindView(R.id.version) TextView version;
   @BindView(R.id.world) TextView world;
   @BindView(R.id.player) TextView player;
-  private SearchWorldComponent searchWorldComponent;
+  private SearchServerComponent searchServerComponent;
 
   public static Intent getCallingIntent(Context context) {
-    return new Intent(context, SearchWorldActivity.class);
+    return new Intent(context, SearchServerActivity.class);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_search_world);
+    setContentView(R.layout.activity_search_server);
 
     initInjector();
     initUi();
@@ -63,19 +63,19 @@ public class SearchWorldActivity extends BaseActivity
     presenter.destroy();
   }
 
-  @Override public SearchWorldComponent getComponent() {
-    return searchWorldComponent;
+  @Override public SearchServerComponent getComponent() {
+    return searchServerComponent;
   }
 
   private void initInjector() {
-    searchWorldComponent = DaggerSearchWorldComponent.builder()
+    searchServerComponent = DaggerSearchServerComponent.builder()
         .applicationComponent(getApplicationComponent())
         .activityModule(getActivityModule())
         .uiModule(new UiModule())
         .interactorsModule(new InteractorsModule())
         .build();
 
-    searchWorldComponent.inject(this);
+    searchServerComponent.inject(this);
   }
 
   private void initUi() {
@@ -84,8 +84,8 @@ public class SearchWorldActivity extends BaseActivity
     }
   }
 
-  @Override public void navigateToWorldDetail(WorldModel worldModel) {
-    navigator.navigateToWorldFoundActivity(this, worldModel);
+  @Override public void navigateToServerDetail(ServerModel serverModel) {
+    navigator.navigateToServerFoundActivity(this, serverModel);
   }
 
   @Override public void showError(Exception exception) {

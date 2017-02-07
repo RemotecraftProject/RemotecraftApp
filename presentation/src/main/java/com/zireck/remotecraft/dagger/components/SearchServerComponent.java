@@ -5,7 +5,7 @@ import com.zireck.remotecraft.dagger.modules.ActivityModule;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.PresentersModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
-import com.zireck.remotecraft.view.activity.WorldFoundActivity;
+import com.zireck.remotecraft.view.activity.SearchServerActivity;
 import dagger.Component;
 
 @PerActivity
@@ -18,6 +18,6 @@ import dagger.Component;
         PresentersModule.class
     }
 )
-public interface WorldFoundComponent extends ActivityComponent {
-  void inject(WorldFoundActivity worldFoundActivity);
+public interface SearchServerComponent extends ActivityComponent {
+  void inject(SearchServerActivity searchWorldActivity);
 }

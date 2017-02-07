@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
 import android.text.TextUtils;
-import com.zireck.remotecraft.infrastructure.entity.WorldEntity;
+import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
@@ -47,16 +47,16 @@ public class ServerSearchManager {
     this.serverValidator = serverValidator;
   }
 
-  public Maybe<WorldEntity> searchWorld() {
-    return searchServer().map(serverMapper::transform);
+  public Maybe<ServerEntity> searchServer() {
+    return doSearch().map(serverMapper::transform);
   }
 
-  public Maybe<WorldEntity> searchWorld(String ipAddress) {
+  public Maybe<ServerEntity> searchServer(String ipAddress) {
     this.ipAddress = ipAddress;
-    return searchWorld();
+    return searchServer();
   }
 
-  private Maybe<Server> searchServer() {
+  private Maybe<Server> doSearch() {
     return Observable.<Message>create(subscriber -> {
       Message message = null;
 

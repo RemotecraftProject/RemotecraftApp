@@ -1,9 +1,9 @@
 package com.zireck.remotecraft.domain.provider;
 
-import com.zireck.remotecraft.domain.World;
+import com.zireck.remotecraft.domain.Server;
 import io.reactivex.Maybe;
 
 public interface NetworkProvider {
-  Maybe<World> searchWorld();
-  Maybe<World> searchWorld(String ipAddress);
+  Maybe<Server> searchServer();
+  Maybe<Server> searchServer(String ipAddress);
 }
