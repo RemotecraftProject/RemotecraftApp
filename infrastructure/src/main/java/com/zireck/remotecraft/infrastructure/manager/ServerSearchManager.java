@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
-import android.text.TextUtils;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
+import com.zireck.remotecraft.infrastructure.exception.InvalidServerException;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
@@ -18,6 +18,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 import timber.log.Timber;
 
 public class ServerSearchManager {
@@ -47,39 +48,42 @@ public class ServerSearchManager {
     this.serverValidator = serverValidator;
   }
 
-  public Maybe<ServerEntity> searchServer() {
-    return doSearch().map(serverMapper::transform);
-  }
-
   public Maybe<ServerEntity> searchServer(String ipAddress) {
     this.ipAddress = ipAddress;
     return searchServer();
   }
 
+  public Maybe<ServerEntity> searchServer() {
+    return doSearch().map(serverMapper::transform);
+  }
+
   private Maybe<Server> doSearch() {
-    return Observable.<Message>create(subscriber -> {
+    return Observable.<Message>create(emitter -> {
+      DatagramPacket response = null;
       Message message = null;
 
       try {
         sendDiscoveryRequest();
-        message = waitForServerResponse();
+        response = waitForServerResponse();
+        message = parseResponse(response);
       } catch (NoResponseException | IOException e) {
-        subscriber.onError(e);
+        emitter.onError(e);
       }
 
       if (message != null) {
-        subscriber.onNext(message);
+        emitter.onNext(message);
       }
-      subscriber.onComplete();
-    }).retryWhen(errors -> errors.zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
-        .flatMap(retryCount -> Observable.empty()))
-        .filter(serverValidator::isValid)
-        .firstElement()
-        .map(serverValidator::cast);
+    }).retryWhen(errors ->
+        errors
+          .zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
+          .flatMap(retryCount -> Observable.timer(retryCount, TimeUnit.SECONDS)))
+      .filter(serverValidator::isValid)
+      .firstElement()
+      .map(serverValidator::cast);
   }
 
   private void sendDiscoveryRequest() throws IOException {
-    if (!TextUtils.isEmpty(ipAddress)) {
+    if (ipAddress != null && ipAddress.length() > 0) {
       sendRequestTo(ipAddress);
     } else {
       enableBroadcast();
@@ -115,21 +119,18 @@ public class ServerSearchManager {
     return new DatagramPacket(discoveryCommand, discoveryCommand.length, inetAddress, SEARCH_PORT);
   }
 
-  private Message waitForServerResponse() throws IOException, NoResponseException {
+  private DatagramPacket waitForServerResponse() throws IOException, NoResponseException {
     byte[] responseBuffer = new byte[RESPONSE_BUFFER_SIZE];
     DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
 
     networkConnectionlessTransmitter.setTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
     networkConnectionlessTransmitter.receive(responsePacket);
-
-    Message message = parseResponse(responsePacket);
-
     networkConnectionlessTransmitter.shutdown();
 
-    return message;
+    return responsePacket;
   }
 
-  private Message parseResponse(DatagramPacket responsePacket) throws NoResponseException {
+  private Message parseResponse(DatagramPacket responsePacket) throws InvalidServerException {
     if (responsePacket == null || responsePacket.getData() == null) {
       Timber.e("Response Packet cannot be null.");
       return null;
@@ -140,7 +141,7 @@ public class ServerSearchManager {
 
     if (message == null || !message.isSuccess() || !message.isServer()) {
       Timber.e("Invalid message received");
-      throw new NoResponseException();
+      throw new InvalidServerException();
     }
 
     return message;
