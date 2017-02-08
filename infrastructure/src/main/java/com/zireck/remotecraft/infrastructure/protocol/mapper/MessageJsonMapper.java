@@ -1,6 +1,5 @@
 package com.zireck.remotecraft.infrastructure.protocol.mapper;
 
-import com.google.gson.JsonSyntaxException;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import javax.inject.Inject;
@@ -14,10 +13,10 @@ public class MessageJsonMapper {
   }
 
   public Message transformMessage(String messageJsonResponse) {
-    try {
-      return jsonSerializer.fromJson(messageJsonResponse, Message.class);
-    } catch (JsonSyntaxException jsonException) {
-      throw jsonException;
-    }
+    return jsonSerializer.fromJson(messageJsonResponse, Message.class);
+  }
+
+  public String transformMessage(Message message) {
+    return jsonSerializer.toJson(message);
   }
 }

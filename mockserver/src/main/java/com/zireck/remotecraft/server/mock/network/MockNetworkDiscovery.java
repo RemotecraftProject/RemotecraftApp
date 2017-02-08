@@ -10,6 +10,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+// TODO clean up this mess!
 public class MockNetworkDiscovery implements Runnable {
 
   private static final String TAG = MockNetworkDiscovery.class.getSimpleName();
@@ -54,7 +55,7 @@ public class MockNetworkDiscovery implements Runnable {
 
           Message message = gson.fromJson(receiveMessage, Message.class);
           if (message != null && message.isCommand() && message.getCommand()
-              .equals(CommandType.GET_WORLD_INFO)) {
+              .equals(CommandType.GET_SERVER_INFO)) {
             reply(datagramSocket, datagramPacket);
           }
         }

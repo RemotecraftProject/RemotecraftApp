@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.server.mock.protocol;
 
 public enum CommandType {
-  GET_WORLD_INFO ("get_world_info");
+  GET_SERVER_INFO("get_server_info");
 
   private final String command;
 

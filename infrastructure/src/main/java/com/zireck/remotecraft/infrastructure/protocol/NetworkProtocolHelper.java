@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.infrastructure.protocol;
 
 // TODO: clean up this class
-public class NetworkProtocolHelper {
+@Deprecated public class NetworkProtocolHelper {
 
   public static final String DISCOVERY_REQUEST = "REMOTECRAFT_DISCOVERY_REQUEST";
   public static final String DISCOVERY_RESPONSE = "REMOTECRAFT_DISCOVERY_RESPONSE";

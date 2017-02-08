@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.infrastructure.validation;
 
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.data.Server;
+import com.zireck.remotecraft.infrastructure.protocol.base.Server;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;

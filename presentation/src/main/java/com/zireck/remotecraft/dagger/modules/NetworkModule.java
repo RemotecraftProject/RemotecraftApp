@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.dagger.modules;
 
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
-import com.zireck.remotecraft.infrastructure.manager.NetworkProtocolManager;
+import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
@@ -62,14 +62,13 @@ import javax.inject.Singleton;
   @Provides @Singleton ServerSearchManager provideServerSearchManager(
       NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
       BroadcastAddressProvider broadcastAddressProvider,
-      NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
+      ProtocolMessageComposer protocolMessageComposer, MessageJsonMapper messageJsonMapper,
       ServerMapper serverMapper, ServerMessageValidator serverValidator) {
     return new ServerSearchManager(networkConnectionlessTransmitter, broadcastAddressProvider,
-        networkProtocolManager, messageJsonMapper, serverMapper, serverValidator);
+        protocolMessageComposer, messageJsonMapper, serverMapper, serverValidator);
   }
 
-  @Provides @Singleton NetworkProtocolManager provideNetworkProtocolManager(
-      JsonSerializer jsonSerializer) {
-    return new NetworkProtocolManager(jsonSerializer);
+  @Provides @Singleton ProtocolMessageComposer provideNetworkProtocolManager() {
+    return new ProtocolMessageComposer();
   }
 }

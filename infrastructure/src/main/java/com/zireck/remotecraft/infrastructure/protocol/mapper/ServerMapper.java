@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.infrastructure.protocol.mapper;
 
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
-import com.zireck.remotecraft.infrastructure.protocol.data.Server;
+import com.zireck.remotecraft.infrastructure.protocol.base.Server;
 import javax.inject.Inject;
 
 public class ServerMapper {

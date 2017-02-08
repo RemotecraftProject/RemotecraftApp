@@ -7,10 +7,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 @RunWith(MockitoJUnitRunner.class) public class ServerEntityDataMapperTest {
 
@@ -39,7 +40,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
     Server server = serverEntityDataMapper.transform(serverEntity);
 
     assertThat(server, notNullValue());
-    assertThat(server, is(Server.class));
+    assertThat(server, instanceOf(Server.class));
     assertThat(server.getSsid(), is("WLAN_CCQ4"));
     assertThat(server.getIp(), is("127.0.0.1"));
     assertThat(server.getVersion(), is("1.4.2"));

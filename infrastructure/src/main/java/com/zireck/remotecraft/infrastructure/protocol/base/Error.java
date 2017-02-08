@@ -11,7 +11,7 @@ public class Error {
     return code;
   }
 
-  void setCode(int code) {
+  public void setCode(int code) {
     this.code = code;
   }
 
@@ -19,7 +19,7 @@ public class Error {
     return message;
   }
 
-  void setMessage(String message) {
+  public void setMessage(String message) {
     this.message = message;
   }
 }

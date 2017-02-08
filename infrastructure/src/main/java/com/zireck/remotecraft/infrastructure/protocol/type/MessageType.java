@@ -1,9 +1,10 @@
-package com.zireck.remotecraft.infrastructure.protocol;
+package com.zireck.remotecraft.infrastructure.protocol.type;
 
 public enum MessageType {
   COMMAND ("command"),
   INFO ("info"),
-  SERVER ("server");
+  SERVER ("server"),
+  ERROR ("error");
 
   private final String messageType;
 

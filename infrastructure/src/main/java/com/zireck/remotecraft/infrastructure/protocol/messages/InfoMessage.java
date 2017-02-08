@@ -1,41 +1,34 @@
 package com.zireck.remotecraft.infrastructure.protocol.messages;
 
-import com.zireck.remotecraft.infrastructure.protocol.MessageType;
+import com.zireck.remotecraft.infrastructure.protocol.type.MessageType;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.data.Info;
+import com.zireck.remotecraft.infrastructure.protocol.base.Info;
 
 public final class InfoMessage extends Message {
 
-  private InfoMessage() {
+  private InfoMessage(Builder builder) {
+    this.isSuccess = true;
     this.type = MessageType.INFO.toString();
+    this.info = builder.info;
   }
 
-  public boolean isInfo() {
-    return info != null;
-  }
-
-  public Info getInfo() {
-    return info;
+  @Override public boolean isInfo() {
+    return true;
   }
 
   public static class Builder {
-    private InfoMessage infoMessage;
+    private Info info;
 
     public Builder() {
-      infoMessage = new InfoMessage();
+
     }
 
     public InfoMessage build() {
-      return infoMessage;
+      return new InfoMessage(this);
     }
 
-    public Builder success(boolean success) {
-      infoMessage.isSuccess = success;
-      return this;
-    }
-
-    public Builder info(Info info) {
-      infoMessage.info = info;
+    public Builder with(Info info) {
+      this.info = info;
       return this;
     }
   }

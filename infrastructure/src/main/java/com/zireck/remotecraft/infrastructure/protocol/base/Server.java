@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.infrastructure.protocol.data;
+package com.zireck.remotecraft.infrastructure.protocol.base;
 
 import com.google.gson.annotations.SerializedName;
 

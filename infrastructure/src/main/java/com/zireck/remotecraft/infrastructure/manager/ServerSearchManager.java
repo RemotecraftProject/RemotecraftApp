@@ -4,10 +4,12 @@ import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.exception.InvalidServerException;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
 import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
+import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.data.Server;
+import com.zireck.remotecraft.infrastructure.protocol.base.Server;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
+import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
 import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
@@ -28,21 +30,21 @@ public class ServerSearchManager {
   private static final int RETRY_COUNT = 5;
   private static final int RESPONSE_BUFFER_SIZE = 15000;
 
-  private NetworkConnectionlessTransmitter networkConnectionlessTransmitter;
-  private BroadcastAddressProvider broadcastAddressProvider;
-  private NetworkProtocolManager networkProtocolManager;
-  private MessageJsonMapper messageJsonMapper;
-  private ServerMapper serverMapper;
-  private ServerMessageValidator serverValidator;
+  private final NetworkConnectionlessTransmitter networkConnectionlessTransmitter;
+  private final BroadcastAddressProvider broadcastAddressProvider;
+  private final ProtocolMessageComposer protocolMessageComposer;
+  private final MessageJsonMapper messageJsonMapper;
+  private final ServerMapper serverMapper;
+  private final ServerMessageValidator serverValidator;
   private String ipAddress;
 
   public ServerSearchManager(NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
       BroadcastAddressProvider broadcastAddressProvider,
-      NetworkProtocolManager networkProtocolManager, MessageJsonMapper messageJsonMapper,
+      ProtocolMessageComposer protocolMessageComposer, MessageJsonMapper messageJsonMapper,
       ServerMapper serverMapper, ServerMessageValidator serverValidator) {
     this.networkConnectionlessTransmitter = networkConnectionlessTransmitter;
     this.broadcastAddressProvider = broadcastAddressProvider;
-    this.networkProtocolManager = networkProtocolManager;
+    this.protocolMessageComposer = protocolMessageComposer;
     this.messageJsonMapper = messageJsonMapper;
     this.serverMapper = serverMapper;
     this.serverValidator = serverValidator;
@@ -112,11 +114,14 @@ public class ServerSearchManager {
   }
 
   private DatagramPacket getDatagramPacket(InetAddress inetAddress) {
-    String serverSearchRequest = networkProtocolManager.composeServerSearchRequest();
+    CommandMessage getServerInfoCommand = protocolMessageComposer.composeGetServerInfoCommand();
+    String getServerInfoCommandJson = messageJsonMapper.transformMessage(getServerInfoCommand);
+
     Timber.d("Sending JSON:");
-    Timber.d(serverSearchRequest);
-    byte[] discoveryCommand = serverSearchRequest.getBytes();
-    return new DatagramPacket(discoveryCommand, discoveryCommand.length, inetAddress, SEARCH_PORT);
+    Timber.d(getServerInfoCommandJson);
+
+    byte[] socketPacket = getServerInfoCommandJson.getBytes();
+    return new DatagramPacket(socketPacket, socketPacket.length, inetAddress, SEARCH_PORT);
   }
 
   private DatagramPacket waitForServerResponse() throws IOException, NoResponseException {

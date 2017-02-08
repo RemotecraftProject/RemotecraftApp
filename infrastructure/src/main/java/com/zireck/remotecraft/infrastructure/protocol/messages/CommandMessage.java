@@ -1,41 +1,34 @@
 package com.zireck.remotecraft.infrastructure.protocol.messages;
 
-import com.zireck.remotecraft.infrastructure.protocol.MessageType;
+import com.zireck.remotecraft.infrastructure.protocol.type.MessageType;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.data.Command;
+import com.zireck.remotecraft.infrastructure.protocol.base.Command;
 
 public final class CommandMessage extends Message {
 
-  private CommandMessage() {
+  private CommandMessage(Builder builder) {
+    this.isSuccess = true;
     this.type = MessageType.COMMAND.toString();
+    this.command = builder.command;
   }
 
-  public boolean isCommand() {
-    return command != null;
-  }
-
-  public Command getCommand() {
-    return command;
+  @Override public boolean isCommand() {
+    return true;
   }
 
   public static class Builder {
-    private CommandMessage commandMessage;
+    private Command command;
 
     public Builder() {
-      commandMessage = new CommandMessage();
+
     }
 
     public CommandMessage build() {
-      return commandMessage;
+      return new CommandMessage(this);
     }
 
-    public Builder success(boolean success) {
-      commandMessage.isSuccess = success;
-      return this;
-    }
-
-    public Builder command(Command command) {
-      commandMessage.command = command;
+    public Builder with(Command command) {
+      this.command = command;
       return this;
     }
   }

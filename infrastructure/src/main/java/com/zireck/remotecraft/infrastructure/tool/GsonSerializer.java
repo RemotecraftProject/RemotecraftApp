@@ -13,7 +13,7 @@ public class GsonSerializer implements JsonSerializer {
   }
 
   @Override public <T> T fromJson(String json, Class<T> targetClass) {
-    return gson.fromJson(json, buildType(targetClass));
+    return gson.fromJson(json, targetClass);
   }
 
   @Override public String toJson(Object object) {

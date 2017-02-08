@@ -1,6 +1,7 @@
 package com.zireck.remotecraft.infrastructure.protocol.mapper;
 
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
+import com.zireck.remotecraft.infrastructure.protocol.messages.ErrorMessage;
 import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,5 +41,16 @@ import static org.mockito.Mockito.when;
     assertThat(message, notNullValue());
     assertThat(message, is(instanceOf(Message.class)));
     verify(jsonSerializer, times(1)).fromJson(someJson, Message.class);
+  }
+
+  @Test public void shouldProperlySerializeMessage() throws Exception {
+    ErrorMessage errorMessage = new ErrorMessage.Builder().with(404).and("Not found!").build();
+    String fakeSerializedJson = "{status:fail, message:not found!}";
+    when(jsonSerializer.toJson(errorMessage)).thenReturn(fakeSerializedJson);
+
+    String message = messageJsonMapper.transformMessage(errorMessage);
+
+    assertThat(message, notNullValue());
+    assertThat(message.length(), is(fakeSerializedJson.length()));
   }
 }

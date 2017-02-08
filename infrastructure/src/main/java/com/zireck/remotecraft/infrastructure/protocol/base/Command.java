@@ -1,14 +1,13 @@
-package com.zireck.remotecraft.infrastructure.protocol.data;
+package com.zireck.remotecraft.infrastructure.protocol.base;
 
 import com.google.gson.annotations.SerializedName;
-import com.zireck.remotecraft.infrastructure.protocol.CommandType;
+import com.zireck.remotecraft.infrastructure.protocol.type.CommandType;
 
 public final class Command extends ParameterizedData {
 
   @SerializedName("name") private String name;
 
   public Command(CommandType commandType) {
-    super(0, null);
     this.name = commandType.toString();
   }
 
