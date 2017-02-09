@@ -121,7 +121,7 @@ import static org.mockito.Mockito.when;
 
     ServerEntity serverEntity = serverEntityMaybe.blockingGet();
     assertThat(serverEntity, nullValue());
-    verify(mockNetworkConnectionlessTransmitter, times(6)).send(any(DatagramPacket.class));
+    verify(mockNetworkConnectionlessTransmitter, atLeast(5)).send(any(DatagramPacket.class));
     verifyZeroInteractions(mockServerMessageValidator, mockServerProtocolMapper);
   }
 
@@ -190,13 +190,16 @@ import static org.mockito.Mockito.when;
   }
 
   private ServerProtocol getMockServerProtocol() {
-    return new ServerProtocol("WLAN_C33C", "127.0.0.1", "v1.8", "123456789", "Za warudo", "Zireck");
+    return new ServerProtocol("WLAN_C33C", "127.0.0.1", "iMac", "Mac OS X", "v1.8", "123456789",
+        "Za warudo", "Zireck");
   }
 
   private ServerEntity getMockServerEntity() {
     return new ServerEntity.Builder()
         .ssid("WLAN_C33C")
         .ip("127.0.0.1")
+        .hostname("iMac")
+        .os("Mac OS X")
         .version("v1.8")
         .seed("123456789")
         .worldName("Za warudo")

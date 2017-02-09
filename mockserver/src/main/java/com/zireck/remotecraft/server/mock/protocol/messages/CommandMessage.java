@@ -2,7 +2,7 @@ package com.zireck.remotecraft.server.mock.protocol.messages;
 
 import com.zireck.remotecraft.server.mock.protocol.MessageType;
 import com.zireck.remotecraft.server.mock.protocol.base.Message;
-import com.zireck.remotecraft.server.mock.protocol.data.Command;
+import com.zireck.remotecraft.server.mock.protocol.data.CommandProtocol;
 
 public final class CommandMessage extends Message {
 
@@ -11,11 +11,11 @@ public final class CommandMessage extends Message {
   }
 
   public boolean isCommand() {
-    return command != null;
+    return commandProtocol != null;
   }
 
-  public Command getCommand() {
-    return command;
+  public CommandProtocol getCommand() {
+    return commandProtocol;
   }
 
   public static class Builder {
@@ -34,8 +34,8 @@ public final class CommandMessage extends Message {
       return this;
     }
 
-    public Builder command(Command command) {
-      commandMessage.command = command;
+    public Builder command(CommandProtocol commandProtocol) {
+      commandMessage.commandProtocol = commandProtocol;
       return this;
     }
   }

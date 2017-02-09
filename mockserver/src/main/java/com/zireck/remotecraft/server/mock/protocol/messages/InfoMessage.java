@@ -2,7 +2,7 @@ package com.zireck.remotecraft.server.mock.protocol.messages;
 
 import com.zireck.remotecraft.server.mock.protocol.MessageType;
 import com.zireck.remotecraft.server.mock.protocol.base.Message;
-import com.zireck.remotecraft.server.mock.protocol.data.Info;
+import com.zireck.remotecraft.server.mock.protocol.data.InfoProtocol;
 
 public final class InfoMessage extends Message {
 
@@ -11,11 +11,11 @@ public final class InfoMessage extends Message {
   }
 
   public boolean isInfo() {
-    return info != null;
+    return infoProtocol != null;
   }
 
-  public Info getInfo() {
-    return info;
+  public InfoProtocol getInfo() {
+    return infoProtocol;
   }
 
   public static class Builder {
@@ -34,8 +34,8 @@ public final class InfoMessage extends Message {
       return this;
     }
 
-    public Builder info(Info info) {
-      infoMessage.info = info;
+    public Builder info(InfoProtocol infoProtocol) {
+      infoMessage.infoProtocol = infoProtocol;
       return this;
     }
   }

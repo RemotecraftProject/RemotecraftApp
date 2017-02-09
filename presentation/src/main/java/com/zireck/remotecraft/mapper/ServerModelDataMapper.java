@@ -22,6 +22,8 @@ import javax.inject.Inject;
     return new ServerModel.Builder()
         .ssid(server.getSsid())
         .ip(server.getIp())
+        .hostname(server.getHostname())
+        .os(server.getOs())
         .version(server.getVersion())
         .seed(server.getSeed())
         .worldName(server.getWorldName())

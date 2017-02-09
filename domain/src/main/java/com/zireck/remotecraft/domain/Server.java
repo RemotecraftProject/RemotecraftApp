@@ -4,6 +4,8 @@ public class Server {
 
   private final String ssid;
   private final String ip;
+  private final String hostname;
+  private final String os;
   private final String version;
   private final String seed;
   private final String worldName;
@@ -12,6 +14,8 @@ public class Server {
   private Server(Builder builder) {
     this.ssid = builder.ssid;
     this.ip = builder.ip;
+    this.hostname = builder.hostname;
+    this.os = builder.os;
     this.version = builder.version;
     this.seed = builder.seed;
     this.worldName = builder.worldName;
@@ -24,6 +28,14 @@ public class Server {
 
   public String getIp() {
     return ip;
+  }
+
+  public String getHostname() {
+    return hostname;
+  }
+
+  public String getOs() {
+    return os;
   }
 
   public String getVersion() {
@@ -45,6 +57,8 @@ public class Server {
   public static class Builder {
     private String ssid;
     private String ip;
+    private String hostname;
+    private String os;
     private String version;
     private String seed;
     private String worldName;
@@ -65,6 +79,16 @@ public class Server {
 
     public Builder ip(String ip) {
       this.ip = ip;
+      return this;
+    }
+
+    public Builder hostname(String hostname) {
+      this.hostname = hostname;
+      return this;
+    }
+
+    public Builder os(String os) {
+      this.os = os;
       return this;
     }
 

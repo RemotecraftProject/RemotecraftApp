@@ -19,6 +19,8 @@ public class ServerModelDataMapperTest {
 
   private static final String FAKE_SSID = "WLAN_C33C";
   private static final String FAKE_IP = "127.0.0.1";
+  private static final String FAKE_HOSTNAME = "iMac";
+  private static final String FAKE_OS = "Mac OS X";
   private static final String FAKE_VERSION = "1.7.12";
   private static final String FAKE_SEED = "1234567890";
   private static final String FAKE_WORLD_NAME = "Super Server";
@@ -105,6 +107,8 @@ public class ServerModelDataMapperTest {
     return new Server.Builder()
         .ssid(FAKE_SSID)
         .ip(FAKE_IP)
+        .hostname(FAKE_HOSTNAME)
+        .os(FAKE_OS)
         .version(FAKE_VERSION)
         .seed(FAKE_SEED)
         .worldName(FAKE_WORLD_NAME)

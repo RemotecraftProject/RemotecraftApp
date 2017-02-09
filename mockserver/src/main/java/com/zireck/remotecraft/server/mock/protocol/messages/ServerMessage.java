@@ -2,32 +2,35 @@ package com.zireck.remotecraft.server.mock.protocol.messages;
 
 import com.zireck.remotecraft.server.mock.protocol.MessageType;
 import com.zireck.remotecraft.server.mock.protocol.base.Message;
-import com.zireck.remotecraft.server.mock.protocol.data.Server;
+import com.zireck.remotecraft.server.mock.protocol.data.ServerProtocol;
 
 public class ServerMessage extends Message {
 
-  private ServerMessage() {
+  private ServerMessage(Builder builder) {
+    this.isSuccess = builder.isSuccess;
     this.type = MessageType.SERVER.toString();
+    this.serverProtocol = builder.serverProtocol;
   }
 
   public static class Builder {
-    private ServerMessage serverMessage;
+    private boolean isSuccess = true;
+    private ServerProtocol serverProtocol;
 
     public Builder() {
-      serverMessage = new ServerMessage();
+
     }
 
     public ServerMessage build() {
-      return serverMessage;
+      return new ServerMessage(this);
     }
 
-    public Builder success(boolean success) {
-      serverMessage.isSuccess = success;
+    public Builder success(boolean isSuccess) {
+      this.isSuccess = isSuccess;
       return this;
     }
 
-    public Builder server(Server server) {
-      serverMessage.server = server;
+    public Builder with(ServerProtocol serverProtocol) {
+      this.serverProtocol = serverProtocol;
       return this;
     }
   }

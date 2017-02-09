@@ -1,18 +1,18 @@
 package com.zireck.remotecraft.server.mock.protocol.base;
 
 import com.google.gson.annotations.SerializedName;
-import com.zireck.remotecraft.server.mock.protocol.data.Command;
-import com.zireck.remotecraft.server.mock.protocol.data.Info;
-import com.zireck.remotecraft.server.mock.protocol.data.Server;
+import com.zireck.remotecraft.server.mock.protocol.data.CommandProtocol;
+import com.zireck.remotecraft.server.mock.protocol.data.InfoProtocol;
+import com.zireck.remotecraft.server.mock.protocol.data.ServerProtocol;
 
 public class Message {
 
   @SerializedName("success") protected boolean isSuccess;
   @SerializedName("type") protected String type;
-  @SerializedName("command") protected Command command;
-  @SerializedName("info") protected Info info;
-  @SerializedName("server") protected Server server;
-  @SerializedName("error") protected Error error;
+  @SerializedName("command") protected CommandProtocol commandProtocol;
+  @SerializedName("info") protected InfoProtocol infoProtocol;
+  @SerializedName("server") protected ServerProtocol serverProtocol;
+  @SerializedName("error") protected ErrorProtocol errorProtocol;
 
   public boolean isSuccess() {
     return isSuccess;
@@ -23,30 +23,30 @@ public class Message {
   }
 
   public boolean isCommand() {
-    return command != null;
+    return commandProtocol != null;
   }
 
-  public Command getCommand() {
-    return command;
+  public CommandProtocol getCommand() {
+    return commandProtocol;
   }
 
   public boolean isInfo() {
-    return info != null;
+    return infoProtocol != null;
   }
 
-  public Info getInfo() {
-    return info;
+  public InfoProtocol getInfo() {
+    return infoProtocol;
   }
 
   public boolean isServer() {
-    return server != null;
+    return serverProtocol != null;
   }
 
-  public Server getServer() {
-    return server;
+  public ServerProtocol getServer() {
+    return serverProtocol;
   }
 
-  public Error getError() {
-    return error;
+  public ErrorProtocol getError() {
+    return errorProtocol;
   }
 }

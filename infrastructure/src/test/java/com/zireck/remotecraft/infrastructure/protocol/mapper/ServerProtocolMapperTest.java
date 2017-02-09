@@ -29,7 +29,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
   @Test public void shouldProperlyMapServerToWorldEntity() throws Exception {
     ServerProtocol serverProtocol =
-        new ServerProtocol("WLAN_C33C", "127.0.0.1", "2.4.9", "34344343", "Za warudo", "Da beasto");
+        new ServerProtocol("WLAN_C33C", "127.0.0.1", "iMac", "Mac OS X", "2.4.9", "34344343",
+            "Za warudo", "Da beasto");
 
     ServerEntity serverEntity = serverProtocolMapper.transform(serverProtocol);
 
@@ -37,6 +38,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(serverEntity, is(instanceOf(ServerEntity.class)));
     assertThat(serverEntity.getSsid(), is("WLAN_C33C"));
     assertThat(serverEntity.getIp(), is("127.0.0.1"));
+    assertThat(serverEntity.getHostname(), is("iMac"));
+    assertThat(serverEntity.getOs(), is("Mac OS X"));
     assertThat(serverEntity.getVersion(), is("2.4.9"));
     assertThat(serverEntity.getSeed(), is("34344343"));
     assertThat(serverEntity.getWorldName(), is("Za warudo"));

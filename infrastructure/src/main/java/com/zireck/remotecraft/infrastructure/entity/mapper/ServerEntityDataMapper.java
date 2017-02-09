@@ -18,6 +18,8 @@ public class ServerEntityDataMapper {
     return new Server.Builder()
         .ssid(serverEntity.getSsid())
         .ip(serverEntity.getIp())
+        .hostname(serverEntity.getHostname())
+        .os(serverEntity.getOs())
         .version(serverEntity.getVersion())
         .seed(serverEntity.getSeed())
         .worldName(serverEntity.getWorldName())

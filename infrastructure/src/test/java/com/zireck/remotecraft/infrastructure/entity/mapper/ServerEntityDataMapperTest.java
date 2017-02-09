@@ -31,6 +31,8 @@ import static org.hamcrest.core.Is.is;
     ServerEntity serverEntity = new ServerEntity.Builder()
         .ssid("WLAN_CCQ4")
         .ip("127.0.0.1")
+        .hostname("iMac")
+        .os("Mac OS X")
         .version("1.4.2")
         .seed("1234567890")
         .worldName("Etho's Server")
@@ -43,6 +45,8 @@ import static org.hamcrest.core.Is.is;
     assertThat(server, instanceOf(Server.class));
     assertThat(server.getSsid(), is("WLAN_CCQ4"));
     assertThat(server.getIp(), is("127.0.0.1"));
+    assertThat(server.getHostname(), is("iMac"));
+    assertThat(server.getOs(), is("Mac OS X"));
     assertThat(server.getVersion(), is("1.4.2"));
     assertThat(server.getSeed(), is("1234567890"));
     assertThat(server.getWorldName(), is("Etho's Server"));

@@ -16,8 +16,10 @@ public class ServerProtocolMapper {
     }
 
     return new ServerEntity.Builder()
-        .ip(serverProtocol.getIp())
         .ssid(serverProtocol.getSsid())
+        .ip(serverProtocol.getIp())
+        .hostname(serverProtocol.getHostname())
+        .os(serverProtocol.getOs())
         .version(serverProtocol.getVersion())
         .seed(serverProtocol.getSeed())
         .worldName(serverProtocol.getWorldName())

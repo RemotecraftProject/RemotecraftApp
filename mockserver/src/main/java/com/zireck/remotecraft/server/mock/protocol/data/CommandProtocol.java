@@ -3,16 +3,16 @@ package com.zireck.remotecraft.server.mock.protocol.data;
 import com.google.gson.annotations.SerializedName;
 import com.zireck.remotecraft.server.mock.protocol.CommandType;
 
-public final class Command extends ParameterizedData {
+public final class CommandProtocol extends ParameterizedData {
 
   @SerializedName("name") private String name;
 
-  public Command(CommandType commandType) {
+  public CommandProtocol(CommandType commandType) {
     super(0, null);
     this.name = commandType.toString();
   }
 
-  public Command(CommandType commandType, int argumentsCount, String... arguments) {
+  public CommandProtocol(CommandType commandType, int argumentsCount, String... arguments) {
     super(argumentsCount, arguments);
     this.name = commandType.toString();
   }
