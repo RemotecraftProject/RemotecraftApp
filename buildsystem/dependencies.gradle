@@ -22,6 +22,7 @@ ext.version = [
     picasso                   : "2.5.2",
     materialDesignColors      : "3.0.0",
     androidSpinKit            : "1.0.5",
+    floatingActionButton      : "1.6.4",
 
     // Testing
     jUnit                     : "4.12",
@@ -56,6 +57,7 @@ ext.dependency = [
     picasso                   : "com.squareup.picasso:picasso:${version.picasso}",
     materialDesignColors      : "com.wada811:android-material-design-colors:${version.materialDesignColors}",
     androidSpinKit            : "com.github.ybq:Android-SpinKit:${version.androidSpinKit}",
+    floatingActionButton      : "com.github.clans:fab:${version.floatingActionButton}",
 
     jUnit                     : "junit:junit:${version.jUnit}",
     mockito                   : "org.mockito:mockito-core:${version.mockito}",
@@ -136,7 +138,8 @@ ext.presentationDependencies = [
     butterKnife               : "${dependency.butterKnife}",
     picasso                   : "${dependency.picasso}",
     materialDesignColors      : "${dependency.materialDesignColors}",
-    androidSpinKit            : "${dependency.androidSpinKit}"
+    androidSpinKit            : "${dependency.androidSpinKit}",
+    floatingActionButton      : "${dependency.floatingActionButton}"
 ]
 
 ext.presentationTestDependencies = [

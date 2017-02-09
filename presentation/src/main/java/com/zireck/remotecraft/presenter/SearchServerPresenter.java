@@ -28,7 +28,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   }
 
   @Override public void resume() {
-    searchServerInteractor.execute(new SearchServerObserver());
+
   }
 
   @Override public void pause() {
@@ -37,6 +37,10 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
 
   @Override public void destroy() {
     searchServerInteractor.dispose();
+  }
+
+  public void onClickWifi() {
+    searchServerInteractor.execute(new SearchServerObserver());
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {

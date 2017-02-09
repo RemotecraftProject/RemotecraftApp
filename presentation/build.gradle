@@ -84,6 +84,7 @@ dependencies {
   compile "${library.picasso}"
   compile "${library.materialDesignColors}"
   compile "${library.androidSpinKit}"
+  compile "${library.floatingActionButton}"
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.mockito}"
