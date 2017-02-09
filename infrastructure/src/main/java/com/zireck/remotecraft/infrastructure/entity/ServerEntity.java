@@ -1,6 +1,6 @@
 package com.zireck.remotecraft.infrastructure.entity;
 
-public final class ServerEntity {
+public class ServerEntity {
 
   private final String ssid;
   private final String ip;
@@ -43,7 +43,6 @@ public final class ServerEntity {
   }
 
   public static class Builder {
-
     private String ssid;
     private String ip;
     private String version;

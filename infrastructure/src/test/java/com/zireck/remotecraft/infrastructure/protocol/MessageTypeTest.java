@@ -1,6 +1,6 @@
 package com.zireck.remotecraft.infrastructure.protocol;
 
-import com.zireck.remotecraft.infrastructure.protocol.type.MessageType;
+import com.zireck.remotecraft.infrastructure.protocol.enumeration.MessageType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;

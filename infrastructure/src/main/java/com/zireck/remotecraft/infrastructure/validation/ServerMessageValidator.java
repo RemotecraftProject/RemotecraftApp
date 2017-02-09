@@ -1,12 +1,12 @@
 package com.zireck.remotecraft.infrastructure.validation;
 
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.base.Server;
+import com.zireck.remotecraft.infrastructure.protocol.base.type.ServerProtocol;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-public class ServerMessageValidator implements MessageValidator<Server> {
+public class ServerMessageValidator implements MessageValidator<ServerProtocol> {
 
   private List<InvalidServerData> invalidServerData;
 
@@ -20,7 +20,7 @@ public class ServerMessageValidator implements MessageValidator<Server> {
     return invalidServerData.size() == 0;
   }
 
-  @Override public Server cast(Message message) {
+  @Override public ServerProtocol cast(Message message) {
     return message.getServer();
   }
 
@@ -36,13 +36,13 @@ public class ServerMessageValidator implements MessageValidator<Server> {
       return invalidServerData;
     }
 
-    Server server = cast(message);
+    ServerProtocol serverProtocol = cast(message);
 
-    if (server.getIp() == null || server.getIp().length() <= 0) {
+    if (serverProtocol.getIp() == null || serverProtocol.getIp().length() <= 0) {
       invalidServerData.add(InvalidServerData.SERVER_NO_IP);
     }
 
-    if (server.getSeed() == null || server.getSeed().length() <= 0) {
+    if (serverProtocol.getSeed() == null || serverProtocol.getSeed().length() <= 0) {
       invalidServerData.add(InvalidServerData.SERVER_NO_SEED);
     }
 

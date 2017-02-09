@@ -46,7 +46,6 @@ public class ServerModel implements Parcelable {
   }
 
   public static class Builder {
-
     private String ssid;
     private String ip;
     private String version;

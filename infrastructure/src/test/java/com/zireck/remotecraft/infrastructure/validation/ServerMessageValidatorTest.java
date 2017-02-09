@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.infrastructure.validation;
 
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.base.Server;
+import com.zireck.remotecraft.infrastructure.protocol.base.type.ServerProtocol;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,19 +23,19 @@ import static org.mockito.Mockito.when;
   private ServerMessageValidator serverMessageValidator;
 
   @Mock private Message mockMessage;
-  @Mock private Server mockServer;
+  @Mock private ServerProtocol mockServerProtocol;
 
   @Before public void setUp() throws Exception {
     serverMessageValidator = new ServerMessageValidator();
   }
 
   @Test public void shouldProperlyCastMessageIntoServer() throws Exception {
-    when(mockMessage.getServer()).thenReturn(mockServer);
+    when(mockMessage.getServer()).thenReturn(mockServerProtocol);
 
-    Server server = serverMessageValidator.cast(mockMessage);
+    ServerProtocol serverProtocol = serverMessageValidator.cast(mockMessage);
 
-    assertThat(server, notNullValue());
-    assertThat(server, is(instanceOf(Server.class)));
+    assertThat(serverProtocol, notNullValue());
+    assertThat(serverProtocol, is(instanceOf(ServerProtocol.class)));
     verify(mockMessage, times(1)).getServer();
     verifyNoMoreInteractions(mockMessage);
   }
@@ -64,11 +64,11 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldCheckInvalidMessageGivenNullIp() throws Exception {
-    when(mockServer.getIp()).thenReturn(null);
-    when(mockServer.getSeed()).thenReturn("42356735435435345");
+    when(mockServerProtocol.getIp()).thenReturn(null);
+    when(mockServerProtocol.getSeed()).thenReturn("42356735435435345");
     when(mockMessage.isSuccess()).thenReturn(true);
     when(mockMessage.isServer()).thenReturn(true);
-    when(mockMessage.getServer()).thenReturn(mockServer);
+    when(mockMessage.getServer()).thenReturn(mockServerProtocol);
 
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
@@ -79,11 +79,11 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldCheckInvalidMessageGivenEmptyIp() throws Exception {
-    when(mockServer.getIp()).thenReturn("");
-    when(mockServer.getSeed()).thenReturn("656478878432054");
+    when(mockServerProtocol.getIp()).thenReturn("");
+    when(mockServerProtocol.getSeed()).thenReturn("656478878432054");
     when(mockMessage.isSuccess()).thenReturn(true);
     when(mockMessage.isServer()).thenReturn(true);
-    when(mockMessage.getServer()).thenReturn(mockServer);
+    when(mockMessage.getServer()).thenReturn(mockServerProtocol);
 
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
@@ -94,11 +94,11 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldCheckInvalidMessageGivenNullSeed() throws Exception {
-    when(mockServer.getIp()).thenReturn("192.168.2.42");
-    when(mockServer.getSeed()).thenReturn(null);
+    when(mockServerProtocol.getIp()).thenReturn("192.168.2.42");
+    when(mockServerProtocol.getSeed()).thenReturn(null);
     when(mockMessage.isSuccess()).thenReturn(true);
     when(mockMessage.isServer()).thenReturn(true);
-    when(mockMessage.getServer()).thenReturn(mockServer);
+    when(mockMessage.getServer()).thenReturn(mockServerProtocol);
 
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
@@ -109,11 +109,11 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldCheckInvalidMessageGivenEmptySeed() throws Exception {
-    when(mockServer.getIp()).thenReturn("192.168.99.32");
-    when(mockServer.getSeed()).thenReturn("");
+    when(mockServerProtocol.getIp()).thenReturn("192.168.99.32");
+    when(mockServerProtocol.getSeed()).thenReturn("");
     when(mockMessage.isSuccess()).thenReturn(true);
     when(mockMessage.isServer()).thenReturn(true);
-    when(mockMessage.getServer()).thenReturn(mockServer);
+    when(mockMessage.getServer()).thenReturn(mockServerProtocol);
 
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
@@ -124,11 +124,11 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldReturnTwoInvalidDataWhenIpAndSeedAreInvalid() throws Exception {
-    when(mockServer.getIp()).thenReturn("");
-    when(mockServer.getSeed()).thenReturn(null);
+    when(mockServerProtocol.getIp()).thenReturn("");
+    when(mockServerProtocol.getSeed()).thenReturn(null);
     when(mockMessage.isSuccess()).thenReturn(true);
     when(mockMessage.isServer()).thenReturn(true);
-    when(mockMessage.getServer()).thenReturn(mockServer);
+    when(mockMessage.getServer()).thenReturn(mockServerProtocol);
 
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();

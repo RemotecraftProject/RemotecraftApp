@@ -1,8 +1,8 @@
-package com.zireck.remotecraft.infrastructure.protocol.base;
+package com.zireck.remotecraft.infrastructure.protocol.base.type;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Error {
+public class ErrorProtocol {
 
   @SerializedName("code") private int code;
   @SerializedName("message") private String message;

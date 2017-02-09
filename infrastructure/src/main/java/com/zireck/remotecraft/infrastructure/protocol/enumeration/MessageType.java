@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.infrastructure.protocol.type;
+package com.zireck.remotecraft.infrastructure.protocol.enumeration;
 
 public enum MessageType {
   COMMAND ("command"),

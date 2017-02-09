@@ -1,15 +1,15 @@
 package com.zireck.remotecraft.infrastructure.protocol.messages;
 
-import com.zireck.remotecraft.infrastructure.protocol.type.MessageType;
-import com.zireck.remotecraft.infrastructure.protocol.base.Error;
+import com.zireck.remotecraft.infrastructure.protocol.base.type.ErrorProtocol;
+import com.zireck.remotecraft.infrastructure.protocol.enumeration.MessageType;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 
-public final class ErrorMessage extends Message {
+public class ErrorMessage extends Message {
 
   private ErrorMessage(Builder builder) {
     this.isSuccess = false;
     this.type = MessageType.ERROR.toString();
-    this.error = builder.error;
+    this.errorProtocol = builder.errorProtocol;
   }
 
   @Override public boolean isSuccess() {
@@ -17,10 +17,10 @@ public final class ErrorMessage extends Message {
   }
 
   public static class Builder {
-    private Error error;
+    private ErrorProtocol errorProtocol;
 
     public Builder() {
-      this.error = new Error();
+      this.errorProtocol = new ErrorProtocol();
     }
 
     public ErrorMessage build() {
@@ -28,12 +28,12 @@ public final class ErrorMessage extends Message {
     }
 
     public Builder with(int code) {
-      this.error.setCode(code);
+      this.errorProtocol.setCode(code);
       return this;
     }
 
     public Builder and(String message) {
-      this.error.setMessage(message);
+      this.errorProtocol.setMessage(message);
       return this;
     }
   }

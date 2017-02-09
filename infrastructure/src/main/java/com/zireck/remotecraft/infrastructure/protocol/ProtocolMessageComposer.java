@@ -1,8 +1,8 @@
 package com.zireck.remotecraft.infrastructure.protocol;
 
-import com.zireck.remotecraft.infrastructure.protocol.base.Command;
+import com.zireck.remotecraft.infrastructure.protocol.base.type.CommandProtocol;
 import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
-import com.zireck.remotecraft.infrastructure.protocol.type.CommandType;
+import com.zireck.remotecraft.infrastructure.protocol.enumeration.CommandType;
 
 public class ProtocolMessageComposer {
 
@@ -12,7 +12,7 @@ public class ProtocolMessageComposer {
 
   public CommandMessage composeGetServerInfoCommand() {
     return new CommandMessage.Builder()
-        .with(new Command(CommandType.GET_SERVER_INFO))
+        .with(new CommandProtocol(CommandType.GET_SERVER_INFO))
         .build();
   }
 }

@@ -1,15 +1,15 @@
 package com.zireck.remotecraft.infrastructure.protocol.messages;
 
-import com.zireck.remotecraft.infrastructure.protocol.type.MessageType;
+import com.zireck.remotecraft.infrastructure.protocol.base.type.InfoProtocol;
+import com.zireck.remotecraft.infrastructure.protocol.enumeration.MessageType;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.base.Info;
 
-public final class InfoMessage extends Message {
+public class InfoMessage extends Message {
 
   private InfoMessage(Builder builder) {
     this.isSuccess = true;
     this.type = MessageType.INFO.toString();
-    this.info = builder.info;
+    this.infoProtocol = builder.infoProtocol;
   }
 
   @Override public boolean isInfo() {
@@ -17,7 +17,7 @@ public final class InfoMessage extends Message {
   }
 
   public static class Builder {
-    private Info info;
+    private InfoProtocol infoProtocol;
 
     public Builder() {
 
@@ -27,8 +27,8 @@ public final class InfoMessage extends Message {
       return new InfoMessage(this);
     }
 
-    public Builder with(Info info) {
-      this.info = info;
+    public Builder with(InfoProtocol infoProtocol) {
+      this.infoProtocol = infoProtocol;
       return this;
     }
   }

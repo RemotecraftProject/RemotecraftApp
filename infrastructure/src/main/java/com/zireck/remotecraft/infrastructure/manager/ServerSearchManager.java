@@ -3,13 +3,13 @@ package com.zireck.remotecraft.infrastructure.manager;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.exception.InvalidServerException;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
-import com.zireck.remotecraft.infrastructure.protocol.NetworkProtocolHelper;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.base.Server;
+import com.zireck.remotecraft.infrastructure.protocol.base.type.ServerProtocol;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
-import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerMapper;
+import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerProtocolMapper;
 import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
+import com.zireck.remotecraft.infrastructure.provider.ServerSearchSettings;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
 import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
@@ -25,28 +25,26 @@ import timber.log.Timber;
 
 public class ServerSearchManager {
 
-  private static final int SEARCH_PORT = 9998;
-  private static final String BROADCAST_ADDRESS = "255.255.255.255";
-  private static final int RETRY_COUNT = 5;
-  private static final int RESPONSE_BUFFER_SIZE = 15000;
-
+  private final ServerSearchSettings serverSearchSettings;
   private final NetworkConnectionlessTransmitter networkConnectionlessTransmitter;
   private final BroadcastAddressProvider broadcastAddressProvider;
   private final ProtocolMessageComposer protocolMessageComposer;
   private final MessageJsonMapper messageJsonMapper;
-  private final ServerMapper serverMapper;
+  private final ServerProtocolMapper serverProtocolMapper;
   private final ServerMessageValidator serverValidator;
   private String ipAddress;
 
-  public ServerSearchManager(NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
+  public ServerSearchManager(ServerSearchSettings serverSearchSettings,
+      NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
       BroadcastAddressProvider broadcastAddressProvider,
       ProtocolMessageComposer protocolMessageComposer, MessageJsonMapper messageJsonMapper,
-      ServerMapper serverMapper, ServerMessageValidator serverValidator) {
+      ServerProtocolMapper serverProtocolMapper, ServerMessageValidator serverValidator) {
+    this.serverSearchSettings = serverSearchSettings;
     this.networkConnectionlessTransmitter = networkConnectionlessTransmitter;
     this.broadcastAddressProvider = broadcastAddressProvider;
     this.protocolMessageComposer = protocolMessageComposer;
     this.messageJsonMapper = messageJsonMapper;
-    this.serverMapper = serverMapper;
+    this.serverProtocolMapper = serverProtocolMapper;
     this.serverValidator = serverValidator;
   }
 
@@ -56,18 +54,18 @@ public class ServerSearchManager {
   }
 
   public Maybe<ServerEntity> searchServer() {
-    return doSearch().map(serverMapper::transform);
+    return performSearch().map(serverProtocolMapper::transform);
   }
 
-  private Maybe<Server> doSearch() {
+  private Maybe<ServerProtocol> performSearch() {
     return Observable.<Message>create(emitter -> {
-      DatagramPacket response = null;
+      DatagramPacket incomingPacket = null;
       Message message = null;
 
       try {
         sendDiscoveryRequest();
-        response = waitForServerResponse();
-        message = parseResponse(response);
+        incomingPacket = waitForServerResponse();
+        message = parseResponse(incomingPacket);
       } catch (NoResponseException | IOException e) {
         emitter.onError(e);
       }
@@ -77,8 +75,9 @@ public class ServerSearchManager {
       }
     }).retryWhen(errors ->
         errors
-          .zipWith(Observable.range(0, RETRY_COUNT), (n, i) -> i)
-          .flatMap(retryCount -> Observable.timer(retryCount, TimeUnit.SECONDS)))
+          .zipWith(Observable.range(0, serverSearchSettings.getRetryCount()), (n, i) -> i)
+          .flatMap(retryCount -> Observable.timer(
+                retryCount * serverSearchSettings.getRetryDelayMultiplier(), TimeUnit.SECONDS)))
       .filter(serverValidator::isValid)
       .firstElement()
       .map(serverValidator::cast);
@@ -89,14 +88,14 @@ public class ServerSearchManager {
       sendRequestTo(ipAddress);
     } else {
       enableBroadcast();
-      sendRequestTo(BROADCAST_ADDRESS);
+      sendRequestTo(serverSearchSettings.getBroadcastAddress());
       sendRequestToEveryInterfaceBroadcastAddress();
     }
   }
 
-  private void sendRequestTo(String ip) throws IOException {
-    DatagramPacket datagramPacket = getDatagramPacket(InetAddress.getByName(ip));
-    networkConnectionlessTransmitter.send(datagramPacket);
+  private void sendRequestTo(String ipAddress) throws IOException {
+    DatagramPacket outgoingPacket = getTransmissionPacket(InetAddress.getByName(ipAddress));
+    networkConnectionlessTransmitter.send(outgoingPacket);
   }
 
   private void enableBroadcast() throws SocketException {
@@ -104,44 +103,44 @@ public class ServerSearchManager {
   }
 
   private void sendRequestToEveryInterfaceBroadcastAddress() throws IOException {
-    DatagramPacket datagramPacket;
+    DatagramPacket outgoingPacket;
     Collection<InetAddress> broadcastAddresses = broadcastAddressProvider.getBroadcastAddresses();
 
     for (InetAddress broadcastAddress : broadcastAddresses) {
-      datagramPacket = getDatagramPacket(broadcastAddress);
-      networkConnectionlessTransmitter.send(datagramPacket);
+      outgoingPacket = getTransmissionPacket(broadcastAddress);
+      networkConnectionlessTransmitter.send(outgoingPacket);
     }
   }
 
-  private DatagramPacket getDatagramPacket(InetAddress inetAddress) {
+  private DatagramPacket getTransmissionPacket(InetAddress inetAddress) {
     CommandMessage getServerInfoCommand = protocolMessageComposer.composeGetServerInfoCommand();
     String getServerInfoCommandJson = messageJsonMapper.transformMessage(getServerInfoCommand);
 
     Timber.d("Sending JSON:");
     Timber.d(getServerInfoCommandJson);
 
-    byte[] socketPacket = getServerInfoCommandJson.getBytes();
-    return new DatagramPacket(socketPacket, socketPacket.length, inetAddress, SEARCH_PORT);
+    byte[] payload = getServerInfoCommandJson.getBytes();
+    return new DatagramPacket(payload, payload.length, inetAddress, serverSearchSettings.getPort());
   }
 
   private DatagramPacket waitForServerResponse() throws IOException, NoResponseException {
-    byte[] responseBuffer = new byte[RESPONSE_BUFFER_SIZE];
+    byte[] responseBuffer = new byte[serverSearchSettings.getResponseBufferSize()];
     DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
 
-    networkConnectionlessTransmitter.setTimeout(NetworkProtocolHelper.SOCKET_TIMEOUT);
+    networkConnectionlessTransmitter.setTimeout(serverSearchSettings.getTimeout());
     networkConnectionlessTransmitter.receive(responsePacket);
     networkConnectionlessTransmitter.shutdown();
 
     return responsePacket;
   }
 
-  private Message parseResponse(DatagramPacket responsePacket) throws InvalidServerException {
-    if (responsePacket == null || responsePacket.getData() == null) {
+  private Message parseResponse(DatagramPacket incomingPacket) throws InvalidServerException {
+    if (incomingPacket == null || incomingPacket.getData() == null) {
       Timber.e("Response Packet cannot be null.");
       return null;
     }
 
-    String messageJsonResponse = new String(responsePacket.getData()).trim();
+    String messageJsonResponse = new String(incomingPacket.getData()).trim();
     Message message = messageJsonMapper.transformMessage(messageJsonResponse);
 
     if (message == null || !message.isSuccess() || !message.isServer()) {

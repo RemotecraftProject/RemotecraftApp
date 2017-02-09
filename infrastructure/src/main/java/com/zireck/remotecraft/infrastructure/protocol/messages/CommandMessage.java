@@ -1,15 +1,15 @@
 package com.zireck.remotecraft.infrastructure.protocol.messages;
 
-import com.zireck.remotecraft.infrastructure.protocol.type.MessageType;
+import com.zireck.remotecraft.infrastructure.protocol.base.type.CommandProtocol;
+import com.zireck.remotecraft.infrastructure.protocol.enumeration.MessageType;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
-import com.zireck.remotecraft.infrastructure.protocol.base.Command;
 
-public final class CommandMessage extends Message {
+public class CommandMessage extends Message {
 
   private CommandMessage(Builder builder) {
     this.isSuccess = true;
     this.type = MessageType.COMMAND.toString();
-    this.command = builder.command;
+    this.commandProtocol = builder.commandProtocol;
   }
 
   @Override public boolean isCommand() {
@@ -17,7 +17,7 @@ public final class CommandMessage extends Message {
   }
 
   public static class Builder {
-    private Command command;
+    private CommandProtocol commandProtocol;
 
     public Builder() {
 
@@ -27,8 +27,8 @@ public final class CommandMessage extends Message {
       return new CommandMessage(this);
     }
 
-    public Builder with(Command command) {
-      this.command = command;
+    public Builder with(CommandProtocol commandProtocol) {
+      this.commandProtocol = commandProtocol;
       return this;
     }
   }

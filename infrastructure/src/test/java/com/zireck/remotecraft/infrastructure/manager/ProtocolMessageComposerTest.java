@@ -2,7 +2,7 @@ package com.zireck.remotecraft.infrastructure.manager;
 
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
-import com.zireck.remotecraft.infrastructure.protocol.type.CommandType;
+import com.zireck.remotecraft.infrastructure.protocol.enumeration.CommandType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
