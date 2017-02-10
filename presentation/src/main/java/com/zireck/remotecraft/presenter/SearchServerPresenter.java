@@ -1,28 +1,34 @@
 package com.zireck.remotecraft.presenter;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
 import com.zireck.remotecraft.mapper.ServerModelDataMapper;
+import com.zireck.remotecraft.model.NetworkAddressModel;
 import com.zireck.remotecraft.model.ServerModel;
+import com.zireck.remotecraft.tools.UriParser;
 import com.zireck.remotecraft.view.SearchServerView;
 import timber.log.Timber;
 
 public class SearchServerPresenter implements Presenter<SearchServerView> {
 
   private SearchServerView view;
-  private MaybeInteractor getWifiStateInteractor;
-  private MaybeInteractor searchServerInteractor;
-  private ServerModelDataMapper serverModelDataMapper;
+  private final MaybeInteractor getWifiStateInteractor;
+  private final MaybeInteractor searchServerInteractor;
+  private final ServerModelDataMapper serverModelDataMapper;
+  private final UriParser uriParser;
   private boolean isScanningWifi = false;
   private boolean isScanningQr = false;
 
   public SearchServerPresenter(MaybeInteractor getWifiStateInteractor,
-      MaybeInteractor searchServerInteractor, ServerModelDataMapper serverModelDataMapper) {
+      MaybeInteractor searchServerInteractor, ServerModelDataMapper serverModelDataMapper,
+      UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchServerInteractor = searchServerInteractor;
     this.serverModelDataMapper = serverModelDataMapper;
+    this.uriParser = uriParser;
   }
 
   @Override public void setView(@NonNull SearchServerView view) {
@@ -56,14 +62,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   }
 
   public void onClickWifi() {
-    if (isScanningWifi || isScanningQr) {
-      return;
-    }
-
-    view.closeMenu();
-    view.showLoading();
-    isScanningWifi = true;
-    searchServerInteractor.execute(new SearchServerObserver());
+    scanWifi();
   }
 
   public void onClickQrCode() {
@@ -81,7 +80,50 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     isScanningQr = false;
     view.hideLoading();
     view.stopQrScanner();
-    view.showMessage("Read code: " + qrCode);
+
+    if (qrCode == null || qrCode.length() <= 0) {
+      view.showError(new IllegalArgumentException("Couldn't read QR Code"));
+    }
+
+    NetworkAddressModel networkAddressModel = processReadQrCode(qrCode);
+    if (networkAddressModel == null) {
+      view.showError(new RuntimeException("Couldn't determine server host"));
+    } else {
+      scanWifi(networkAddressModel);
+    }
+  }
+
+  private void scanWifi() {
+    scanWifi(null);
+  }
+
+  private void scanWifi(NetworkAddressModel networkAddressModel) {
+    if (isScanningWifi || isScanningQr) {
+      return;
+    }
+
+    view.closeMenu();
+    view.showLoading();
+    isScanningWifi = true;
+    if (networkAddressModel == null) {
+      searchServerInteractor.execute(new SearchServerObserver());
+    } else {
+      // TODO execute interactor with argument
+    }
+  }
+
+  private NetworkAddressModel processReadQrCode(String qrCode) {
+    Uri uri = uriParser.parse(qrCode);
+    String ip = uriParser.getQueryParameter(uri, "ip");
+    String port = uriParser.getQueryParameter(uri, "port");
+    if (ip == null || ip.length() <= 0 || port == null || port.length() <= 0) {
+      return null;
+    }
+
+    return new NetworkAddressModel.Builder()
+        .with(ip)
+        .and(port)
+        .build();
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {
