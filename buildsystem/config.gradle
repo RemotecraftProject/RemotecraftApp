@@ -6,7 +6,7 @@ ext.configuration = [
   versionBuild                : -1,
   versionClassifier           : "",
 
-  minimumSdkVersion           : 15,
+  minimumSdkVersion           : 16,
   compileSdkVersion           : 24,
   targetSdkVersion            : 24,
   buildToolsVersion           : "24.0.1"

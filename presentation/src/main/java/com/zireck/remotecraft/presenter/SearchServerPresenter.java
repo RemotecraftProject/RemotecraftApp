@@ -40,18 +40,27 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   }
 
   public void onClickWifi() {
+    view.closeMenu();
+    view.showLoading();
     searchServerInteractor.execute(new SearchServerObserver());
+  }
+
+  public void onClickQrCode() {
+    view.closeMenu();
+    view.showError(new IllegalStateException("Currently unavailable"));
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {
     @Override public void onSuccess(Server server) {
       Timber.d("Received Server: %s", server.getWorldName());
 
+      view.hideLoading();
       ServerModel serverModel = serverModelDataMapper.transform(server);
       view.navigateToServerDetail(serverModel);
     }
 
     @Override public void onError(Throwable e) {
+      view.hideLoading();
       view.showError((Exception) e);
     }
   }

@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -16,6 +17,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.dagger.HasComponent;
 import com.zireck.remotecraft.dagger.components.DaggerSearchServerComponent;
@@ -35,6 +37,10 @@ public class SearchServerActivity extends BaseActivity
 
   @Inject SearchServerPresenter presenter;
   @Inject ImageLoader imageLoader;
+
+  @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+  @BindView(R.id.loading) SpinKitView loadingView;
+  @BindView(R.id.dimmer_view) View dimmerView;
   @BindView(R.id.menu) FloatingActionMenu floatingActionMenu;
   @BindView(R.id.fab_wifi) FloatingActionButton floatingActionButtonWifi;
   @BindView(R.id.fab_qrcode) FloatingActionButton floatingActionButtonQrCode;
@@ -86,7 +92,27 @@ public class SearchServerActivity extends BaseActivity
   @Override public void showError(Exception exception) {
     String errorMessage = ErrorMessageFactory.create(this, exception);
     Timber.e(errorMessage);
-    Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+    displayMessage(errorMessage);
+  }
+
+  @Override public void closeMenu() {
+    floatingActionMenu.close(true);
+  }
+
+  @Override public void enableMenu() {
+    floatingActionMenu.setEnabled(true);
+  }
+
+  @Override public void disableMenu() {
+    floatingActionMenu.setEnabled(false);
+  }
+
+  @Override public void showLoading() {
+    loadingView.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void hideLoading() {
+    loadingView.setVisibility(View.GONE);
   }
 
   @OnClick(R.id.fab_wifi) public void onClickFabWifi(View view) {
@@ -94,8 +120,7 @@ public class SearchServerActivity extends BaseActivity
   }
 
   @OnClick(R.id.fab_qrcode) public void onClickFabQrCode(View view) {
-    Snackbar.make(findViewById(android.R.id.content), "Currently unavailable",
-        Snackbar.LENGTH_SHORT).show();
+    presenter.onClickQrCode();
   }
 
   private void initInjector() {
@@ -114,11 +139,15 @@ public class SearchServerActivity extends BaseActivity
       getSupportActionBar().hide();
     }
 
+    enableFloatingActionMenuAnimation();
     floatingActionMenu.setClosedOnTouchOutside(true);
-    setFloatingActionMenuAnimation();
+    floatingActionMenu.setOnMenuToggleListener(this::dimeBackground);
+    dimmerView.setOnClickListener(view -> {
+      floatingActionMenu.close(true);
+    });
   }
 
-  private void setFloatingActionMenuAnimation() {
+  private void enableFloatingActionMenuAnimation() {
     AnimatorSet set = new AnimatorSet();
 
     ObjectAnimator scaleOutX =
@@ -150,5 +179,20 @@ public class SearchServerActivity extends BaseActivity
     set.setInterpolator(new OvershootInterpolator(2));
 
     floatingActionMenu.setIconToggleAnimatorSet(set);
+  }
+
+  private void dimeBackground(boolean shouldDime) {
+    final float targetAlpha = shouldDime ? 1f : 0;
+    final int endVisibility = shouldDime ? View.VISIBLE : View.GONE;
+    dimmerView.setVisibility(View.VISIBLE);
+    dimmerView.animate()
+        .alpha(targetAlpha)
+        .setDuration(250)
+        .withEndAction(() -> dimmerView.setVisibility(endVisibility))
+        .start();
+  }
+
+  private void displayMessage(String message) {
+    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
   }
 }
