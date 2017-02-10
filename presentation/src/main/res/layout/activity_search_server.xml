@@ -115,7 +115,7 @@
         fab:fab_colorPressed="@color/colorPrimaryDark"
         fab:fab_colorRipple="#99FFFFFF"
         fab:fab_size="normal"
-        fab:fab_label="QR Code" />
+        fab:fab_label="@string/scan_qr" />
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab_wifi"
@@ -126,7 +126,7 @@
         fab:fab_colorPressed="@color/colorPrimaryDark"
         fab:fab_colorRipple="#99FFFFFF"
         fab:fab_size="normal"
-        fab:fab_label="Wi-Fi" />
+        fab:fab_label="@string/scan_wifi" />
 
   </com.github.clans.fab.FloatingActionMenu>
 
@@ -139,5 +139,20 @@
       app:SpinKit_Color="@color/colorPrimaryDark"
       style="@style/SpinKitView.Large.Circle"
       />
+
+  <com.dlazaro66.qrcodereaderview.QRCodeReaderView
+      android:id="@+id/qrCodeReaderView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"/>
+
+  <ImageButton
+      android:id="@+id/close_camera_button"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_gravity="top|start"
+      android:background="@color/md_grey_800"
+      android:src="@drawable/ic_close_white"
+      android:visibility="gone"/>
 
 </android.support.design.widget.CoordinatorLayout>

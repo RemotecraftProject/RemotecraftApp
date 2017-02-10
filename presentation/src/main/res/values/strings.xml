@@ -5,4 +5,7 @@
   <string name="exception_no_internet_connection">No Internet connection.</string>
   <string name="exception_no_response">No response.</string>
   <string name="exception_invalid_server">Invalid server.</string>
+
+  <string name="scan_wifi">Scan Wi-Fi</string>
+  <string name="scan_qr">Scan QR Code</string>
 </resources>

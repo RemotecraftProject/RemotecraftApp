@@ -11,10 +11,12 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -41,6 +43,8 @@ public class SearchServerActivity extends BaseActivity
   @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
   @BindView(R.id.loading) SpinKitView loadingView;
   @BindView(R.id.dimmer_view) View dimmerView;
+  @BindView(R.id.close_camera_button) ImageButton closeCameraButton;
+  @BindView(R.id.qrCodeReaderView) QRCodeReaderView qrCodeReaderView;
   @BindView(R.id.menu) FloatingActionMenu floatingActionMenu;
   @BindView(R.id.fab_wifi) FloatingActionButton floatingActionButtonWifi;
   @BindView(R.id.fab_qrcode) FloatingActionButton floatingActionButtonQrCode;
@@ -81,12 +85,20 @@ public class SearchServerActivity extends BaseActivity
     presenter.destroy();
   }
 
+  @Override public void onBackPressed() {
+    super.onBackPressed();
+  }
+
   @Override public SearchServerComponent getComponent() {
     return searchServerComponent;
   }
 
   @Override public void navigateToServerDetail(ServerModel serverModel) {
     navigator.navigateToServerFoundActivity(this, serverModel);
+  }
+
+  @Override public void showMessage(String message) {
+    displayMessage(message);
   }
 
   @Override public void showError(Exception exception) {
@@ -113,6 +125,22 @@ public class SearchServerActivity extends BaseActivity
 
   @Override public void hideLoading() {
     loadingView.setVisibility(View.GONE);
+  }
+
+  @Override public void startQrScanner() {
+    closeCameraButton.setVisibility(View.VISIBLE);
+    qrCodeReaderView.setVisibility(View.VISIBLE);
+    qrCodeReaderView.startCamera();
+  }
+
+  @Override public void stopQrScanner() {
+    qrCodeReaderView.stopCamera();
+    qrCodeReaderView.setVisibility(View.GONE);
+    closeCameraButton.setVisibility(View.GONE);
+  }
+
+  @OnClick(R.id.close_camera_button) public void onClickCloseCamera(View view) {
+    presenter.onClickCloseCamera();
   }
 
   @OnClick(R.id.fab_wifi) public void onClickFabWifi(View view) {
@@ -145,6 +173,17 @@ public class SearchServerActivity extends BaseActivity
     dimmerView.setOnClickListener(view -> {
       floatingActionMenu.close(true);
     });
+
+    setupQrCodeReader();
+  }
+
+  private void setupQrCodeReader() {
+    qrCodeReaderView.setQRDecodingEnabled(true);
+    qrCodeReaderView.setAutofocusInterval(2000L);
+    qrCodeReaderView.setBackCamera();
+    qrCodeReaderView.setOnQRCodeReadListener(((text, points) -> {
+      presenter.onReadQrCode(text);
+    }));
   }
 
   private void enableFloatingActionMenuAnimation() {

@@ -15,6 +15,8 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private MaybeInteractor getWifiStateInteractor;
   private MaybeInteractor searchServerInteractor;
   private ServerModelDataMapper serverModelDataMapper;
+  private boolean isScanningWifi = false;
+  private boolean isScanningQr = false;
 
   public SearchServerPresenter(MaybeInteractor getWifiStateInteractor,
       MaybeInteractor searchServerInteractor, ServerModelDataMapper serverModelDataMapper) {
@@ -28,30 +30,63 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   }
 
   @Override public void resume() {
+    if (!isScanningWifi && !isScanningQr) {
+      view.hideLoading();
+    }
 
+    if (isScanningQr) {
+      view.startQrScanner();
+    }
   }
 
   @Override public void pause() {
-
+    view.stopQrScanner();
   }
 
   @Override public void destroy() {
     searchServerInteractor.dispose();
   }
 
+  public void onClickCloseCamera() {
+    if (isScanningQr) {
+      isScanningQr = false;
+      view.hideLoading();
+      view.stopQrScanner();
+    }
+  }
+
   public void onClickWifi() {
+    if (isScanningWifi || isScanningQr) {
+      return;
+    }
+
     view.closeMenu();
     view.showLoading();
+    isScanningWifi = true;
     searchServerInteractor.execute(new SearchServerObserver());
   }
 
   public void onClickQrCode() {
+    if (isScanningWifi || isScanningQr) {
+      return;
+    }
+
     view.closeMenu();
-    view.showError(new IllegalStateException("Currently unavailable"));
+    view.showLoading();
+    isScanningQr = true;
+    view.startQrScanner();
+  }
+
+  public void onReadQrCode(String qrCode) {
+    isScanningQr = false;
+    view.hideLoading();
+    view.stopQrScanner();
+    view.showMessage("Read code: " + qrCode);
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {
     @Override public void onSuccess(Server server) {
+      isScanningWifi = false;
       Timber.d("Received Server: %s", server.getWorldName());
 
       view.hideLoading();
@@ -60,6 +95,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     }
 
     @Override public void onError(Throwable e) {
+      isScanningWifi = false;
       view.hideLoading();
       view.showError((Exception) e);
     }
