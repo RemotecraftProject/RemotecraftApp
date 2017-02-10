@@ -10,5 +10,4 @@ public interface NetworkConnectionlessTransmitter {
   void setTimeout(int timeout) throws SocketException;
   void send(DatagramPacket datagramPacket) throws IOException;
   void receive(DatagramPacket datagramPacket) throws IOException;
-  void shutdown();
 }

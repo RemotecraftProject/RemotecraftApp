@@ -32,9 +32,4 @@ public class NetworkConnectionlessDatagramTransmitter implements NetworkConnecti
   @Override public void receive(DatagramPacket datagramPacket) throws IOException {
     datagramSocket.receive(datagramPacket);
   }
-
-  @Override public void shutdown() {
-    datagramSocket.disconnect();
-    datagramSocket.close();
-  }
 }

@@ -76,12 +76,4 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
     verify(mockDatagramSocket, times(1)).receive(datagramPacket);
     verifyNoMoreInteractions(mockDatagramSocket);
   }
-
-  @Test public void shouldProperlyShutdownTheSocket() throws Exception {
-    networkConnectionlessDatagramTransmitter.shutdown();
-
-    verify(mockDatagramSocket, times(1)).disconnect();
-    verify(mockDatagramSocket, times(1)).close();
-    verifyNoMoreInteractions(mockDatagramSocket);
-  }
 }

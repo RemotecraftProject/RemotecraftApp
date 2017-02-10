@@ -95,7 +95,6 @@ import static org.mockito.Mockito.when;
     verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).setTimeout(
         mockServerSearchSettings.getTimeout());
     verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).receive(any(DatagramPacket.class));
-    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).shutdown();
     verify(mockMessageJsonMapper).transformMessage(anyString());
   }
 
@@ -185,7 +184,6 @@ import static org.mockito.Mockito.when;
     verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).setTimeout(
         mockServerSearchSettings.getTimeout());
     verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).receive(any(DatagramPacket.class));
-    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).shutdown();
     verify(mockMessageJsonMapper).transformMessage(anyString());
   }
 

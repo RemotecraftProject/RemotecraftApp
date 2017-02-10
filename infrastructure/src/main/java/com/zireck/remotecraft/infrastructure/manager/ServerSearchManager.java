@@ -129,7 +129,6 @@ public class ServerSearchManager {
 
     networkConnectionlessTransmitter.setTimeout(serverSearchSettings.getTimeout());
     networkConnectionlessTransmitter.receive(responsePacket);
-    networkConnectionlessTransmitter.shutdown();
 
     return responsePacket;
   }
