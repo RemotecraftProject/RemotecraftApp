@@ -20,7 +20,7 @@ public class ErrorMessageFactory {
     } else if (exception instanceof NoResponseException) {
       errorMessage = context.getString(R.string.exception_no_response);
     } else if (exception instanceof InvalidServerException) {
-      errorMessage = context.getString(R.string.exception_invalid_world);
+      errorMessage = context.getString(R.string.exception_invalid_server);
     }
 
     return errorMessage;

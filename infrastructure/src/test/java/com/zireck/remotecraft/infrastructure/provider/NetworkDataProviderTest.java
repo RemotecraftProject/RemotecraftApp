@@ -33,16 +33,16 @@ import static org.mockito.Mockito.when;
     networkProvider = new NetworkDataProvider(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
-  @Test public void shouldReturnValidWorld() throws Exception {
-    ServerEntity serverEntity = getWorldEntity();
-    Server server = getWorld();
+  @Test public void shouldReturnValidServer() throws Exception {
+    ServerEntity serverEntity = getServerEntity();
+    Server server = getServer();
     Maybe<ServerEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(serverEntity));
     when(mockServerSearchManager.searchServer()).thenReturn(maybe);
     when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Maybe<Server> worldMaybe = networkProvider.searchServer();
+    Maybe<Server> serverMaybe = networkProvider.searchServer();
 
-    TestObserver<Server> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = serverMaybe.test();
     testObserver.assertNoErrors();
     testObserver.assertComplete();
     testObserver.assertResult(server);
@@ -51,12 +51,12 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
-  @Test public void shouldNotReturnAnyWorld() throws Exception {
+  @Test public void shouldNotReturnAnyServer() throws Exception {
     when(mockServerSearchManager.searchServer()).thenReturn(Maybe.never());
 
-    Maybe<Server> worldMaybe = networkProvider.searchServer();
+    Maybe<Server> serverMaybe = networkProvider.searchServer();
 
-    TestObserver<Server> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = serverMaybe.test();
     testObserver.assertEmpty();
     testObserver.assertNotComplete();
     verify(mockServerSearchManager, times(1)).searchServer();
@@ -64,17 +64,17 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager);
   }
 
-  @Test public void shouldReturnWorldForAGivenIpAddress() throws Exception {
+  @Test public void shouldReturnServerForAGivenIpAddress() throws Exception {
     String ipAddress = "192.168.1.1";
-    ServerEntity serverEntity = getWorldEntity();
-    Server server = getWorld();
+    ServerEntity serverEntity = getServerEntity();
+    Server server = getServer();
     Maybe<ServerEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(serverEntity));
     when(mockServerSearchManager.searchServer(ipAddress)).thenReturn(maybe);
     when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Maybe<Server> worldMaybe = networkProvider.searchServer(ipAddress);
+    Maybe<Server> serverMaybe = networkProvider.searchServer(ipAddress);
 
-    TestObserver<Server> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = serverMaybe.test();
     testObserver.assertNoErrors();
     testObserver.assertComplete();
     testObserver.assertResult(server);
@@ -83,13 +83,13 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
-  @Test public void shouldNotReturnAnyWorldForACertainIpAddress() throws Exception {
+  @Test public void shouldNotReturnAnyServerForACertainIpAddress() throws Exception {
     String ipAddress = "192.168.1.435";
     when(mockServerSearchManager.searchServer(ipAddress)).thenReturn(Maybe.never());
 
-    Maybe<Server> worldMaybe = networkProvider.searchServer(ipAddress);
+    Maybe<Server> serverMaybe = networkProvider.searchServer(ipAddress);
 
-    TestObserver<Server> testObserver = worldMaybe.test();
+    TestObserver<Server> testObserver = serverMaybe.test();
     testObserver.assertEmpty();
     testObserver.assertNotComplete();
     verify(mockServerSearchManager, times(1)).searchServer(ipAddress);
@@ -97,7 +97,7 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager);
   }
 
-  private ServerEntity getWorldEntity() {
+  private ServerEntity getServerEntity() {
     return new ServerEntity.Builder()
         .ssid("WLAN_346Q")
         .ip("192.168.1.1")
@@ -110,7 +110,7 @@ import static org.mockito.Mockito.when;
         .build();
   }
 
-  private Server getWorld() {
+  private Server getServer() {
     return new Server.Builder()
         .ssid("WLAN_346Q")
         .ip("192.168.1.1")

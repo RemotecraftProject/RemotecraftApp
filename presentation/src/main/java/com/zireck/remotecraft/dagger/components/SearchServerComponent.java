@@ -19,5 +19,5 @@ import dagger.Component;
     }
 )
 public interface SearchServerComponent extends ActivityComponent {
-  void inject(SearchServerActivity searchWorldActivity);
+  void inject(SearchServerActivity searchServerActivity);
 }
