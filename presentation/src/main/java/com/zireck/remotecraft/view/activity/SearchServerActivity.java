@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +51,7 @@ public class SearchServerActivity extends BaseActivity
   @BindView(R.id.menu) FloatingActionMenu floatingActionMenu;
   @BindView(R.id.fab_wifi) FloatingActionButton floatingActionButtonWifi;
   @BindView(R.id.fab_qrcode) FloatingActionButton floatingActionButtonQrCode;
+  @BindView(R.id.fab_ip) FloatingActionButton floatingActionButtonIp;
   @BindView(R.id.background) ImageView background;
   @BindView(R.id.found) TextView found;
   @BindView(R.id.ssid) TextView ssid;
@@ -139,6 +143,23 @@ public class SearchServerActivity extends BaseActivity
     closeCameraButton.setVisibility(View.GONE);
   }
 
+  @Override public void showNetworkAddressDialog() {
+    AlertDialog.Builder enterNetworkAddressDialog = new AlertDialog.Builder(this);
+    LayoutInflater layoutInflater = getLayoutInflater();
+    View enterNetworkAddressDialogView =
+        layoutInflater.inflate(R.layout.dialog_enter_network_address, null);
+    enterNetworkAddressDialog.setView(enterNetworkAddressDialogView);
+    enterNetworkAddressDialog.setPositiveButton("Done", (dialogInterface, i) -> {
+      EditText ip = (EditText) enterNetworkAddressDialogView.findViewById(R.id.ip);
+      EditText port = (EditText) enterNetworkAddressDialogView.findViewById(R.id.port);
+      presenter.onEnterNetworkAddress(ip.getText().toString(), port.getText().toString());
+    });
+    enterNetworkAddressDialog.setNegativeButton("Cancel",
+        (dialogInterface, i) -> dialogInterface.dismiss());
+
+    enterNetworkAddressDialog.show();
+  }
+
   @OnClick(R.id.close_camera_button) public void onClickCloseCamera(View view) {
     presenter.onClickCloseCamera();
   }
@@ -149,6 +170,10 @@ public class SearchServerActivity extends BaseActivity
 
   @OnClick(R.id.fab_qrcode) public void onClickFabQrCode(View view) {
     presenter.onClickQrCode();
+  }
+
+  @OnClick(R.id.fab_ip) public void onClickFabIp(View view) {
+    presenter.onClickIp();
   }
 
   private void initInjector() {

@@ -19,20 +19,22 @@ public class InteractorsModule {
 
   }
 
-  @Provides @PerActivity
-  GetWifiStateInteractor provideGetWifiStateInteractor(ReceiversProvider receiversProvider,
-      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+  @Provides @PerActivity GetWifiStateInteractor provideGetWifiStateInteractor(
+      ReceiversProvider receiversProvider, ThreadExecutor threadExecutor,
+      PostExecutionThread postExecutionThread) {
     return new GetWifiStateInteractor(receiversProvider, threadExecutor, postExecutionThread);
   }
 
-  @Provides @PerActivity SearchServerInteractor provideSearchServerInteractor(NetworkDataProvider networkDataProvider,
-      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+  @Provides @PerActivity SearchServerInteractor provideSearchServerInteractor(
+      NetworkDataProvider networkDataProvider, ThreadExecutor threadExecutor,
+      PostExecutionThread postExecutionThread) {
     return new SearchServerInteractor(networkDataProvider, threadExecutor, postExecutionThread);
   }
 
   @Provides @PerActivity SearchServerForIpInteractor provideSearchServerForIpInteractor(
-      NetworkProvider networkProvider, ThreadExecutor threadExecutor,
+      NetworkDataProvider networkDataProvider, ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {
-    return new SearchServerForIpInteractor(networkProvider, threadExecutor, postExecutionThread);
+    return new SearchServerForIpInteractor(networkDataProvider, threadExecutor,
+        postExecutionThread);
   }
 }

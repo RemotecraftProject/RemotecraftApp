@@ -107,6 +107,17 @@
       fab:menu_fab_hide_animation="@anim/fab_scale_down">
 
     <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_plus_network_white"
+        fab:fab_colorNormal="@color/colorPrimary"
+        fab:fab_colorPressed="@color/colorPrimaryDark"
+        fab:fab_colorRipple="#99FFFFFF"
+        fab:fab_size="normal"
+        fab:fab_label="@string/enter_ip" />
+
+    <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab_qrcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

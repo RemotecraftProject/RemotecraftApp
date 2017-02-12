@@ -13,4 +13,5 @@ public interface SearchServerView extends BaseView {
   void hideLoading();
   void startQrScanner();
   void stopQrScanner();
+  void showNetworkAddressDialog();
 }

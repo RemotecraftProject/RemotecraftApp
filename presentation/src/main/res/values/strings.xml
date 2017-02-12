@@ -8,4 +8,5 @@
 
   <string name="scan_wifi">Scan Wi-Fi</string>
   <string name="scan_qr">Scan QR Code</string>
+  <string name="enter_ip">Enter IP</string>
 </resources>
