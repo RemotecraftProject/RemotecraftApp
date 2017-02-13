@@ -25,7 +25,7 @@ public class SearchServerForIpInteractor
   }
 
   @Override protected Maybe<Server> buildReactiveStream(Params params) {
-    if (!networkAddressValidator.isValid(params.networkAddress)) {
+    if (params == null || !networkAddressValidator.isValid(params.networkAddress)) {
       return Maybe.error(new IllegalArgumentException("Invalid IP Address"));
     }
 

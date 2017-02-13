@@ -7,11 +7,14 @@ import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
 import com.zireck.remotecraft.domain.validation.NetworkAddressValidator;
 import io.reactivex.Maybe;
+import io.reactivex.observers.TestObserver;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.only;
@@ -40,6 +43,8 @@ public class SearchServerForIpInteractorTest {
     NetworkAddress networkAddress = new NetworkAddress.Builder()
         .with("127.0.0.1")
         .build();
+    when(mockNetworkAddressValidator.isValid(networkAddress)).thenReturn(true);
+
     SearchServerForIpInteractor.Params params =
         SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
     searchServerForIpInteractor.buildReactiveStream(params);
@@ -81,6 +86,7 @@ public class SearchServerForIpInteractorTest {
     NetworkAddress networkAddress = new NetworkAddress.Builder()
         .with("192.168.1.40")
         .build();
+    when(mockNetworkAddressValidator.isValid(networkAddress)).thenReturn(true);
     when(mockNetworkProvider.searchServer(networkAddress)).thenReturn(Maybe.empty());
 
     SearchServerForIpInteractor.Params params =
@@ -90,20 +96,28 @@ public class SearchServerForIpInteractorTest {
     assertEquals(getEmptyReactiveStream(), reactiveStream);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowExceptionWhenNullIpAddressIsSet() throws Exception {
-    searchServerForIpInteractor.buildReactiveStream(null);
+  @Test public void shouldThrowExceptionWhenNullNetworkAddressIsSet() throws Exception {
+    Maybe<Server> serverMaybe = searchServerForIpInteractor.buildReactiveStream(null);
+
+    TestObserver<Object> testObserver = new TestObserver<>();
+    serverMaybe.subscribe(testObserver);
+    assertThat(testObserver.errorCount(), is(1));
+    testObserver.assertErrorMessage("Invalid IP Address");
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowExceptionWhenEmptyIpAddressIsSet() throws Exception {
-    searchServerForIpInteractor.buildReactiveStream(null);
-  }
+  @Test public void shouldThrowExceptionWhenEmptyNetworkAddressIsSet() throws Exception {
+    NetworkAddress networkAddress = new NetworkAddress.Builder()
+        .with("")
+        .build();
+    SearchServerForIpInteractor.Params params =
+        SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
 
-  @Test(expected = RuntimeException.class)
-  public void shouldThrowExceptionWhenBuildingReactiveStreamWithoutPreviouslySettingAnIpAddress()
-      throws Exception {
-    searchServerForIpInteractor.buildReactiveStream(null);
+    Maybe<Server> serverMaybe = searchServerForIpInteractor.buildReactiveStream(params);
+
+    TestObserver<Object> testObserver = new TestObserver<>();
+    serverMaybe.subscribe(testObserver);
+    assertThat(testObserver.errorCount(), is(1));
+    testObserver.assertErrorMessage("Invalid IP Address");
   }
 
   private Maybe<Server> getValidWorldReactiveStream() {
