@@ -35,7 +35,6 @@ import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.presenter.SearchServerPresenter;
 import com.zireck.remotecraft.view.SearchServerView;
 import javax.inject.Inject;
-import timber.log.Timber;
 
 public class SearchServerActivity extends BaseActivity
     implements HasComponent<SearchServerComponent>, SearchServerView {
@@ -71,7 +70,7 @@ public class SearchServerActivity extends BaseActivity
 
     initInjector();
     initUi();
-    presenter.setView(this);
+    presenter.attachView(this);
   }
 
   @Override protected void onResume() {
@@ -107,20 +106,11 @@ public class SearchServerActivity extends BaseActivity
 
   @Override public void showError(Exception exception) {
     String errorMessage = ErrorMessageFactory.create(this, exception);
-    Timber.e(errorMessage);
     displayMessage(errorMessage);
   }
 
   @Override public void closeMenu() {
     floatingActionMenu.close(true);
-  }
-
-  @Override public void enableMenu() {
-    floatingActionMenu.setEnabled(true);
-  }
-
-  @Override public void disableMenu() {
-    floatingActionMenu.setEnabled(false);
   }
 
   @Override public void showLoading() {
@@ -143,7 +133,7 @@ public class SearchServerActivity extends BaseActivity
     closeCameraButton.setVisibility(View.GONE);
   }
 
-  @Override public void showNetworkAddressDialog() {
+  @Override public void showEnterNetworkAddressDialog() {
     AlertDialog.Builder enterNetworkAddressDialog = new AlertDialog.Builder(this);
     LayoutInflater layoutInflater = getLayoutInflater();
     View enterNetworkAddressDialogView =
@@ -160,20 +150,20 @@ public class SearchServerActivity extends BaseActivity
     enterNetworkAddressDialog.show();
   }
 
-  @OnClick(R.id.close_camera_button) public void onClickCloseCamera(View view) {
-    presenter.onClickCloseCamera();
-  }
-
   @OnClick(R.id.fab_wifi) public void onClickFabWifi(View view) {
-    presenter.onClickWifi();
+    presenter.onClickScanWifi();
   }
 
   @OnClick(R.id.fab_qrcode) public void onClickFabQrCode(View view) {
-    presenter.onClickQrCode();
+    presenter.onClickScanQrCode();
   }
 
   @OnClick(R.id.fab_ip) public void onClickFabIp(View view) {
-    presenter.onClickIp();
+    presenter.onClickEnterNetworkAddress();
+  }
+
+  @OnClick(R.id.close_camera_button) public void onClickCloseCamera(View view) {
+    presenter.onClickCloseCamera();
   }
 
   private void initInjector() {

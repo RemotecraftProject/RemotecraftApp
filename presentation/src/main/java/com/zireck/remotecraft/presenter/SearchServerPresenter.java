@@ -18,6 +18,9 @@ import timber.log.Timber;
 
 public class SearchServerPresenter implements Presenter<SearchServerView> {
 
+  private static final String QUERY_PARAMETER_IP = "ip";
+  private static final String QUERY_PARAMETER_PORT = "port";
+
   private SearchServerView view;
   private final MaybeInteractor getWifiStateInteractor;
   private final SearchServerInteractor searchServerInteractor;
@@ -41,7 +44,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     this.uriParser = uriParser;
   }
 
-  @Override public void setView(@NonNull SearchServerView view) {
+  @Override public void attachView(@NonNull SearchServerView view) {
     this.view = view;
   }
 
@@ -56,12 +59,34 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   }
 
   @Override public void pause() {
+    view.closeMenu();
     view.stopQrScanner();
   }
 
   @Override public void destroy() {
     searchServerInteractor.dispose();
     searchServerForIpInteractor.dispose();
+  }
+
+  public void onClickScanWifi() {
+    scanWifi(null);
+  }
+
+  public void onClickScanQrCode() {
+    if (anyActionCurrentlyInProgress()) {
+      view.showError(new RuntimeException("Action already in progress."));
+      return;
+    }
+
+    view.closeMenu();
+    view.showLoading();
+    isScanningQr = true;
+    view.startQrScanner();
+  }
+
+  public void onClickEnterNetworkAddress() {
+    view.closeMenu();
+    view.showEnterNetworkAddressDialog();
   }
 
   public void onClickCloseCamera() {
@@ -72,107 +97,37 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     }
   }
 
-  public void onClickWifi() {
-    scanWifi();
-  }
-
-  public void onClickQrCode() {
-    if (isScanningWifi || isScanningQr) {
-      return;
-    }
-
-    view.closeMenu();
-    view.showLoading();
-    isScanningQr = true;
-    view.startQrScanner();
-  }
-
-  public void onClickIp() {
-    view.showNetworkAddressDialog();
-  }
-
   public void onReadQrCode(String qrCode) {
     isScanningQr = false;
     view.hideLoading();
     view.stopQrScanner();
 
-    if (qrCode == null || qrCode.length() <= 0) {
-      view.showError(new IllegalArgumentException("Couldn't read QR Code"));
+    if (qrCode == null || qrCode.isEmpty()) {
+      view.showError(new IllegalArgumentException("Couldn't read QR Code."));
+      return;
     }
 
-    NetworkAddressModel networkAddressModel = processReadQrCode(qrCode);
+    NetworkAddressModel networkAddressModel = getNetworkAddressFromQrCode(qrCode);
     if (networkAddressModel == null) {
-      view.showError(new RuntimeException("Couldn't determine server host"));
+      view.showError(new RuntimeException("Couldn't determine server address."));
     } else {
       scanWifi(networkAddressModel);
     }
   }
 
-  private void scanWifi() {
-    scanWifi(null);
-  }
-
-  private void scanWifi(NetworkAddressModel networkAddressModel) {
-    if (isScanningWifi || isScanningQr) {
+  public void onEnterNetworkAddress(String ip, String port) {
+    if (anyActionCurrentlyInProgress()) {
+      view.showError(new RuntimeException("Action already in progress."));
       return;
     }
 
-    view.closeMenu();
-    view.showLoading();
-    isScanningWifi = true;
-    if (networkAddressModel == null) {
-      searchServerInteractor.execute(new SearchServerObserver(), null);
-    } else {
-      NetworkAddress networkAddress =
-          networkAddressModelDataMapper.transformInverse(networkAddressModel);
-      SearchServerForIpInteractor.Params params =
-          SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
-      searchServerForIpInteractor.execute(new SearchServerObserver(), params);
-    }
-  }
-
-  private NetworkAddressModel processReadQrCode(String qrCode) {
-    Uri uri = uriParser.parse(qrCode);
-    String ip = uriParser.getQueryParameter(uri, "ip");
-    String portString = uriParser.getQueryParameter(uri, "port");
-    if (ip == null || ip.length() <= 0 || portString == null || portString.length() <= 0) {
-      return null;
-    }
-
-    int port;
-    try {
-      port = Integer.parseInt(portString);
-    } catch (NumberFormatException e) {
-      Timber.e(e.getMessage());
-      return null;
-    }
-
-    return new NetworkAddressModel.Builder()
-        .with(ip)
-        .and(port)
-        .build();
-  }
-
-  public void onEnterNetworkAddress(String ip, String portString) {
-    if (isScanningWifi || isScanningQr) {
-      return;
-    }
-
-    if (ip == null || ip.isEmpty() || portString == null || portString.isEmpty()) {
-      return;
-    }
-
-    int port;
-    try {
-      port = Integer.parseInt(portString);
-    } catch (NumberFormatException e) {
-      Timber.e(e.getMessage());
+    if (!areValidIpAndPort(ip, port)) {
       return;
     }
 
     NetworkAddressModel networkAddressModel = new NetworkAddressModel.Builder()
         .with(ip)
-        .and(port)
+        .and(Integer.parseInt(port))
         .build();
 
     view.closeMenu();
@@ -184,6 +139,70 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     SearchServerForIpInteractor.Params params =
         SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
     searchServerForIpInteractor.execute(new SearchServerObserver(), params);
+  }
+
+  private void scanWifi(NetworkAddressModel networkAddressModel) {
+    if (anyActionCurrentlyInProgress()) {
+      view.showError(new RuntimeException("Action already in progress."));
+      return;
+    }
+
+    view.closeMenu();
+    view.showLoading();
+    isScanningWifi = true;
+
+    if (networkAddressModel == null) {
+      searchServerInteractor.execute(new SearchServerObserver(), null);
+    } else {
+      NetworkAddress networkAddress =
+          networkAddressModelDataMapper.transformInverse(networkAddressModel);
+      SearchServerForIpInteractor.Params params =
+          SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
+      searchServerForIpInteractor.execute(new SearchServerObserver(), params);
+    }
+  }
+
+  private NetworkAddressModel getNetworkAddressFromQrCode(String qrCode) {
+    Uri uri = uriParser.parse(qrCode);
+    String ip = uriParser.getQueryParameter(uri, QUERY_PARAMETER_IP);
+    String port = uriParser.getQueryParameter(uri, QUERY_PARAMETER_PORT);
+
+    if (!areValidIpAndPort(ip, port)) {
+      return null;
+    }
+
+    return new NetworkAddressModel.Builder()
+        .with(ip)
+        .and(Integer.parseInt(port))
+        .build();
+  }
+
+  private boolean anyActionCurrentlyInProgress() {
+    return isScanningWifi || isScanningQr;
+  }
+
+  private boolean areValidIpAndPort(String ip, String port) {
+    if (ip == null || port == null) {
+      view.showError(new IllegalArgumentException("Invalid Network Address."));
+      return false;
+    }
+
+    ip = ip.trim();
+    port = port.trim();
+    if (ip.isEmpty() || port.isEmpty()) {
+      view.showError(new IllegalArgumentException("Invalid Network Address."));
+      return false;
+    }
+
+    try {
+      Integer.parseInt(port);
+    } catch (NumberFormatException e) {
+      Timber.e(e.getMessage());
+      view.showError(new IllegalArgumentException("Invalid port."));
+      return false;
+    }
+
+    return true;
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {

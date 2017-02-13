@@ -21,6 +21,8 @@ public class ErrorMessageFactory {
       errorMessage = context.getString(R.string.exception_no_response);
     } else if (exception instanceof InvalidServerException) {
       errorMessage = context.getString(R.string.exception_invalid_server);
+    } else if (exception.getMessage() != null && !exception.getMessage().isEmpty()) {
+      errorMessage = exception.getMessage();
     }
 
     return errorMessage;

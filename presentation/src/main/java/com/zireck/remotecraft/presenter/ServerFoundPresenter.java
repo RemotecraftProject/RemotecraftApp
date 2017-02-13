@@ -18,7 +18,7 @@ public class ServerFoundPresenter implements Presenter<ServerFoundView> {
     showServerInView(serverModel);
   }
 
-  @Override public void setView(@NonNull ServerFoundView view) {
+  @Override public void attachView(@NonNull ServerFoundView view) {
     this.view = view;
   }
 

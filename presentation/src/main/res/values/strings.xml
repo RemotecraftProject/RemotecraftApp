@@ -8,5 +8,8 @@
 
   <string name="scan_wifi">Scan Wi-Fi</string>
   <string name="scan_qr">Scan QR Code</string>
-  <string name="enter_ip">Enter IP</string>
+  <string name="enter_ip">Enter Address</string>
+
+  <string name="enter_network_address_dialog_ip_hint">IP Address</string>
+  <string name="enter_network_address_dialog_port_hint">Port (Default: 9998)</string>
 </resources>

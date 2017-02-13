@@ -7,11 +7,9 @@ public interface SearchServerView extends BaseView {
   void showMessage(String message);
   void showError(Exception exception);
   void closeMenu();
-  void enableMenu();
-  void disableMenu();
   void showLoading();
   void hideLoading();
   void startQrScanner();
   void stopQrScanner();
-  void showNetworkAddressDialog();
+  void showEnterNetworkAddressDialog();
 }

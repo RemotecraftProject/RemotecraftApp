@@ -43,7 +43,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     setContentView(R.layout.activity_server_found);
 
     initInjector();
-    presenter.setView(this);
+    presenter.attachView(this);
     mapExtras();
   }
 
