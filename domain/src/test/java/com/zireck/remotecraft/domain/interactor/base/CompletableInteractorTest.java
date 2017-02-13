@@ -2,6 +2,7 @@ package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.params.EmptyParams;
 import io.reactivex.Completable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.TestScheduler;
@@ -38,13 +39,13 @@ public class CompletableInteractorTest {
   // TODO test should complete stream
 
   @Test public void shouldNeverComplete() throws Exception {
-    notCompletableInteractor.execute(testDisposableCompletableObserver);
+    notCompletableInteractor.execute(testDisposableCompletableObserver, null);
 
     assertFalse(testDisposableCompletableObserver.isCompleted);
   }
 
   @Test public void shouldProperlyDisposeObserver() throws Exception {
-    completableInteractor.execute(testDisposableCompletableObserver);
+    completableInteractor.execute(testDisposableCompletableObserver, null);
     completableInteractor.dispose();
 
     assertTrue(testDisposableCompletableObserver.isDisposed());
@@ -52,29 +53,31 @@ public class CompletableInteractorTest {
 
   @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
       throws Exception {
-    completableInteractor.execute(null);
+    completableInteractor.execute(null, null);
   }
 
-  private static final class CompletableInteractorTestClass extends CompletableInteractor {
+  private static final class CompletableInteractorTestClass
+      extends CompletableInteractor<EmptyParams> {
 
     public CompletableInteractorTestClass(ThreadExecutor threadExecutor,
         PostExecutionThread postExecutionThread) {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Completable buildReactiveStream() {
+    @Override protected Completable buildReactiveStream(EmptyParams params) {
       return Completable.complete();
     }
   }
 
-  private static final class NotCompletableInteractorTestClass extends CompletableInteractor {
+  private static final class NotCompletableInteractorTestClass
+      extends CompletableInteractor<EmptyParams> {
 
     public NotCompletableInteractorTestClass(ThreadExecutor threadExecutor,
         PostExecutionThread postExecutionThread) {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Completable buildReactiveStream() {
+    @Override protected Completable buildReactiveStream(EmptyParams params) {
       return Completable.never();
     }
   }

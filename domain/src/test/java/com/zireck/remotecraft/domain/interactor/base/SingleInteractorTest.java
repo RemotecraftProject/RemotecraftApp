@@ -2,6 +2,7 @@ package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.params.EmptyParams;
 import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.TestScheduler;
@@ -33,7 +34,7 @@ public class SingleInteractorTest {
   // TODO test stream containing values
 
   @Test public void shouldProperlyDisposeObserver() throws Exception {
-    singleInteractor.execute(testDisposableSingleObserver);
+    singleInteractor.execute(testDisposableSingleObserver, null);
     singleInteractor.dispose();
 
     assertTrue(testDisposableSingleObserver.isDisposed());
@@ -41,16 +42,17 @@ public class SingleInteractorTest {
 
   @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
       throws Exception {
-    singleInteractor.execute(null);
+    singleInteractor.execute(null, null);
   }
 
-  private static final class SingleInteractorTestClass extends SingleInteractor {
+  private static final class SingleInteractorTestClass
+      extends SingleInteractor<Integer, EmptyParams> {
     public SingleInteractorTestClass(ThreadExecutor threadExecutor,
         PostExecutionThread postExecutionThread) {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Single buildReactiveStream() {
+    @Override protected Single<Integer> buildReactiveStream(EmptyParams params) {
       return Single.just(1);
     }
   }

@@ -2,6 +2,7 @@ package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.params.EmptyParams;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.TestScheduler;
@@ -38,13 +39,13 @@ public class ObservableInteractorTest {
   // TODO test non-empty stream
 
   @Test public void shouldReturnEmptyStream() throws Exception {
-    emptyObservableInteractor.execute(testDisposableObserver);
+    emptyObservableInteractor.execute(testDisposableObserver, null);
 
     assertEquals(0, testDisposableObserver.valuesCount);
   }
 
   @Test public void shouldProperlyDisposeObserver() throws Exception {
-    observableInteractor.execute(testDisposableObserver);
+    observableInteractor.execute(testDisposableObserver, null);
     observableInteractor.dispose();
 
     assertTrue(testDisposableObserver.isDisposed());
@@ -52,29 +53,31 @@ public class ObservableInteractorTest {
 
   @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
       throws Exception {
-    observableInteractor.execute(null);
+    observableInteractor.execute(null, null);
   }
 
-  private static final class ObservableInteractorTestClass extends ObservableInteractor {
+  private static final class ObservableInteractorTestClass
+      extends ObservableInteractor<Integer, EmptyParams> {
 
     public ObservableInteractorTestClass(ThreadExecutor threadExecutor,
         PostExecutionThread postExecutionThread) {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Observable buildReactiveStream() {
+    @Override protected Observable<Integer> buildReactiveStream(EmptyParams params) {
       return Observable.just(1, 1, 1, 1);
     }
   }
 
-  private static final class EmptyObservableInteractorTestClass extends ObservableInteractor {
+  private static final class EmptyObservableInteractorTestClass
+      extends ObservableInteractor<Integer, EmptyParams> {
 
     public EmptyObservableInteractorTestClass(ThreadExecutor threadExecutor,
         PostExecutionThread postExecutionThread) {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Observable buildReactiveStream() {
+    @Override protected Observable<Integer> buildReactiveStream(EmptyParams params) {
       return Observable.empty();
     }
   }

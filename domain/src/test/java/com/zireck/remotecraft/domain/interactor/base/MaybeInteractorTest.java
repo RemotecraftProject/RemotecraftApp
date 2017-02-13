@@ -2,6 +2,7 @@ package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.params.EmptyParams;
 import io.reactivex.Maybe;
 import io.reactivex.observers.DisposableMaybeObserver;
 import io.reactivex.schedulers.TestScheduler;
@@ -34,13 +35,13 @@ public class MaybeInteractorTest {
   // TODO test non-empty stream
 
   @Test public void shouldReturnEmptyStream() throws Exception {
-    maybeInteractor.execute(testDisposableMaybeObserver);
+    maybeInteractor.execute(testDisposableMaybeObserver, null);
 
     assertEquals(0, testDisposableMaybeObserver.valuesCount);
   }
 
   @Test public void shouldProperlyDisposeObserver() throws Exception {
-    maybeInteractor.execute(testDisposableMaybeObserver);
+    maybeInteractor.execute(testDisposableMaybeObserver, null);
     maybeInteractor.dispose();
 
     assertTrue(testDisposableMaybeObserver.isDisposed());
@@ -48,22 +49,23 @@ public class MaybeInteractorTest {
 
   @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
       throws Exception {
-    maybeInteractor.execute(null);
+    maybeInteractor.execute(null, null);
   }
 
-  private static final class MaybeInteractorTestClass extends MaybeInteractor {
+  private static final class MaybeInteractorTestClass
+      extends MaybeInteractor<Integer, EmptyParams> {
 
     public MaybeInteractorTestClass(ThreadExecutor threadExecutor,
         PostExecutionThread postExecutionThread) {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Maybe buildReactiveStream() {
+    @Override protected Maybe<Integer> buildReactiveStream(EmptyParams emptyParams) {
       return Maybe.empty();
     }
 
-    @Override public void execute(DisposableMaybeObserver observer) {
-      super.execute(observer);
+    @Override public void execute(DisposableMaybeObserver observer, EmptyParams params) {
+      super.execute(observer, params);
     }
   }
 

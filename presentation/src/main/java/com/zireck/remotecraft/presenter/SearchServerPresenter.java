@@ -61,6 +61,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
 
   @Override public void destroy() {
     searchServerInteractor.dispose();
+    searchServerForIpInteractor.dispose();
   }
 
   public void onClickCloseCamera() {

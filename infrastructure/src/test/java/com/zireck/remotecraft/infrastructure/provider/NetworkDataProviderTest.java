@@ -69,7 +69,7 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager);
   }
 
-  @Test public void shouldReturnServerForAGivenIpAddress() throws Exception {
+  @Test public void shouldReturnServerForAGivenNetworkAddress() throws Exception {
     NetworkAddress networkAddress = new NetworkAddress.Builder()
         .with("192.168.1.1")
         .build();
@@ -79,6 +79,8 @@ import static org.mockito.Mockito.when;
     ServerEntity serverEntity = getServerEntity();
     Server server = getServer();
     Maybe<ServerEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(serverEntity));
+    when(mockNetworkAddressEntityDataMapper.transformInverse(networkAddress)).thenReturn(
+        networkAddressEntity);
     when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(maybe);
     when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
@@ -93,13 +95,15 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
-  @Test public void shouldNotReturnAnyServerForACertainIpAddress() throws Exception {
+  @Test public void shouldNotReturnAnyServerForACertainNetworkAddress() throws Exception {
     NetworkAddress networkAddress = new NetworkAddress.Builder()
         .with("192.168.1.435")
         .build();
     NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
         .with("192.168.1.435")
         .build();
+    when(mockNetworkAddressEntityDataMapper.transformInverse(networkAddress)).thenReturn(
+        networkAddressEntity);
     when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(Maybe.never());
 
     Maybe<Server> serverMaybe = networkProvider.searchServer(networkAddress);

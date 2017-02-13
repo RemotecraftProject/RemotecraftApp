@@ -27,7 +27,7 @@ public class GetWifiStateInteractorTest {
   }
 
   @Test public void shouldBuildReactiveStreamProperly() throws Exception {
-    getWifiStateInteractor.buildReactiveStream();
+    getWifiStateInteractor.buildReactiveStream(null);
 
     verify(mockReceiversProvider).getWifiState();
     verifyNoMoreInteractions(mockReceiversProvider);

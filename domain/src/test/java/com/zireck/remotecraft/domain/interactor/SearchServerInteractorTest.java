@@ -32,7 +32,7 @@ public class SearchServerInteractorTest {
   }
 
   @Test public void shouldBuildReactiveStreamProperly() throws Exception {
-    searchServerInteractor.buildReactiveStream();
+    searchServerInteractor.buildReactiveStream(null);
 
     verify(mockNetworkProvider).searchServer();
     verifyNoMoreInteractions(mockNetworkProvider);
@@ -43,7 +43,7 @@ public class SearchServerInteractorTest {
   @Test public void shoulNotReturnInvalidReactiveStreamWhenValidWorldFound() throws Exception {
     when(mockNetworkProvider.searchServer()).thenReturn(getValidWorldReactiveStream());
 
-    Maybe reactiveStream = searchServerInteractor.buildReactiveStream();
+    Maybe reactiveStream = searchServerInteractor.buildReactiveStream(null);
 
     assertNotNull(reactiveStream);
   }
@@ -51,7 +51,7 @@ public class SearchServerInteractorTest {
   @Test public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
     when(mockNetworkProvider.searchServer()).thenReturn(Maybe.empty());
 
-    Maybe reactiveStream = searchServerInteractor.buildReactiveStream();
+    Maybe reactiveStream = searchServerInteractor.buildReactiveStream(null);
 
     assertNotNull(reactiveStream);
   }
@@ -59,7 +59,7 @@ public class SearchServerInteractorTest {
   @Test public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
     when(mockNetworkProvider.searchServer()).thenReturn(Maybe.empty());
 
-    Maybe reactiveStream = searchServerInteractor.buildReactiveStream();
+    Maybe reactiveStream = searchServerInteractor.buildReactiveStream(null);
 
     assertEquals(getEmptyReactiveStream(), reactiveStream);
   }
