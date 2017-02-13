@@ -10,6 +10,7 @@ ext.version = [
     gson                      : "2.7",
     lightweightStreamApi      : "1.1.4",
     qrCodeReader              : "2.0.1",
+    apacheCommonsValidator    : "1.5.1",
 
     // Android Specific
     design                    : "24.2.0",
@@ -47,6 +48,7 @@ ext.dependency = [
     gson                      : "com.google.code.gson:gson:${version.gson}",
     lightweightStreamApi      : "com.annimon:stream:${version.lightweightStreamApi}",
     qrCodeReader              : "com.dlazaro66.qrcodereaderview:qrcodereaderview:${version.qrCodeReader}",
+    apacheCommonsValidator    : "commons-validator:commons-validator:${version.apacheCommonsValidator}",
 
     design                    : "com.android.support:design:${version.design}",
     appCompat                 : "com.android.support:appcompat-v7:${version.appCompat}",
@@ -114,7 +116,8 @@ ext.domainDependencies = [
     rxJava                    : "${dependency.rxJava}",
     javaxAnnotation           : "${dependency.javaxAnnotation}",
     javaxInject               : "${dependency.javaxInject}",
-    lightweightStreamApi      : "${dependency.lightweightStreamApi}"
+    lightweightStreamApi      : "${dependency.lightweightStreamApi}",
+    apacheCommonsValidator    : "${dependency.apacheCommonsValidator}"
 ]
 
 ext.domainTestDependencies = [

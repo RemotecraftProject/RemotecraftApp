@@ -1,42 +1,46 @@
 package com.zireck.remotecraft.domain.interactor;
 
+import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
+import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
+import com.zireck.remotecraft.domain.validation.Validator;
 import io.reactivex.Maybe;
 
 public class SearchServerForIpInteractor
     extends MaybeInteractor<Server, SearchServerForIpInteractor.Params> {
 
   private final NetworkProvider networkProvider;
+  private final Validator<NetworkAddress> networkAddressValidator;
 
-  public SearchServerForIpInteractor(NetworkProvider networkProvider, ThreadExecutor threadExecutor,
+  public SearchServerForIpInteractor(NetworkProvider networkProvider,
+      Validator<NetworkAddress> networkAddressValidator, ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.networkProvider = networkProvider;
+    this.networkAddressValidator = networkAddressValidator;
   }
 
   @Override protected Maybe<Server> buildReactiveStream(Params params) {
-    // TODO check if it's a valid ip address
-    if (params.ipAddress == null || params.ipAddress.isEmpty()) {
-      throw new RuntimeException("Invalid IP Address");
+    if (!networkAddressValidator.isValid(params.networkAddress)) {
+      return Maybe.error(new IllegalArgumentException("Invalid IP Address"));
     }
 
-    return networkProvider.searchServer(params.ipAddress);
+    return networkProvider.searchServer(params.networkAddress);
   }
 
   public static final class Params implements BaseParams {
-    private final String ipAddress;
+    private final NetworkAddress networkAddress;
 
-    private Params(String ipAddress) {
-      this.ipAddress = ipAddress;
+    private Params(NetworkAddress networkAddress) {
+      this.networkAddress = networkAddress;
     }
 
-    public static Params forIpAddress(String ipAddress) {
-      return new Params(ipAddress);
+    public static Params forNetworkAddress(NetworkAddress networkAddress) {
+      return new Params(networkAddress);
     }
   }
 }

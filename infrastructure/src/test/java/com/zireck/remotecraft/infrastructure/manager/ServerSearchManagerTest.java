@@ -1,5 +1,6 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
+import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
@@ -168,7 +169,10 @@ import static org.mockito.Mockito.when;
     when(mockServerMessageValidator.cast(mockMessage)).thenReturn(mockServerProtocol);
     when(mockServerProtocolMapper.transform(mockServerProtocol)).thenReturn(mockServerEntity);
 
-    Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer("127.0.0.1");
+    NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
+        .with("127.0.0.1")
+        .build();
+    Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer(networkAddressEntity);
 
     ServerEntity serverEntity = serverEntityMaybe.blockingGet();
     assertThat(serverEntity, notNullValue());

@@ -1,9 +1,11 @@
 package com.zireck.remotecraft.infrastructure.provider;
 
+import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
+
 public class ServerSearchSettings {
 
   private final int port;
-  private final String broadcastAddress;
+  private final NetworkAddressEntity broadcastAddress;
   private final int retryCount;
   private final int retryDelayMultiplier;
   private final int responseBufferSize;
@@ -22,7 +24,7 @@ public class ServerSearchSettings {
     return port;
   }
 
-  public String getBroadcastAddress() {
+  public NetworkAddressEntity getBroadcastAddress() {
     return broadcastAddress;
   }
 
@@ -44,14 +46,16 @@ public class ServerSearchSettings {
 
   public static class Builder {
     private int port = 9998;
-    private String broadcastAddress = "255.255.255.255";
+    private NetworkAddressEntity broadcastAddress;
     private int retryCount = 5;
     private int retryDelayMultiplier = 1;
     private int responseBufferSize = 15000;
     private int timeout = 1000;
 
     public Builder() {
-
+      broadcastAddress = new NetworkAddressEntity.Builder()
+          .with("255.255.255.255")
+          .build();
     }
 
     public ServerSearchSettings build() {
@@ -63,7 +67,7 @@ public class ServerSearchSettings {
       return this;
     }
 
-    public Builder broadcastAddress(String broadcastAddress) {
+    public Builder broadcastAddress(NetworkAddressEntity broadcastAddress) {
       this.broadcastAddress = broadcastAddress;
       return this;
     }

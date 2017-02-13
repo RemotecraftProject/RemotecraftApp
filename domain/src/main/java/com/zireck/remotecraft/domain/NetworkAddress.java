@@ -1,11 +1,11 @@
-package com.zireck.remotecraft.model;
+package com.zireck.remotecraft.domain;
 
-public class NetworkAddressModel {
+public class NetworkAddress {
 
   private final String ip;
   private final int port;
 
-  public NetworkAddressModel(Builder builder) {
+  public NetworkAddress(Builder builder) {
     this.ip = builder.ip;
     this.port = builder.port;
   }
@@ -26,8 +26,8 @@ public class NetworkAddressModel {
 
     }
 
-    public NetworkAddressModel build() {
-      return new NetworkAddressModel(this);
+    public NetworkAddress build() {
+      return new NetworkAddress(this);
     }
 
     public Builder with(String ip) {

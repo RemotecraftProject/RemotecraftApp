@@ -2,11 +2,13 @@ package com.zireck.remotecraft.presenter;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
+import com.zireck.remotecraft.mapper.NetworkAddressModelDataMapper;
 import com.zireck.remotecraft.mapper.ServerModelDataMapper;
 import com.zireck.remotecraft.model.NetworkAddressModel;
 import com.zireck.remotecraft.model.ServerModel;
@@ -21,6 +23,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private final SearchServerInteractor searchServerInteractor;
   private final SearchServerForIpInteractor searchServerForIpInteractor;
   private final ServerModelDataMapper serverModelDataMapper;
+  private final NetworkAddressModelDataMapper networkAddressModelDataMapper;
   private final UriParser uriParser;
   private boolean isScanningWifi = false;
   private boolean isScanningQr = false;
@@ -28,11 +31,13 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   public SearchServerPresenter(MaybeInteractor getWifiStateInteractor,
       SearchServerInteractor searchServerInteractor,
       SearchServerForIpInteractor searchServerForIpInteractor,
-      ServerModelDataMapper serverModelDataMapper, UriParser uriParser) {
+      ServerModelDataMapper serverModelDataMapper,
+      NetworkAddressModelDataMapper networkAddressModelDataMapper, UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchServerInteractor = searchServerInteractor;
     this.searchServerForIpInteractor = searchServerForIpInteractor;
     this.serverModelDataMapper = serverModelDataMapper;
+    this.networkAddressModelDataMapper = networkAddressModelDataMapper;
     this.uriParser = uriParser;
   }
 
@@ -117,9 +122,10 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     if (networkAddressModel == null) {
       searchServerInteractor.execute(new SearchServerObserver(), null);
     } else {
-      // TODO pass over NetworkAddress to the domain layer
+      NetworkAddress networkAddress =
+          networkAddressModelDataMapper.transformInverse(networkAddressModel);
       SearchServerForIpInteractor.Params params =
-          SearchServerForIpInteractor.Params.forIpAddress(networkAddressModel.getIp());
+          SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
       searchServerForIpInteractor.execute(new SearchServerObserver(), params);
     }
   }
@@ -127,8 +133,16 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private NetworkAddressModel processReadQrCode(String qrCode) {
     Uri uri = uriParser.parse(qrCode);
     String ip = uriParser.getQueryParameter(uri, "ip");
-    String port = uriParser.getQueryParameter(uri, "port");
-    if (ip == null || ip.length() <= 0 || port == null || port.length() <= 0) {
+    String portString = uriParser.getQueryParameter(uri, "port");
+    if (ip == null || ip.length() <= 0 || portString == null || portString.length() <= 0) {
+      return null;
+    }
+
+    int port;
+    try {
+      port = Integer.parseInt(portString);
+    } catch (NumberFormatException e) {
+      Timber.e(e.getMessage());
       return null;
     }
 
@@ -138,15 +152,36 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
         .build();
   }
 
-  public void onEnterNetworkAddress(String ip, String port) {
+  public void onEnterNetworkAddress(String ip, String portString) {
     if (isScanningWifi || isScanningQr) {
       return;
     }
 
+    if (ip == null || ip.isEmpty() || portString == null || portString.isEmpty()) {
+      return;
+    }
+
+    int port;
+    try {
+      port = Integer.parseInt(portString);
+    } catch (NumberFormatException e) {
+      Timber.e(e.getMessage());
+      return;
+    }
+
+    NetworkAddressModel networkAddressModel = new NetworkAddressModel.Builder()
+        .with(ip)
+        .and(port)
+        .build();
+
     view.closeMenu();
     view.showLoading();
     isScanningWifi = true;
-    SearchServerForIpInteractor.Params params = SearchServerForIpInteractor.Params.forIpAddress(ip);
+
+    NetworkAddress networkAddress =
+        networkAddressModelDataMapper.transformInverse(networkAddressModel);
+    SearchServerForIpInteractor.Params params =
+        SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
     searchServerForIpInteractor.execute(new SearchServerObserver(), params);
   }
 

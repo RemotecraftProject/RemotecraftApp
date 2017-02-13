@@ -1,5 +1,6 @@
 package com.zireck.remotecraft.infrastructure.manager;
 
+import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.exception.InvalidServerException;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
@@ -32,7 +33,7 @@ public class ServerSearchManager {
   private final MessageJsonMapper messageJsonMapper;
   private final ServerProtocolMapper serverProtocolMapper;
   private final ServerMessageValidator serverValidator;
-  private String ipAddress;
+  private NetworkAddressEntity networkAddressEntity;
 
   public ServerSearchManager(ServerSearchSettings serverSearchSettings,
       NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
@@ -48,8 +49,8 @@ public class ServerSearchManager {
     this.serverValidator = serverValidator;
   }
 
-  public Maybe<ServerEntity> searchServer(String ipAddress) {
-    this.ipAddress = ipAddress;
+  public Maybe<ServerEntity> searchServer(NetworkAddressEntity networkAddressEntity) {
+    this.networkAddressEntity = networkAddressEntity;
     return searchServer();
   }
 
@@ -84,8 +85,8 @@ public class ServerSearchManager {
   }
 
   private void sendDiscoveryRequest() throws IOException {
-    if (ipAddress != null && ipAddress.length() > 0) {
-      sendRequestTo(ipAddress);
+    if (networkAddressEntity != null) {
+      sendRequestTo(networkAddressEntity);
     } else {
       enableBroadcast();
       sendRequestTo(serverSearchSettings.getBroadcastAddress());
@@ -93,8 +94,9 @@ public class ServerSearchManager {
     }
   }
 
-  private void sendRequestTo(String ipAddress) throws IOException {
-    DatagramPacket outgoingPacket = getTransmissionPacket(InetAddress.getByName(ipAddress));
+  private void sendRequestTo(NetworkAddressEntity networkAddressEntity) throws IOException {
+    InetAddress inetAddress = InetAddress.getByName(networkAddressEntity.getIp());
+    DatagramPacket outgoingPacket = getTransmissionPacket(inetAddress);
     networkConnectionlessTransmitter.send(outgoingPacket);
   }
 

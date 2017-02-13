@@ -1,11 +1,11 @@
-package com.zireck.remotecraft.model;
+package com.zireck.remotecraft.infrastructure.entity;
 
-public class NetworkAddressModel {
+public class NetworkAddressEntity {
 
   private final String ip;
   private final int port;
 
-  public NetworkAddressModel(Builder builder) {
+  private NetworkAddressEntity(Builder builder) {
     this.ip = builder.ip;
     this.port = builder.port;
   }
@@ -26,8 +26,8 @@ public class NetworkAddressModel {
 
     }
 
-    public NetworkAddressModel build() {
-      return new NetworkAddressModel(this);
+    public NetworkAddressEntity build() {
+      return new NetworkAddressEntity(this);
     }
 
     public Builder with(String ip) {

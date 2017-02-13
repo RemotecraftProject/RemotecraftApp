@@ -6,6 +6,7 @@ targetCompatibility = 1.8
 
 configurations {
     provided
+  all*.exclude group: 'commons-logging', module: 'commons-logging'
 }
 
 sourceSets {
@@ -22,6 +23,7 @@ dependencies {
   provided "${library.javaxAnnotation}"
   compile "${library.javaxInject}"
   compile "${library.lightweightStreamApi}"
+  compile "${library.apacheCommonsValidator}"
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.mockito}"
