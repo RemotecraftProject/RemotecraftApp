@@ -74,11 +74,14 @@ public class ServerSearchManager {
       if (message != null) {
         emitter.onNext(message);
       }
-    }).retryWhen(errors ->
-        errors
-          .zipWith(Observable.range(0, serverSearchSettings.getRetryCount()), (n, i) -> i)
-          .flatMap(retryCount -> Observable.timer(
-                retryCount * serverSearchSettings.getRetryDelayMultiplier(), TimeUnit.SECONDS)))
+    }).retryWhen(errors -> {
+      Observable<Integer> range = Observable.range(1, serverSearchSettings.getRetryCount());
+      Observable<Observable<Long>> zipWith = errors.zipWith(range,
+          (e, i) -> i < serverSearchSettings.getRetryCount() ? Observable.timer(
+              serverSearchSettings.getRetryDelayMultiplier() * i, TimeUnit.SECONDS)
+              : Observable.error(e));
+      return Observable.merge(zipWith);
+    })
       .filter(serverValidator::isValid)
       .firstElement()
       .map(serverValidator::cast);
