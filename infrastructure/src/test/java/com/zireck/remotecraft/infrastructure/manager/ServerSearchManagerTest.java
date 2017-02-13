@@ -2,6 +2,7 @@ package com.zireck.remotecraft.infrastructure.manager;
 
 import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
+import com.zireck.remotecraft.infrastructure.exception.InvalidServerException;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.base.type.ServerProtocol;
@@ -99,7 +100,8 @@ import static org.mockito.Mockito.when;
     verify(mockMessageJsonMapper).transformMessage(anyString());
   }
 
-  @Test public void shouldNotFindServerGivenAnUnsuccessfulResponse() throws Exception {
+  @Test(expected = RuntimeException.class)
+  public void shouldNotFindServerGivenAnUnsuccessfulResponse() throws Exception {
     final ServerProtocol mockServerProtocol = getMockServerProtocol();
     final ServerEntity mockServerEntity = getMockServerEntity();
 
@@ -120,12 +122,10 @@ import static org.mockito.Mockito.when;
     Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer();
 
     ServerEntity serverEntity = serverEntityMaybe.blockingGet();
-    assertThat(serverEntity, nullValue());
-    verify(mockNetworkConnectionlessTransmitter, atLeast(5)).send(any(DatagramPacket.class));
-    verifyZeroInteractions(mockServerMessageValidator, mockServerProtocolMapper);
   }
 
-  @Test public void shouldNotFindServerGivenANonServerResponse() throws Exception {
+  @Test(expected = RuntimeException.class) public void shouldNotFindServerGivenANonServerResponse()
+      throws Exception {
     final ServerProtocol mockServerProtocol = getMockServerProtocol();
     final ServerEntity mockServerEntity = getMockServerEntity();
 
@@ -146,9 +146,6 @@ import static org.mockito.Mockito.when;
     Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer();
 
     ServerEntity serverEntity = serverEntityMaybe.blockingGet();
-    assertThat(serverEntity, nullValue());
-    verify(mockNetworkConnectionlessTransmitter, atLeast(5)).send(any(DatagramPacket.class));
-    verifyZeroInteractions(mockServerMessageValidator, mockServerProtocolMapper);
   }
 
   @Test public void shouldFindServerForIpAddressGivenAValidNetworkResponse() throws Exception {
