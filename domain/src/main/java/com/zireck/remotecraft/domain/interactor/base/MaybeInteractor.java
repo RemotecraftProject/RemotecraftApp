@@ -2,12 +2,14 @@ package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import io.reactivex.Maybe;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableMaybeObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class MaybeInteractor implements Interactor<DisposableMaybeObserver> {
+public abstract class MaybeInteractor<T, P extends BaseParams>
+    implements Interactor<DisposableMaybeObserver, P> {
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
@@ -19,10 +21,11 @@ public abstract class MaybeInteractor implements Interactor<DisposableMaybeObser
     this.disposables = new CompositeDisposable();
   }
 
-  protected abstract Maybe buildReactiveStream();
+  protected abstract Maybe<T> buildReactiveStream(P params);
 
-  @Override public void execute(DisposableMaybeObserver observer) {
-    buildReactiveStream()
+  @SuppressWarnings("unchecked")
+  @Override public void execute(DisposableMaybeObserver observer, P params) {
+    buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribeWith(observer);
@@ -33,4 +36,6 @@ public abstract class MaybeInteractor implements Interactor<DisposableMaybeObser
   @Override public void dispose() {
     disposables.clear();
   }
+
+
 }

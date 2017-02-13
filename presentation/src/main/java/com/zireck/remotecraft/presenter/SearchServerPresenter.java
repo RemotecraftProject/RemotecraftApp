@@ -115,11 +115,12 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     view.showLoading();
     isScanningWifi = true;
     if (networkAddressModel == null) {
-      searchServerInteractor.execute(new SearchServerObserver());
+      searchServerInteractor.execute(new SearchServerObserver(), null);
     } else {
       // TODO pass over NetworkAddress to the domain layer
-      searchServerForIpInteractor.setIpAddress(networkAddressModel.getIp());
-      searchServerForIpInteractor.execute(new SearchServerObserver());
+      SearchServerForIpInteractor.Params params =
+          SearchServerForIpInteractor.Params.forIpAddress(networkAddressModel.getIp());
+      searchServerForIpInteractor.execute(new SearchServerObserver(), params);
     }
   }
 
@@ -145,8 +146,8 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     view.closeMenu();
     view.showLoading();
     isScanningWifi = true;
-    searchServerForIpInteractor.setIpAddress(ip);
-    searchServerForIpInteractor.execute(new SearchServerObserver());
+    SearchServerForIpInteractor.Params params = SearchServerForIpInteractor.Params.forIpAddress(ip);
+    searchServerForIpInteractor.execute(new SearchServerObserver(), params);
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {

@@ -2,12 +2,14 @@ package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class ObservableInteractor implements Interactor<DisposableObserver> {
+public abstract class ObservableInteractor<T, P extends BaseParams>
+    implements Interactor<DisposableObserver, P> {
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
@@ -20,10 +22,11 @@ public abstract class ObservableInteractor implements Interactor<DisposableObser
     this.disposables = new CompositeDisposable();
   }
 
-  protected abstract Observable buildReactiveStream();
+  protected abstract Observable<T> buildReactiveStream(P params);
 
-  @Override public void execute(DisposableObserver observer) {
-    buildReactiveStream()
+  @SuppressWarnings("unchecked")
+  @Override public void execute(DisposableObserver observer, P params) {
+    buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribeWith(observer);

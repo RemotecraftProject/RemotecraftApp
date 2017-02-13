@@ -2,13 +2,14 @@ package com.zireck.remotecraft.domain.interactor.base;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import io.reactivex.Completable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class CompletableInteractor
-    implements Interactor<DisposableCompletableObserver> {
+public abstract class CompletableInteractor<P extends BaseParams>
+    implements Interactor<DisposableCompletableObserver, P> {
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
@@ -21,10 +22,10 @@ public abstract class CompletableInteractor
     this.disposables = new CompositeDisposable();
   }
 
-  protected abstract Completable buildReactiveStream();
+  protected abstract Completable buildReactiveStream(P params);
 
-  @Override public void execute(DisposableCompletableObserver observer) {
-    buildReactiveStream()
+  @Override public void execute(DisposableCompletableObserver observer, P params) {
+    buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribeWith(observer);
