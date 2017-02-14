@@ -139,12 +139,14 @@ public class SearchServerActivity extends BaseActivity
     View enterNetworkAddressDialogView =
         layoutInflater.inflate(R.layout.dialog_enter_network_address, null);
     enterNetworkAddressDialog.setView(enterNetworkAddressDialogView);
-    enterNetworkAddressDialog.setPositiveButton("Done", (dialogInterface, i) -> {
-      EditText ip = (EditText) enterNetworkAddressDialogView.findViewById(R.id.ip);
-      EditText port = (EditText) enterNetworkAddressDialogView.findViewById(R.id.port);
-      presenter.onEnterNetworkAddress(ip.getText().toString(), port.getText().toString());
-    });
-    enterNetworkAddressDialog.setNegativeButton("Cancel",
+    enterNetworkAddressDialog.setTitle(R.string.enter_network_address_dialog_title);
+    enterNetworkAddressDialog.setPositiveButton(R.string.enter_network_address_dialog_button_accept,
+        (dialogInterface, i) -> {
+          EditText ip = (EditText) enterNetworkAddressDialogView.findViewById(R.id.ip);
+          EditText port = (EditText) enterNetworkAddressDialogView.findViewById(R.id.port);
+          presenter.onEnterNetworkAddress(ip.getText().toString(), port.getText().toString());
+        });
+    enterNetworkAddressDialog.setNegativeButton(R.string.enter_network_address_dialog_button_cancel,
         (dialogInterface, i) -> dialogInterface.dismiss());
 
     enterNetworkAddressDialog.show();

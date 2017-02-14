@@ -16,6 +16,8 @@ android {
     applicationId configuration.applicationId
     versionCode buildVersionCode()
     versionName buildVersionName()
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
 
   compileOptions {
@@ -89,4 +91,6 @@ dependencies {
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.mockito}"
+
+  androidTestCompile "${libraryTest.espresso}"
 }
