@@ -1,12 +1,13 @@
 package com.zireck.remotecraft.view.activity;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import com.zireck.remotecraft.FabMenuClose;
-import com.zireck.remotecraft.FabMenuOpen;
+import com.azimolabs.conditionwatcher.ConditionWatcher;
 import com.zireck.remotecraft.R;
-import com.zireck.remotecraft.TimerIdlingResource;
+import com.zireck.remotecraft.espresso.action.FabMenuCloseAction;
+import com.zireck.remotecraft.espresso.action.FabMenuOpenAction;
+import com.zireck.remotecraft.espresso.instruction.FabMenuClosedInstruction;
+import com.zireck.remotecraft.espresso.instruction.FabMenuOpenInstruction;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,68 +23,53 @@ import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class) public class SearchServerActivityInstrumentationTest {
 
-  private static final long FAB_MENU_DELAY_IN_MILLIS = 300;
-
   @Rule public ActivityTestRule<SearchServerActivity> activityTestRule =
-      new ActivityTestRule<SearchServerActivity>(SearchServerActivity.class);
+      new ActivityTestRule<>(SearchServerActivity.class);
 
   @Test public void shouldProperlyOpenTheFabMenu() throws Exception {
-    onView(withId(R.id.menu)).perform(new FabMenuOpen());
-    TimerIdlingResource timerIdlingResource = startTiming(FAB_MENU_DELAY_IN_MILLIS);
+    onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
+    ConditionWatcher.waitForCondition(new FabMenuOpenInstruction());
+
     onView(withId(R.id.fab_qrcode)).check(matches(isDisplayed()));
-    stopTiming(timerIdlingResource);
   }
 
   @Test public void shouldProperlyCloseTheFabMenu() throws Exception {
-    onView(withId(R.id.menu)).perform(new FabMenuClose());
-    TimerIdlingResource timerIdlingResource = startTiming(FAB_MENU_DELAY_IN_MILLIS);
+    onView(withId(R.id.menu)).perform(new FabMenuCloseAction());
+    ConditionWatcher.waitForCondition(new FabMenuClosedInstruction());
+
     onView(withId(R.id.fab_qrcode)).check(matches(not(isDisplayed())));
-    stopTiming(timerIdlingResource);
   }
 
   @Test public void shouldProperlyOpenAndCloseTheFabMenu() throws Exception {
-    onView(withId(R.id.menu)).perform(new FabMenuOpen());
-    TimerIdlingResource timerIdlingResource = startTiming(FAB_MENU_DELAY_IN_MILLIS);
+    onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
+    ConditionWatcher.waitForCondition(new FabMenuOpenInstruction());
     onView(withId(R.id.fab_qrcode)).check(matches(isDisplayed()));
-    stopTiming(timerIdlingResource);
-    onView(withId(R.id.menu)).perform(new FabMenuClose());
-    TimerIdlingResource secondTimerIdlingResource = startTiming(FAB_MENU_DELAY_IN_MILLIS);
+
+
+    onView(withId(R.id.menu)).perform(new FabMenuCloseAction());
+    ConditionWatcher.waitForCondition(new FabMenuClosedInstruction());
     onView(withId(R.id.fab_qrcode)).check(matches(not(isDisplayed())));
-    stopTiming(secondTimerIdlingResource);
   }
 
   @Test public void shouldDisplayEnterAddressDialog() throws Exception {
-    onView(withId(R.id.menu)).perform(new FabMenuOpen());
-    TimerIdlingResource timerIdlingResource = startTiming(FAB_MENU_DELAY_IN_MILLIS);
+    onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
+    ConditionWatcher.waitForCondition(new FabMenuOpenInstruction());
     onView(withId(R.id.fab_ip)).check(matches(isDisplayed()));
-    stopTiming(timerIdlingResource);
     onView(withId(R.id.fab_ip)).perform(click());
+
     onView(withText(R.string.enter_network_address_dialog_button_accept)).check(
-        matches(not(isDisplayed())));
+        matches(isDisplayed()));
   }
 
   @Test public void shouldDismissEnterAddressDialogWhenCancel() throws Exception {
-    onView(withId(R.id.menu)).perform(new FabMenuOpen());
-    TimerIdlingResource timerIdlingResource = startTiming(FAB_MENU_DELAY_IN_MILLIS);
-    onView(withId(R.id.fab_ip)).check(matches(isDisplayed()));
-    stopTiming(timerIdlingResource);
+    onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
+    ConditionWatcher.waitForCondition(new FabMenuOpenInstruction());
     onView(withId(R.id.fab_ip)).check(matches(isDisplayed())).perform(click());
-    Espresso.registerIdlingResources(timerIdlingResource);
     onView(withText(R.string.enter_network_address_dialog_button_accept)).check(
         matches(isDisplayed()));
     onView(withText(R.string.enter_network_address_dialog_button_cancel)).check(
         matches(isDisplayed())).perform(click());
+
     onView(withText(R.string.enter_network_address_dialog_button_accept)).check(doesNotExist());
-  }
-
-  private TimerIdlingResource startTiming(final long timeInMillis) {
-    TimerIdlingResource timerIdlingResource = new TimerIdlingResource(timeInMillis);
-    Espresso.registerIdlingResources(timerIdlingResource);
-
-    return timerIdlingResource;
-  }
-
-  private void stopTiming(TimerIdlingResource timerIdlingResource) {
-    Espresso.unregisterIdlingResources(timerIdlingResource);
   }
 }

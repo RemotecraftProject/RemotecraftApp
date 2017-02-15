@@ -1,4 +1,4 @@
-package com.zireck.remotecraft;
+package com.zireck.remotecraft.espresso.action;
 
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -8,17 +8,17 @@ import org.hamcrest.Matcher;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
-public class FabMenuClose implements ViewAction {
+public class FabMenuOpenAction implements ViewAction {
   @Override public Matcher<View> getConstraints() {
     return isAssignableFrom(FloatingActionMenu.class);
   }
 
   @Override public String getDescription() {
-    return "FloatingActionMenu Close";
+    return "FloatingActionMenu Open";
   }
 
   @Override public void perform(UiController uiController, View view) {
     FloatingActionMenu floatingActionMenu = (FloatingActionMenu) view;
-    floatingActionMenu.close(true);
+    floatingActionMenu.open(true);
   }
 }

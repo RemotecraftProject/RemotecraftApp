@@ -32,7 +32,8 @@ ext.version = [
     powermock                 : "1.6.1",
     powermockrunner           : "1.6.1",
     powermockito              : "1.6.1",
-    espresso                  : "2.2.2"
+    espresso                  : "2.2.2",
+    conditionWatcher          : "0.1"
 ]
 
 def version = ext.version;
@@ -69,7 +70,8 @@ ext.dependency = [
     powermock                 : "org.powermock:powermock:${version.powermock}",
     powermockrunner           : "org.powermock:powermock-module-junit4:${version.powermockrunner}",
     powermockito              : "org.powermock:powermock-api-mockito:${version.powermockito}",
-    espresso                  : "com.android.support.test.espresso:espresso-core:${version.espresso}"
+    espresso                  : "com.android.support.test.espresso:espresso-core:${version.espresso}",
+    conditionWatcher          : "com.azimolabs.conditionwatcher:conditionwatcher:${version.conditionWatcher}"
 ]
 
 def dependency = ext.dependency;
@@ -153,5 +155,6 @@ ext.presentationDependencies = [
 ext.presentationTestDependencies = [
     jUnit                     : "${dependency.jUnit}",
     mockito                   : "${dependency.mockito}",
-    espresso                  : "${dependency.espresso}"
+    espresso                  : "${dependency.espresso}",
+    conditionWatcher          : "${dependency.conditionWatcher}"
 ]

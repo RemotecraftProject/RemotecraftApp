@@ -93,4 +93,5 @@ dependencies {
   testCompile "${libraryTest.mockito}"
 
   androidTestCompile "${libraryTest.espresso}"
+  androidTestCompile "${libraryTest.conditionWatcher}"
 }
