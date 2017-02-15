@@ -13,6 +13,7 @@
       android:digits="0123456789."
       android:hint="@string/enter_network_address_dialog_ip_hint"
       android:inputType="number"
+      android:maxLength="15"
       />
 
   <EditText
@@ -21,6 +22,7 @@
       android:layout_height="wrap_content"
       android:hint="@string/enter_network_address_dialog_port_hint"
       android:inputType="number"
+      android:maxLength="5"
       />
 
 </LinearLayout>

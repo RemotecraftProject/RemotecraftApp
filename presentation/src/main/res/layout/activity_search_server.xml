@@ -9,6 +9,13 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.SearchServerActivity">
 
+  <ImageView
+      android:id="@+id/background"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:src="@drawable/desert"
+      android:scaleType="centerCrop"/>
+
   <View
       android:id="@+id/dimmer_view"
       android:layout_width="match_parent"
@@ -17,13 +24,6 @@
       android:alpha="0"
       android:visibility="gone"
       />
-
-  <ImageView
-      android:visibility="gone"
-      android:id="@+id/background"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:scaleType="centerCrop"/>
 
   <LinearLayout
       android:visibility="gone"

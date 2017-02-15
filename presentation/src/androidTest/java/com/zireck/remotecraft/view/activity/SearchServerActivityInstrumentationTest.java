@@ -19,12 +19,17 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.zireck.remotecraft.espresso.matcher.EspressoCustomMatchers.withDrawable;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class) public class SearchServerActivityInstrumentationTest {
 
   @Rule public ActivityTestRule<SearchServerActivity> activityTestRule =
       new ActivityTestRule<>(SearchServerActivity.class);
+
+  @Test public void shouldDisplayTheDesertBackground() throws Exception {
+    onView(withId(R.id.background)).check(matches(withDrawable(R.drawable.desert)));
+  }
 
   @Test public void shouldProperlyOpenTheFabMenu() throws Exception {
     onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
@@ -49,6 +54,38 @@ import static org.hamcrest.Matchers.not;
     onView(withId(R.id.menu)).perform(new FabMenuCloseAction());
     ConditionWatcher.waitForCondition(new FabMenuClosedInstruction());
     onView(withId(R.id.fab_qrcode)).check(matches(not(isDisplayed())));
+  }
+
+  @Test public void shouldDisplayAllFabItemsWhenFabMenuIsOpen() throws Exception {
+    onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
+    ConditionWatcher.waitForCondition(new FabMenuOpenInstruction());
+
+    onView(withId(R.id.fab_wifi)).check(matches(isDisplayed()));
+    onView(withId(R.id.fab_qrcode)).check(matches(isDisplayed()));
+    onView(withId(R.id.fab_ip)).check(matches(isDisplayed()));
+  }
+
+  @Test public void shouldDimTheBackgroundWhenTheFabMenuIsOpen() throws Exception {
+    onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
+    ConditionWatcher.waitForCondition(new FabMenuOpenInstruction());
+
+    onView(withId(R.id.dimmer_view)).check(matches(isDisplayed()));
+  }
+
+  @Test public void shouldNotDimTheBackgroundWhenTheFabMenuIsClosed() throws Exception {
+    onView(withId(R.id.menu)).perform(new FabMenuCloseAction());
+    ConditionWatcher.waitForCondition(new FabMenuClosedInstruction());
+
+    onView(withId(R.id.dimmer_view)).check(matches(not(isDisplayed())));
+  }
+
+  @Test public void shouldCloseFabMenuWhenClickingAnywhereOutsideOfIt() throws Exception {
+    onView(withId(R.id.menu)).perform(new FabMenuOpenAction());
+    ConditionWatcher.waitForCondition(new FabMenuOpenInstruction());
+    onView(withId(R.id.background)).perform(click());
+    ConditionWatcher.waitForCondition(new FabMenuClosedInstruction());
+
+    onView(withId(R.id.fab_wifi)).check(matches(not(isDisplayed())));
   }
 
   @Test public void shouldDisplayEnterAddressDialog() throws Exception {
