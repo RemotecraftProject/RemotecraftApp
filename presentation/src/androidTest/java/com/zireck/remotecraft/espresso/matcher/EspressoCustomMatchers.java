@@ -12,4 +12,8 @@ public class EspressoCustomMatchers {
   public static Matcher<View> noDrawable() {
     return new DrawableMatcher(-1);
   }
+
+  public static Matcher<View> fabMenuOpen() {
+    return new FabMenuOpenMatcher();
+  }
 }
