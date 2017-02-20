@@ -3,12 +3,14 @@ package com.zireck.remotecraft.dagger.modules;
 import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGranted;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import com.zireck.remotecraft.domain.validation.NetworkAddressValidator;
 import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
+import com.zireck.remotecraft.infrastructure.provider.PermissionDataProvider;
 import dagger.Module;
 import dagger.Provides;
 
@@ -36,5 +38,12 @@ public class InteractorsModule {
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     return new SearchServerForIpInteractor(networkDataProvider, networkAddressValidator,
         threadExecutor, postExecutionThread);
+  }
+
+  @Provides @PerActivity CheckIfPermissionGranted provideCheckIfPermissionGranted(
+      PermissionDataProvider permissionDataProvider, ThreadExecutor threadExecutor,
+      PostExecutionThread postExecutionThread) {
+    return new CheckIfPermissionGranted(permissionDataProvider, threadExecutor,
+        postExecutionThread);
   }
 }

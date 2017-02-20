@@ -1,16 +1,21 @@
 package com.zireck.remotecraft.presenter;
 
+import android.Manifest;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.NetworkAddress;
+import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
+import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGranted;
 import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
+import com.zireck.remotecraft.domain.observer.DefaultSingleObserver;
 import com.zireck.remotecraft.mapper.NetworkAddressModelDataMapper;
 import com.zireck.remotecraft.mapper.ServerModelDataMapper;
 import com.zireck.remotecraft.model.NetworkAddressModel;
+import com.zireck.remotecraft.model.PermissionModel;
 import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.tools.UriParser;
 import com.zireck.remotecraft.view.SearchServerView;
@@ -25,6 +30,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private final MaybeInteractor getWifiStateInteractor;
   private final SearchServerInteractor searchServerInteractor;
   private final SearchServerForIpInteractor searchServerForIpInteractor;
+  private final CheckIfPermissionGranted checkIfPermissionGranted;
   private final ServerModelDataMapper serverModelDataMapper;
   private final NetworkAddressModelDataMapper networkAddressModelDataMapper;
   private final UriParser uriParser;
@@ -34,11 +40,13 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   public SearchServerPresenter(MaybeInteractor getWifiStateInteractor,
       SearchServerInteractor searchServerInteractor,
       SearchServerForIpInteractor searchServerForIpInteractor,
+      CheckIfPermissionGranted checkIfPermissionGranted,
       ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper, UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchServerInteractor = searchServerInteractor;
     this.searchServerForIpInteractor = searchServerForIpInteractor;
+    this.checkIfPermissionGranted = checkIfPermissionGranted;
     this.serverModelDataMapper = serverModelDataMapper;
     this.networkAddressModelDataMapper = networkAddressModelDataMapper;
     this.uriParser = uriParser;
@@ -79,9 +87,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     }
 
     view.closeMenu();
-    view.showLoading();
-    isScanningQr = true;
-    view.startQrScanner();
+    checkIfPermissionGranted();
   }
 
   public void onClickEnterNetworkAddress() {
@@ -92,15 +98,13 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   public void onClickCloseCamera() {
     if (isScanningQr) {
       isScanningQr = false;
-      view.hideLoading();
-      view.stopQrScanner();
+      stopQrScanning();
     }
   }
 
   public void onReadQrCode(String qrCode) {
     isScanningQr = false;
-    view.hideLoading();
-    view.stopQrScanner();
+    stopQrScanning();
 
     if (qrCode == null || qrCode.isEmpty()) {
       view.showError(new IllegalArgumentException("Couldn't read QR Code."));
@@ -205,6 +209,27 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     return true;
   }
 
+  private void startQrScanning() {
+    view.closeMenu();
+    view.showLoading();
+    isScanningQr = true;
+    view.startQrScanner();
+  }
+
+  private void stopQrScanning() {
+    view.hideLoading();
+    view.stopQrScanner();
+  }
+
+  private void checkIfPermissionGranted() {
+    view.showLoading();
+    PermissionModel permissionCameraModel = new PermissionModel(Manifest.permission.CAMERA);
+    Permission permissionCamera = new Permission(permissionCameraModel.getName());
+    CheckIfPermissionGranted.Params params =
+        CheckIfPermissionGranted.Params.forPermission(permissionCamera);
+    checkIfPermissionGranted.execute(new IsPermissionGrantedObserver(), params);
+  }
+
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {
     @Override public void onSuccess(Server server) {
       isScanningWifi = false;
@@ -218,6 +243,17 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     @Override public void onError(Throwable e) {
       isScanningWifi = false;
       view.hideLoading();
+      view.showError((Exception) e);
+    }
+  }
+
+  private final class IsPermissionGrantedObserver extends DefaultSingleObserver<Boolean> {
+    @Override public void onSuccess(Boolean value) {
+      startQrScanning();
+    }
+
+    @Override public void onError(Throwable e) {
+      stopQrScanning();
       view.showError((Exception) e);
     }
   }
