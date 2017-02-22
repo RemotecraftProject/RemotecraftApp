@@ -7,6 +7,7 @@ import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGranted;
+import com.zireck.remotecraft.domain.interactor.RequestPermission;
 import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
@@ -32,17 +33,19 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private final SearchServerInteractor searchServerInteractor;
   private final SearchServerForIpInteractor searchServerForIpInteractor;
   private final CheckIfPermissionGranted checkIfPermissionGranted;
+  private final RequestPermission requestPermission;
   private final ServerModelDataMapper serverModelDataMapper;
   private final NetworkAddressModelDataMapper networkAddressModelDataMapper;
   private final PermissionModelDataMapper permissionModelDataMapper;
   private final UriParser uriParser;
+  private final PermissionModel permissionCameraModel;
   private boolean isScanningWifi = false;
   private boolean isScanningQr = false;
 
   public SearchServerPresenter(MaybeInteractor getWifiStateInteractor,
       SearchServerInteractor searchServerInteractor,
       SearchServerForIpInteractor searchServerForIpInteractor,
-      CheckIfPermissionGranted checkIfPermissionGranted,
+      CheckIfPermissionGranted checkIfPermissionGranted, RequestPermission requestPermission,
       ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
@@ -50,10 +53,12 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     this.searchServerInteractor = searchServerInteractor;
     this.searchServerForIpInteractor = searchServerForIpInteractor;
     this.checkIfPermissionGranted = checkIfPermissionGranted;
+    this.requestPermission = requestPermission;
     this.serverModelDataMapper = serverModelDataMapper;
     this.networkAddressModelDataMapper = networkAddressModelDataMapper;
     this.permissionModelDataMapper = permissionModelDataMapper;
     this.uriParser = uriParser;
+    this.permissionCameraModel = new PermissionModel(Manifest.permission.CAMERA);
   }
 
   @Override public void attachView(@NonNull SearchServerView view) {
@@ -91,7 +96,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     }
 
     view.closeMenu();
-    checkIfPermissionGranted();
+    checkIfPermissionGranted(permissionCameraModel);
   }
 
   public void onClickEnterNetworkAddress() {
@@ -225,13 +230,19 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     view.stopQrScanner();
   }
 
-  private void checkIfPermissionGranted() {
+  private void checkIfPermissionGranted(PermissionModel permissionModel) {
     view.showLoading();
-    PermissionModel permissionCameraModel = new PermissionModel(Manifest.permission.CAMERA);
-    Permission permissionCamera = permissionModelDataMapper.transformInverse(permissionCameraModel);
+    Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
     CheckIfPermissionGranted.Params params =
-        CheckIfPermissionGranted.Params.forPermission(permissionCamera);
+        CheckIfPermissionGranted.Params.forPermission(permission);
     checkIfPermissionGranted.execute(new IsPermissionGrantedObserver(), params);
+  }
+
+  private void requestPermission(PermissionModel permissionModel) {
+    view.showLoading();
+    Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
+    RequestPermission.Params params = RequestPermission.Params.forPermission(permission);
+    requestPermission.execute(new RequestPermissionObserver(), params);
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {
@@ -256,12 +267,28 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
       if (granted) {
         startQrScanning();
       } else {
-        view.showMessage("Error. Permission not granted");
+        requestPermission(permissionCameraModel);
       }
     }
 
     @Override public void onError(Throwable e) {
       stopQrScanning();
+      view.showError((Exception) e);
+    }
+  }
+
+  private final class RequestPermissionObserver extends DefaultSingleObserver<Boolean> {
+    @Override public void onSuccess(Boolean granted) {
+      if (granted) {
+        startQrScanning();
+      } else {
+        view.hideLoading();
+        view.showMessage("Error. Permission not granted");
+      }
+    }
+
+    @Override public void onError(Throwable e) {
+      view.hideLoading();
       view.showError((Exception) e);
     }
   }
