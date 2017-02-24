@@ -4,17 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
+import android.view.ViewGroup;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.CompositePermissionListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.provider.PermissionProvider;
 import com.zireck.remotecraft.infrastructure.entity.PermissionEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.PermissionEntityDataMapper;
+import com.zireck.remotecraft.infrastructure.permission.PermissionRationaleDialog;
+import com.zireck.remotecraft.infrastructure.permission.RationaleResponse;
+import com.zireck.remotecraft.infrastructure.permission.SnackbarOnPermanentlyDeniedPermissionListener;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.Single;
 import javax.inject.Inject;
 
@@ -39,24 +45,55 @@ public class PermissionDataProvider implements PermissionProvider {
     PermissionEntity permissionEntity = permissionEntityDataMapper.transformInverse(permission);
 
     return Observable.<Boolean>create(emitter -> {
+      PermissionListener permissionDeniedListener =
+          getPermissionDeniedListener(activity, permissionEntity);
+      PermissionListener permissionRequestListener =
+          getPermissionRequestListener(permissionEntity, emitter);
+      CompositePermissionListener compositePermissionListener =
+          new CompositePermissionListener(permissionDeniedListener, permissionRequestListener);
+
       Dexter.withActivity(activity)
           .withPermission(permissionEntity.getName())
-          .withListener(new PermissionListener() {
-            @Override public void onPermissionGranted(PermissionGrantedResponse response) {
-              emitter.onNext(true);
-            }
-
-            @Override public void onPermissionDenied(PermissionDeniedResponse response) {
-              emitter.onNext(false);
-            }
-
-            @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
-                PermissionToken token) {
-              emitter.onNext(false);
-            }
-          });
+          .withListener(compositePermissionListener)
+          .check();
     })
         .firstElement()
         .toSingle();
+  }
+
+  private PermissionListener getPermissionDeniedListener(Activity activity,
+      PermissionEntity permissionEntity) {
+    ViewGroup view = (ViewGroup) activity.findViewById(android.R.id.content);
+
+    return SnackbarOnPermanentlyDeniedPermissionListener.Builder
+        .with(view, permissionEntity.getDeniedMessage())
+        .withOpenSettingsButton("Settings")
+        .build();
+  }
+
+  private PermissionListener getPermissionRequestListener(PermissionEntity permissionEntity,
+      ObservableEmitter<Boolean> emitter) {
+    return new PermissionListener() {
+      @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+        emitter.onNext(true);
+      }
+
+      @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+        emitter.onNext(false);
+      }
+
+      @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+          PermissionToken token) {
+        new PermissionRationaleDialog(activity, permissionEntity, new RationaleResponse() {
+          @Override public void continuePermissionRequest() {
+            token.continuePermissionRequest();
+          }
+
+          @Override public void cancelPermissionRequest() {
+            token.cancelPermissionRequest();
+          }
+        }).show();
+      }
+    };
   }
 }

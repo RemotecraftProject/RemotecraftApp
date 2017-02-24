@@ -283,7 +283,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
         startQrScanning();
       } else {
         view.hideLoading();
-        view.showMessage("Error. Permission not granted");
+        //view.showMessage("Error. Permission not granted");
       }
     }
 
