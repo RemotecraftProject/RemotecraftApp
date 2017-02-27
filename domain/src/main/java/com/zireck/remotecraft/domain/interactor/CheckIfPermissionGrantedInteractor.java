@@ -8,12 +8,12 @@ import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import com.zireck.remotecraft.domain.provider.PermissionProvider;
 import io.reactivex.Single;
 
-public class CheckIfPermissionGranted
-    extends SingleInteractor<Boolean, CheckIfPermissionGranted.Params> {
+public class CheckIfPermissionGrantedInteractor
+    extends SingleInteractor<Boolean, CheckIfPermissionGrantedInteractor.Params> {
 
   private final PermissionProvider permissionProvider;
 
-  public CheckIfPermissionGranted(PermissionProvider permissionProvider,
+  public CheckIfPermissionGrantedInteractor(PermissionProvider permissionProvider,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.permissionProvider = permissionProvider;

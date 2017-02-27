@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
-import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGranted;
-import com.zireck.remotecraft.domain.interactor.RequestPermission;
+import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;
+import com.zireck.remotecraft.domain.interactor.RequestPermissionInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
@@ -31,8 +31,8 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private final MaybeInteractor getWifiStateInteractor;
   private final SearchServerInteractor searchServerInteractor;
   private final SearchServerForIpInteractor searchServerForIpInteractor;
-  private final CheckIfPermissionGranted checkIfPermissionGranted;
-  private final RequestPermission requestPermission;
+  private final CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor;
+  private final RequestPermissionInteractor requestPermissionInteractor;
   private final PermissionModel cameraPermissionModel;
   private final ServerModelDataMapper serverModelDataMapper;
   private final NetworkAddressModelDataMapper networkAddressModelDataMapper;
@@ -44,15 +44,15 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   public SearchServerPresenter(MaybeInteractor getWifiStateInteractor,
       SearchServerInteractor searchServerInteractor,
       SearchServerForIpInteractor searchServerForIpInteractor,
-      CheckIfPermissionGranted checkIfPermissionGranted, RequestPermission requestPermission,
+      CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor, RequestPermissionInteractor requestPermissionInteractor,
       PermissionModel cameraPermissionModel, ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchServerInteractor = searchServerInteractor;
     this.searchServerForIpInteractor = searchServerForIpInteractor;
-    this.checkIfPermissionGranted = checkIfPermissionGranted;
-    this.requestPermission = requestPermission;
+    this.checkIfPermissionGrantedInteractor = checkIfPermissionGrantedInteractor;
+    this.requestPermissionInteractor = requestPermissionInteractor;
     this.cameraPermissionModel = cameraPermissionModel;
     this.serverModelDataMapper = serverModelDataMapper;
     this.networkAddressModelDataMapper = networkAddressModelDataMapper;
@@ -232,16 +232,16 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private void checkIfPermissionGranted(PermissionModel permissionModel) {
     view.showLoading();
     Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
-    CheckIfPermissionGranted.Params params =
-        CheckIfPermissionGranted.Params.forPermission(permission);
-    checkIfPermissionGranted.execute(new IsPermissionGrantedObserver(), params);
+    CheckIfPermissionGrantedInteractor.Params params =
+        CheckIfPermissionGrantedInteractor.Params.forPermission(permission);
+    checkIfPermissionGrantedInteractor.execute(new IsPermissionGrantedObserver(), params);
   }
 
   private void requestPermission(PermissionModel permissionModel) {
     view.showLoading();
     Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
-    RequestPermission.Params params = RequestPermission.Params.forPermission(permission);
-    requestPermission.execute(new RequestPermissionObserver(), params);
+    RequestPermissionInteractor.Params params = RequestPermissionInteractor.Params.forPermission(permission);
+    requestPermissionInteractor.execute(new RequestPermissionObserver(), params);
   }
 
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {

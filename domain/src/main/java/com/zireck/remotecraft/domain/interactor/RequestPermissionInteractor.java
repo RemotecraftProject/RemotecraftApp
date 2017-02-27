@@ -8,11 +8,12 @@ import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import com.zireck.remotecraft.domain.provider.PermissionProvider;
 import io.reactivex.Single;
 
-public class RequestPermission extends SingleInteractor<Boolean, RequestPermission.Params> {
+public class RequestPermissionInteractor
+    extends SingleInteractor<Boolean, RequestPermissionInteractor.Params> {
 
   private final PermissionProvider permissionProvider;
 
-  public RequestPermission(PermissionProvider permissionProvider, ThreadExecutor threadExecutor,
+  public RequestPermissionInteractor(PermissionProvider permissionProvider, ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.permissionProvider = permissionProvider;
