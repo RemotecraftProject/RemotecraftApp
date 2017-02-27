@@ -55,11 +55,6 @@ import javax.inject.Singleton;
     return networkDataProvider;
   }
 
-  @Provides @Singleton PermissionProvider providePermissionProvider(
-      PermissionDataProvider permissionDataProvider) {
-    return permissionDataProvider;
-  }
-
   @Provides @Singleton NetworkInterfaceProvider provideNetworkInterfaceProvider() {
     return new AndroidNetworkInterfaceProvider();
   }

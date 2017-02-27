@@ -3,7 +3,6 @@ package com.zireck.remotecraft.infrastructure.provider;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -16,6 +15,8 @@ import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.provider.PermissionProvider;
 import com.zireck.remotecraft.infrastructure.entity.PermissionEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.PermissionEntityDataMapper;
+import com.zireck.remotecraft.infrastructure.permission.AndroidPermissionChecker;
+import com.zireck.remotecraft.infrastructure.permission.PermissionChecker;
 import com.zireck.remotecraft.infrastructure.permission.PermissionRationaleDialog;
 import com.zireck.remotecraft.infrastructure.permission.RationaleResponse;
 import com.zireck.remotecraft.infrastructure.permission.SnackbarOnPermanentlyDeniedPermissionListener;
@@ -28,17 +29,20 @@ public class PermissionDataProvider implements PermissionProvider {
 
   @Inject Context context;
   @Inject Activity activity;
+  private final PermissionChecker permissionChecker;
   private final PermissionEntityDataMapper permissionEntityDataMapper;
 
-  @Inject public PermissionDataProvider(PermissionEntityDataMapper permissionEntityDataMapper) {
+  @Inject public PermissionDataProvider(AndroidPermissionChecker androidPermissionChecker,
+      PermissionEntityDataMapper permissionEntityDataMapper) {
+    this.permissionChecker = androidPermissionChecker;
     this.permissionEntityDataMapper = permissionEntityDataMapper;
   }
 
   @Override public Single<Boolean> isGranted(Permission permission) {
     PermissionEntity permissionEntity = permissionEntityDataMapper.transformInverse(permission);
 
-    return Single.just(ContextCompat.checkSelfPermission(context, permissionEntity.getPermission()))
-        .map(selfPermission -> selfPermission == PackageManager.PERMISSION_GRANTED);
+    return Single.just(permissionChecker.checkSelfPermission(context, permissionEntity))
+        .map(permissionChecker::isGranted);
   }
 
   @Override public Single<Boolean> request(Permission permission) {

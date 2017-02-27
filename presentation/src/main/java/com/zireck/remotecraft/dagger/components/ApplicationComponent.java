@@ -7,6 +7,7 @@ import com.zireck.remotecraft.dagger.modules.NetworkModule;
 import com.zireck.remotecraft.dagger.modules.ToolsModule;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.provider.PermissionProvider;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import com.zireck.remotecraft.navigation.Navigator;

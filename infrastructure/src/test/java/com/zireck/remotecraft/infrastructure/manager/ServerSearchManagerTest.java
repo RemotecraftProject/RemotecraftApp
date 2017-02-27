@@ -53,8 +53,17 @@ import static org.mockito.Mockito.when;
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
+    NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
+        .with("192.168.1.15")
+        .and(8889)
+        .build();
     mockServerSearchSettings = new ServerSearchSettings.Builder()
+        .port(8889)
+        .broadcastAddress(networkAddressEntity)
+        .retryCount(5)
         .retryDelayMultiplier(0)
+        .responseBufferSize(15000)
+        .timeout(1500)
         .build();
 
     serverSearchManager =
