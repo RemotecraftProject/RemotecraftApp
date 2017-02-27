@@ -37,7 +37,7 @@ public class PermissionDataProvider implements PermissionProvider {
   @Override public Single<Boolean> isGranted(Permission permission) {
     PermissionEntity permissionEntity = permissionEntityDataMapper.transformInverse(permission);
 
-    return Single.just(ContextCompat.checkSelfPermission(context, permissionEntity.getName()))
+    return Single.just(ContextCompat.checkSelfPermission(context, permissionEntity.getPermission()))
         .map(selfPermission -> selfPermission == PackageManager.PERMISSION_GRANTED);
   }
 
@@ -53,7 +53,7 @@ public class PermissionDataProvider implements PermissionProvider {
           new CompositePermissionListener(permissionDeniedListener, permissionRequestListener);
 
       Dexter.withActivity(activity)
-          .withPermission(permissionEntity.getName())
+          .withPermission(permissionEntity.getPermission())
           .withListener(compositePermissionListener)
           .check();
     })

@@ -19,7 +19,12 @@ import javax.inject.Inject;
       throw new IllegalArgumentException("Cannot transform a null Permission object.");
     }
 
-    return new PermissionModel(permission.getName());
+    return new PermissionModel.Builder()
+        .permission(permission.getPermission())
+        .rationaleTitle(permission.getRationaleTitle())
+        .rationaleMessage(permission.getRationaleMessage())
+        .deniedMessage(permission.getDeniedMessage())
+        .build();
   }
 
   public Collection<PermissionModel> transform(Collection<Permission> permissionCollection) {
@@ -33,7 +38,12 @@ import javax.inject.Inject;
       throw new IllegalArgumentException("Cannot transform a null PermissionModel object.");
     }
 
-    return new Permission(permissionModel.getName());
+    return new Permission.Builder()
+        .permission(permissionModel.getPermission())
+        .rationaleTitle(permissionModel.getRationaleTitle())
+        .rationaleMessage(permissionModel.getRationaleMessage())
+        .deniedMessage(permissionModel.getDeniedMessage())
+        .build();
   }
 
   public Collection<Permission> transformInverse(Collection<PermissionModel> permissionModels) {

@@ -18,7 +18,12 @@ public class PermissionEntityDataMapper {
       return null;
     }
 
-    return new Permission(permissionEntity.getName());
+    return new Permission.Builder()
+        .permission(permissionEntity.getPermission())
+        .rationaleTitle(permissionEntity.getRationaleTitle())
+        .rationaleMessage(permissionEntity.getRationaleMessage())
+        .deniedMessage(permissionEntity.getDeniedMessage())
+        .build();
   }
 
   public Collection<Permission> transform(Collection<PermissionEntity> permissionEntities) {
@@ -32,7 +37,12 @@ public class PermissionEntityDataMapper {
       return null;
     }
 
-    return new PermissionEntity(permission.getName());
+    return new PermissionEntity.Builder()
+        .permission(permission.getPermission())
+        .rationaleTitle(permission.getRationaleTitle())
+        .rationaleMessage(permission.getRationaleMessage())
+        .deniedMessage(permission.getDeniedMessage())
+        .build();
   }
 
   public Collection<PermissionEntity> transformInverse(Collection<Permission> permissions) {

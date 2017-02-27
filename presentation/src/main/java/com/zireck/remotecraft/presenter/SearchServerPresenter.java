@@ -1,6 +1,5 @@
 package com.zireck.remotecraft.presenter;
 
-import android.Manifest;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.NetworkAddress;
@@ -34,11 +33,11 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private final SearchServerForIpInteractor searchServerForIpInteractor;
   private final CheckIfPermissionGranted checkIfPermissionGranted;
   private final RequestPermission requestPermission;
+  private final PermissionModel cameraPermissionModel;
   private final ServerModelDataMapper serverModelDataMapper;
   private final NetworkAddressModelDataMapper networkAddressModelDataMapper;
   private final PermissionModelDataMapper permissionModelDataMapper;
   private final UriParser uriParser;
-  private final PermissionModel permissionCameraModel;
   private boolean isScanningWifi = false;
   private boolean isScanningQr = false;
 
@@ -46,7 +45,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
       SearchServerInteractor searchServerInteractor,
       SearchServerForIpInteractor searchServerForIpInteractor,
       CheckIfPermissionGranted checkIfPermissionGranted, RequestPermission requestPermission,
-      ServerModelDataMapper serverModelDataMapper,
+      PermissionModel cameraPermissionModel, ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
@@ -54,11 +53,11 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     this.searchServerForIpInteractor = searchServerForIpInteractor;
     this.checkIfPermissionGranted = checkIfPermissionGranted;
     this.requestPermission = requestPermission;
+    this.cameraPermissionModel = cameraPermissionModel;
     this.serverModelDataMapper = serverModelDataMapper;
     this.networkAddressModelDataMapper = networkAddressModelDataMapper;
     this.permissionModelDataMapper = permissionModelDataMapper;
     this.uriParser = uriParser;
-    this.permissionCameraModel = new PermissionModel(Manifest.permission.CAMERA);
   }
 
   @Override public void attachView(@NonNull SearchServerView view) {
@@ -96,7 +95,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     }
 
     view.closeMenu();
-    checkIfPermissionGranted(permissionCameraModel);
+    checkIfPermissionGranted(cameraPermissionModel);
   }
 
   public void onClickEnterNetworkAddress() {
@@ -267,7 +266,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
       if (granted) {
         startQrScanning();
       } else {
-        requestPermission(permissionCameraModel);
+        requestPermission(cameraPermissionModel);
       }
     }
 

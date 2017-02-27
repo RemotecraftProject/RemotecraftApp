@@ -30,13 +30,26 @@ import static org.hamcrest.MatcherAssert.assertThat;
   }
 
   @Test public void shouldProperlyMapPermissionEntityIntoPermission() throws Exception {
-    PermissionEntity permissionCameraEntity = new PermissionEntity("CAMERA");
+    PermissionEntity permissionCameraEntity = new PermissionEntity.Builder()
+        .permission("CAMERA")
+        .rationaleTitle("Permission Request")
+        .rationaleMessage("You should allow this permission")
+        .deniedMessage("You must allow this permission in order for this feature to work")
+        .build();
 
     Permission permissionCamera = permissionEntityDataMapper.transform(permissionCameraEntity);
 
     assertThat(permissionCamera, notNullValue());
     assertThat(permissionCamera, instanceOf(Permission.class));
-    assertThat(permissionCamera.getName(), is("CAMERA"));
+    assertThat(permissionCamera.getPermission(), notNullValue());
+    assertThat(permissionCamera.getPermission(), is("CAMERA"));
+    assertThat(permissionCamera.getRationaleTitle(), notNullValue());
+    assertThat(permissionCamera.getRationaleTitle(), is("Permission Request"));
+    assertThat(permissionCamera.getRationaleMessage(), notNullValue());
+    assertThat(permissionCamera.getRationaleMessage(), is("You should allow this permission"));
+    assertThat(permissionCamera.getDeniedMessage(), notNullValue());
+    assertThat(permissionCamera.getDeniedMessage(),
+        is("You must allow this permission in order for this feature to work"));
   }
 
   @Test public void shouldReturnNullValueGivenANullPermission() throws Exception {
@@ -48,13 +61,26 @@ import static org.hamcrest.MatcherAssert.assertThat;
   }
 
   @Test public void shouldProperlyMapPermissionIntoPermissionEntity() throws Exception {
-    Permission permissionCamera = new Permission("CAMERA");
+    Permission permissionCamera = new Permission.Builder()
+        .permission("CAMERA")
+        .rationaleTitle("Permission Request")
+        .rationaleMessage("You should allow this permission")
+        .deniedMessage("You must allow this permission in order for this feature to work")
+        .build();
 
     PermissionEntity permissionCameraEntity =
         permissionEntityDataMapper.transformInverse(permissionCamera);
 
     assertThat(permissionCameraEntity, notNullValue());
     assertThat(permissionCameraEntity, instanceOf(PermissionEntity.class));
-    assertThat(permissionCameraEntity.getName(), is("CAMERA"));
+    assertThat(permissionCameraEntity.getPermission(), notNullValue());
+    assertThat(permissionCameraEntity.getPermission(), is("CAMERA"));
+    assertThat(permissionCameraEntity.getRationaleTitle(), notNullValue());
+    assertThat(permissionCameraEntity.getRationaleTitle(), is("Permission Request"));
+    assertThat(permissionCameraEntity.getRationaleMessage(), notNullValue());
+    assertThat(permissionCameraEntity.getRationaleMessage(), is("You should allow this permission"));
+    assertThat(permissionCameraEntity.getDeniedMessage(), notNullValue());
+    assertThat(permissionCameraEntity.getDeniedMessage(),
+        is("You must allow this permission in order for this feature to work"));
   }
 }

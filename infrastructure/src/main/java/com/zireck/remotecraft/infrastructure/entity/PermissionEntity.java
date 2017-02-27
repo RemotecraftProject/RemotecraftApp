@@ -2,25 +2,62 @@ package com.zireck.remotecraft.infrastructure.entity;
 
 public class PermissionEntity {
 
-  private final String name;
+  private final String permission;
+  private final String rationaleTitle;
+  private final String rationaleMessage;
+  private final String deniedMessage;
 
-  public PermissionEntity(String name) {
-    this.name = name;
+  private PermissionEntity(Builder builder) {
+    this.permission = builder.permission;
+    this.rationaleTitle = builder.rationaleTitle;
+    this.rationaleMessage = builder.rationaleMessage;
+    this.deniedMessage = builder.deniedMessage;
   }
 
-  public String getName() {
-    return name;
+  public String getPermission() {
+    return permission;
   }
 
   public String getRationaleTitle() {
-    return "Permission Request";
+    return rationaleTitle;
   }
 
   public String getRationaleMessage() {
-    return "You need to allow the camera permission";
+    return rationaleMessage;
   }
 
   public String getDeniedMessage() {
-    return "Allow camera permission in app settings.";
+    return deniedMessage;
+  }
+
+  public static class Builder {
+    private String permission;
+    private String rationaleTitle;
+    private String rationaleMessage;
+    private String deniedMessage;
+
+    public PermissionEntity build() {
+      return new PermissionEntity(this);
+    }
+
+    public PermissionEntity.Builder permission(String permission) {
+      this.permission = permission;
+      return this;
+    }
+
+    public PermissionEntity.Builder rationaleTitle(String rationaleTitle) {
+      this.rationaleTitle = rationaleTitle;
+      return this;
+    }
+
+    public PermissionEntity.Builder rationaleMessage(String rationaleMessage) {
+      this.rationaleMessage = rationaleMessage;
+      return this;
+    }
+
+    public PermissionEntity.Builder deniedMessage(String deniedMessage) {
+      this.deniedMessage = deniedMessage;
+      return this;
+    }
   }
 }
