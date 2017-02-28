@@ -125,7 +125,16 @@ public class SearchServerForIpInteractorTest {
   }
 
   private Server getFakeWorld() {
-    return new Server.Builder().build();
+    return new Server.Builder()
+        .ssid("WLAN_C33C")
+        .ip("192.168.1.34")
+        .hostname("iMac")
+        .os("macOS")
+        .version("1.47")
+        .seed("9356454564578")
+        .worldName("Brown Island")
+        .playerName("Etho")
+        .build();
   }
 
   private Maybe<Server> getEmptyReactiveStream() {
