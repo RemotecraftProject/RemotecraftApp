@@ -22,7 +22,7 @@
     </activity>
 
     <activity
-        android:name=".view.activity.SearchServerActivity" />
+        android:name=".view.activity.ServerSearchActivity" />
     <activity android:name=".view.activity.ServerFoundActivity"/>
   </application>
 

@@ -30,6 +30,7 @@ ext.version = [
     // Testing
     jUnit                     : "4.12",
     mockito                   : "1.9.0",
+    robolectric               : "3.2.2",
     powermock                 : "1.6.1",
     powermockrunner           : "1.6.1",
     powermockito              : "1.6.1",
@@ -69,6 +70,7 @@ ext.dependency = [
 
     jUnit                     : "junit:junit:${version.jUnit}",
     mockito                   : "org.mockito:mockito-core:${version.mockito}",
+    robolectric               : "org.robolectric:robolectric:${version.robolectric}",
     powermock                 : "org.powermock:powermock:${version.powermock}",
     powermockrunner           : "org.powermock:powermock-module-junit4:${version.powermockrunner}",
     powermockito              : "org.powermock:powermock-api-mockito:${version.powermockito}",
@@ -158,6 +160,7 @@ ext.presentationDependencies = [
 ext.presentationTestDependencies = [
     jUnit                     : "${dependency.jUnit}",
     mockito                   : "${dependency.mockito}",
+    robolectric               : "${dependency.robolectric}",
     espresso                  : "${dependency.espresso}",
     conditionWatcher          : "${dependency.conditionWatcher}"
 ]

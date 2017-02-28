@@ -25,21 +25,21 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.dagger.HasComponent;
-import com.zireck.remotecraft.dagger.components.DaggerSearchServerComponent;
-import com.zireck.remotecraft.dagger.components.SearchServerComponent;
+import com.zireck.remotecraft.dagger.components.DaggerServerSearchComponent;
+import com.zireck.remotecraft.dagger.components.ServerSearchComponent;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.model.ServerModel;
-import com.zireck.remotecraft.presenter.SearchServerPresenter;
-import com.zireck.remotecraft.view.SearchServerView;
+import com.zireck.remotecraft.presenter.ServerSearchPresenter;
+import com.zireck.remotecraft.view.ServerSearchView;
 import javax.inject.Inject;
 
-public class SearchServerActivity extends BaseActivity
-    implements HasComponent<SearchServerComponent>, SearchServerView {
+public class ServerSearchActivity extends BaseActivity
+    implements HasComponent<ServerSearchComponent>, ServerSearchView {
 
-  @Inject SearchServerPresenter presenter;
+  @Inject ServerSearchPresenter presenter;
   @Inject ImageLoader imageLoader;
 
   @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
@@ -58,15 +58,15 @@ public class SearchServerActivity extends BaseActivity
   @BindView(R.id.version) TextView version;
   @BindView(R.id.world) TextView world;
   @BindView(R.id.player) TextView player;
-  private SearchServerComponent searchServerComponent;
+  private ServerSearchComponent serverSearchComponent;
 
   public static Intent getCallingIntent(Context context) {
-    return new Intent(context, SearchServerActivity.class);
+    return new Intent(context, ServerSearchActivity.class);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_search_server);
+    setContentView(R.layout.activity_server_search);
 
     initInjector();
     initUi();
@@ -92,8 +92,8 @@ public class SearchServerActivity extends BaseActivity
     super.onBackPressed();
   }
 
-  @Override public SearchServerComponent getComponent() {
-    return searchServerComponent;
+  @Override public ServerSearchComponent getComponent() {
+    return serverSearchComponent;
   }
 
   @Override public void navigateToServerDetail(ServerModel serverModel) {
@@ -169,14 +169,14 @@ public class SearchServerActivity extends BaseActivity
   }
 
   private void initInjector() {
-    searchServerComponent = DaggerSearchServerComponent.builder()
+    serverSearchComponent = DaggerServerSearchComponent.builder()
         .applicationComponent(getApplicationComponent())
         .activityModule(getActivityModule())
         .uiModule(new UiModule())
         .interactorsModule(new InteractorsModule())
         .build();
 
-    searchServerComponent.inject(this);
+    serverSearchComponent.inject(this);
   }
 
   private void initUi() {

@@ -2,7 +2,7 @@ package com.zireck.remotecraft.view;
 
 import com.zireck.remotecraft.model.ServerModel;
 
-public interface SearchServerView extends BaseView {
+public interface ServerSearchView extends BaseView {
   void navigateToServerDetail(ServerModel serverModel);
   void showMessage(String message);
   void showError(Exception exception);

@@ -32,11 +32,9 @@ public class SplashActivity extends BaseActivity {
   }
 
   private void initTimeout() {
-    new Handler().postDelayed(new Runnable() {
-      @Override public void run() {
-        navigator.navigateToSearchActivity(SplashActivity.this);
-        finish();
-      }
+    new Handler().postDelayed(() -> {
+      navigator.navigateToServerSearchActivity(SplashActivity.this);
+      finish();
     }, TIMEOUT_IN_SECONDS * 1000);
   }
 }

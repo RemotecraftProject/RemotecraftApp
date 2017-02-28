@@ -23,10 +23,10 @@ import static com.zireck.remotecraft.espresso.matcher.EspressoCustomMatchers.fab
 import static com.zireck.remotecraft.espresso.matcher.EspressoCustomMatchers.withDrawable;
 import static org.hamcrest.Matchers.not;
 
-@RunWith(AndroidJUnit4.class) public class SearchServerActivityInstrumentationTest {
+@RunWith(AndroidJUnit4.class) public class ServerSearchActivityInstrumentationTest {
 
-  @Rule public ActivityTestRule<SearchServerActivity> activityTestRule =
-      new ActivityTestRule<>(SearchServerActivity.class);
+  @Rule public ActivityTestRule<ServerSearchActivity> activityTestRule =
+      new ActivityTestRule<>(ServerSearchActivity.class);
 
   @Test public void shouldDisplayTheDesertBackground() throws Exception {
     onView(withId(R.id.background)).check(matches(withDrawable(R.drawable.desert)));

@@ -10,8 +10,8 @@ import com.zireck.remotecraft.mapper.NetworkAddressModelDataMapper;
 import com.zireck.remotecraft.mapper.PermissionModelDataMapper;
 import com.zireck.remotecraft.mapper.ServerModelDataMapper;
 import com.zireck.remotecraft.model.PermissionModel;
-import com.zireck.remotecraft.presenter.SearchServerPresenter;
 import com.zireck.remotecraft.presenter.ServerFoundPresenter;
+import com.zireck.remotecraft.presenter.ServerSearchPresenter;
 import com.zireck.remotecraft.tools.UriParser;
 import dagger.Module;
 import dagger.Provides;
@@ -23,18 +23,18 @@ public class PresentersModule {
 
   }
 
-  @Provides @PerActivity SearchServerPresenter provideSearchServerPresenter(
+  @Provides @PerActivity ServerSearchPresenter provideServerSearchPresenter(
       GetWifiStateInteractor getWifiStateInteractor, SearchServerInteractor searchServerInteractor,
       SearchServerForIpInteractor searchServerForIpInteractor,
-      CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor, RequestPermissionInteractor requestPermissionInteractor,
+      CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
+      RequestPermissionInteractor requestPermissionInteractor,
       PermissionModel cameraPermissionModel, ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
-    return new SearchServerPresenter(getWifiStateInteractor, searchServerInteractor,
+    return new ServerSearchPresenter(getWifiStateInteractor, searchServerInteractor,
         searchServerForIpInteractor, checkIfPermissionGrantedInteractor,
-        requestPermissionInteractor,
-        cameraPermissionModel, serverModelDataMapper, networkAddressModelDataMapper,
-        permissionModelDataMapper, uriParser);
+        requestPermissionInteractor, cameraPermissionModel, serverModelDataMapper,
+        networkAddressModelDataMapper, permissionModelDataMapper, uriParser);
   }
 
   @Provides @PerActivity ServerFoundPresenter provideServerFoundPresenter() {

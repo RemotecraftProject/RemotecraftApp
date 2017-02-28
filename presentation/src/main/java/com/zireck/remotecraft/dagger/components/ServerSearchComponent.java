@@ -6,7 +6,7 @@ import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.PermissionsModule;
 import com.zireck.remotecraft.dagger.modules.PresentersModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
-import com.zireck.remotecraft.view.activity.SearchServerActivity;
+import com.zireck.remotecraft.view.activity.ServerSearchActivity;
 import dagger.Component;
 
 @PerActivity
@@ -20,6 +20,6 @@ import dagger.Component;
         PermissionsModule.class
     }
 )
-public interface SearchServerComponent extends ActivityComponent {
-  void inject(SearchServerActivity searchServerActivity);
+public interface ServerSearchComponent extends ActivityComponent {
+  void inject(ServerSearchActivity serverSearchActivity);
 }

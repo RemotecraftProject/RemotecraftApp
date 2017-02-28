@@ -91,6 +91,7 @@ dependencies {
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.mockito}"
+  testCompile "${libraryTest.robolectric}"
 
   androidTestCompile "${libraryTest.espresso}"
   androidTestCompile "${libraryTest.conditionWatcher}"

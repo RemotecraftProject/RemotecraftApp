@@ -19,15 +19,15 @@ import com.zireck.remotecraft.model.NetworkAddressModel;
 import com.zireck.remotecraft.model.PermissionModel;
 import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.tools.UriParser;
-import com.zireck.remotecraft.view.SearchServerView;
+import com.zireck.remotecraft.view.ServerSearchView;
 import timber.log.Timber;
 
-public class SearchServerPresenter implements Presenter<SearchServerView> {
+public class ServerSearchPresenter implements Presenter<ServerSearchView> {
 
   private static final String QUERY_PARAMETER_IP = "ip";
   private static final String QUERY_PARAMETER_PORT = "port";
 
-  private SearchServerView view;
+  private ServerSearchView view;
   private final MaybeInteractor getWifiStateInteractor;
   private final SearchServerInteractor searchServerInteractor;
   private final SearchServerForIpInteractor searchServerForIpInteractor;
@@ -41,7 +41,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
   private boolean isScanningWifi = false;
   private boolean isScanningQr = false;
 
-  public SearchServerPresenter(MaybeInteractor getWifiStateInteractor,
+  public ServerSearchPresenter(MaybeInteractor getWifiStateInteractor,
       SearchServerInteractor searchServerInteractor,
       SearchServerForIpInteractor searchServerForIpInteractor,
       CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor, RequestPermissionInteractor requestPermissionInteractor,
@@ -60,7 +60,7 @@ public class SearchServerPresenter implements Presenter<SearchServerView> {
     this.uriParser = uriParser;
   }
 
-  @Override public void attachView(@NonNull SearchServerView view) {
+  @Override public void attachView(@NonNull ServerSearchView view) {
     this.view = view;
   }
 
