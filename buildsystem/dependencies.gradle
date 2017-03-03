@@ -31,11 +31,13 @@ ext.version = [
     jUnit                     : "4.12",
     mockito                   : "1.9.0",
     robolectric               : "3.2.2",
+    daggerMock                : "0.6.4",
     powermock                 : "1.6.1",
     powermockrunner           : "1.6.1",
     powermockito              : "1.6.1",
     espresso                  : "2.2.2",
-    conditionWatcher          : "0.1"
+    conditionWatcher          : "0.1",
+    openGlApi                 : "gl1.1-android-2.1_r1"
 ]
 
 def version = ext.version;
@@ -71,11 +73,13 @@ ext.dependency = [
     jUnit                     : "junit:junit:${version.jUnit}",
     mockito                   : "org.mockito:mockito-core:${version.mockito}",
     robolectric               : "org.robolectric:robolectric:${version.robolectric}",
+    daggerMock                : "com.github.fabioCollini:DaggerMock:${version.daggerMock}",
     powermock                 : "org.powermock:powermock:${version.powermock}",
     powermockrunner           : "org.powermock:powermock-module-junit4:${version.powermockrunner}",
     powermockito              : "org.powermock:powermock-api-mockito:${version.powermockito}",
     espresso                  : "com.android.support.test.espresso:espresso-core:${version.espresso}",
-    conditionWatcher          : "com.azimolabs.conditionwatcher:conditionwatcher:${version.conditionWatcher}"
+    conditionWatcher          : "com.azimolabs.conditionwatcher:conditionwatcher:${version.conditionWatcher}",
+    openGlApi                 : "org.khronos:opengl-api:${version.openGlApi}"
 ]
 
 def dependency = ext.dependency;
@@ -161,6 +165,8 @@ ext.presentationTestDependencies = [
     jUnit                     : "${dependency.jUnit}",
     mockito                   : "${dependency.mockito}",
     robolectric               : "${dependency.robolectric}",
+    daggerMock                : "${dependency.daggerMock}",
     espresso                  : "${dependency.espresso}",
-    conditionWatcher          : "${dependency.conditionWatcher}"
+    conditionWatcher          : "${dependency.conditionWatcher}",
+    openGlApi                 : "${dependency.openGlApi}"
 ]

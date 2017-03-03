@@ -13,6 +13,7 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
+@SuppressWarnings("WeakerAccess")
 @Module
 public class ApplicationModule {
   private final RemotecraftApp application;
@@ -21,25 +22,24 @@ public class ApplicationModule {
     this.application = application;
   }
 
-  @Provides @Singleton Context provideApplicationContext() {
+  @Provides @Singleton public Context provideApplicationContext() {
     return this.application;
   }
 
-  @Provides @Singleton ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
+  @Provides @Singleton public ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
     return jobExecutor;
   }
 
-  @Provides @Singleton PostExecutionThread providePostExecutionThread(UiThread uiThread) {
+  @Provides @Singleton public PostExecutionThread providePostExecutionThread(UiThread uiThread) {
     return uiThread;
   }
 
-  @Provides @Singleton
-  Navigator provideNavigator() {
+  @Provides @Singleton public Navigator provideNavigator() {
     return new Navigator();
   }
 
-  @Provides @Singleton ReceiversProvider provideReceiversProvider(
-      ReceiversDataProvider receiversDataProvider) {
+  @Provides @Singleton
+  public ReceiversProvider provideReceiversProvider(ReceiversDataProvider receiversDataProvider) {
     return receiversDataProvider;
   }
 }

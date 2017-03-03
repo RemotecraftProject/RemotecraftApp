@@ -3,6 +3,7 @@ package com.zireck.remotecraft;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import com.zireck.remotecraft.dagger.components.ApplicationComponent;
 import com.zireck.remotecraft.dagger.components.DaggerApplicationComponent;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
@@ -34,6 +35,11 @@ public class RemotecraftApp extends Application implements Application.ActivityL
 
   public ApplicationComponent getApplicationComponent() {
     return this.applicationComponent;
+  }
+
+  @VisibleForTesting
+  public void setApplicationComponent(ApplicationComponent applicationComponent) {
+    this.applicationComponent = applicationComponent;
   }
 
   @Override public void onActivityCreated(Activity activity, Bundle bundle) {
