@@ -26,3 +26,9 @@ allprojects {
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
+
+allprojects {
+  tasks.withType(Test) {
+    maxHeapSize = "1g"
+  }
+}
