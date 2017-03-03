@@ -152,6 +152,7 @@ ext.presentationDependencies = [
     appCompat                 : "${dependency.appCompat}",
     recyclerView              : "${dependency.recyclerView}",
     cardView                  : "${dependency.cardView}",
+    androidAnnotations        : "${dependency.androidAnnotations}",
 
     butterKnifeCompiler       : "${dependency.butterKnifeCompiler}",
     butterKnife               : "${dependency.butterKnife}",
