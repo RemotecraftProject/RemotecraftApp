@@ -39,6 +39,9 @@ https://github.com/AzimoLabs/ConditionWatcher
 **Android UI Test — Espresso Matcher for ImageView** <br />
 https://medium.com/@dbottillo/android-ui-test-espresso-matcher-for-imageview-1a28c832626f#.pmayfwrf9
 
+**Asserting for a Toast message using Robolectric** <br />
+http://www.jameselsey.co.uk/blogs/techblog/asserting-for-a-toast-message-using-robolectric/
+
 ## License
 
     Copyright 2017 Andrés Hernández
