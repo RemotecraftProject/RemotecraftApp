@@ -3,9 +3,11 @@ package com.zireck.remotecraft.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.dagger.components.DaggerServerFoundComponent;
 import com.zireck.remotecraft.dagger.components.ServerFoundComponent;
@@ -43,6 +45,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     setContentView(R.layout.activity_server_found);
 
     initInjector();
+    initUi();
     presenter.attachView(this);
     mapExtras();
   }
@@ -55,6 +58,12 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
         .build();
 
     serverFoundComponent.inject(this);
+  }
+
+  private void initUi() {
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
   }
 
   private void mapExtras() {
@@ -74,5 +83,17 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
 
   @Override public void renderNetworkInfo(String networkInfo) {
     networkInfoView.setText(networkInfo);
+  }
+
+  @Override public void navigateBack(boolean isSuccess, ServerModel serverModel) {
+    navigator.finishActivity(this, isSuccess, KEY_SERVER, serverModel);
+  }
+
+  @OnClick(R.id.button_accept) public void onClickAccept(View view) {
+    presenter.onClickAccept();
+  }
+
+  @OnClick(R.id.button_cancel) public void onClickCancel(View view) {
+    presenter.onClickCancel();
   }
 }

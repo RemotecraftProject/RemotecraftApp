@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
@@ -88,6 +89,14 @@ public class ServerSearchActivity extends BaseActivity
     presenter.destroy();
   }
 
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    boolean isSuccess = resultCode == RESULT_OK;
+    ServerModel serverModel = data.getExtras().getParcelable(ServerFoundActivity.KEY_SERVER);
+    presenter.onNavigationResult(requestCode, isSuccess, serverModel);
+  }
+
   @Override public void onBackPressed() {
     super.onBackPressed();
   }
@@ -98,6 +107,10 @@ public class ServerSearchActivity extends BaseActivity
 
   @Override public void navigateToServerDetail(ServerModel serverModel) {
     navigator.navigateToServerFoundActivity(this, serverModel);
+  }
+
+  @Override public void navigateToMainScreen(ServerModel serverModel) {
+    Toast.makeText(this, "Finally connecting to server", Toast.LENGTH_SHORT).show();
   }
 
   @Override public void showMessage(String message) {

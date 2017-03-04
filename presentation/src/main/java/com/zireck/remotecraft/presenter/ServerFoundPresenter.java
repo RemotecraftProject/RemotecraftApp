@@ -34,6 +34,14 @@ public class ServerFoundPresenter implements Presenter<ServerFoundView> {
 
   }
 
+  public void onClickAccept() {
+    view.navigateBack(true, serverModel);
+  }
+
+  public void onClickCancel() {
+    view.navigateBack(false, serverModel);
+  }
+
   private void showServerInView(ServerModel serverModel) {
     // TODO Check if it's a valid Server as well
     if (serverModel == null) {

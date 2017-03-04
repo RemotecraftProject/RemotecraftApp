@@ -4,6 +4,7 @@ import com.zireck.remotecraft.model.ServerModel;
 
 public interface ServerSearchView extends BaseView {
   void navigateToServerDetail(ServerModel serverModel);
+  void navigateToMainScreen(ServerModel serverModel);
   void showMessage(String message);
   void showError(Exception exception);
   void closeMenu();

@@ -18,6 +18,7 @@ import com.zireck.remotecraft.mapper.ServerModelDataMapper;
 import com.zireck.remotecraft.model.NetworkAddressModel;
 import com.zireck.remotecraft.model.PermissionModel;
 import com.zireck.remotecraft.model.ServerModel;
+import com.zireck.remotecraft.navigation.Navigator;
 import com.zireck.remotecraft.tools.UriParser;
 import com.zireck.remotecraft.view.ServerSearchView;
 import timber.log.Timber;
@@ -82,6 +83,14 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   @Override public void destroy() {
     searchServerInteractor.dispose();
     searchServerForIpInteractor.dispose();
+  }
+
+  public void onNavigationResult(int requestCode, boolean isSuccess, ServerModel serverModel) {
+    if (requestCode == Navigator.RequestCode.SERVER_FOUND) {
+      if (isSuccess) {
+        view.navigateToMainScreen(serverModel);
+      }
+    }
   }
 
   public void onClickScanWifi() {
