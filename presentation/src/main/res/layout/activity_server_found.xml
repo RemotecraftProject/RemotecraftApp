@@ -1,54 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-  <ImageView
-      android:id="@+id/image_header"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-      tools:background="@color/md_grey_800"
-      />
-
-  <TextView
-      android:id="@+id/world_name"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/image_header"
-      />
-
-  <TextView
-      android:id="@+id/player_name"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/world_name"
-      />
-
-  <TextView
-      android:id="@+id/network_info"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/player_name"
+  <com.zireck.remotecraft.view.custom.ServerInfoView
+      android:id="@+id/server_info"
+      android:layout_width="350dp"
+      android:layout_height="250dp"
+      android:layout_centerInParent="true"
       />
 
   <Button
-      android:id="@+id/button_accept"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_above="@+id/button_cancel"
-      android:text="Accept"
-      />
-
-  <Button
-      android:id="@+id/button_cancel"
+      android:id="@+id/button_connect"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      android:text="Cancel"
+      android:layout_margin="16dp"
+      android:text="Connect"
       />
 
 </RelativeLayout>

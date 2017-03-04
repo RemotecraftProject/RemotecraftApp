@@ -3,32 +3,32 @@ package com.zireck.remotecraft.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.dagger.components.DaggerServerFoundComponent;
 import com.zireck.remotecraft.dagger.components.ServerFoundComponent;
 import com.zireck.remotecraft.dagger.modules.PresentersModule;
+import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.presenter.ServerFoundPresenter;
 import com.zireck.remotecraft.view.ServerFoundView;
+import com.zireck.remotecraft.view.custom.ServerInfoView;
 import javax.inject.Inject;
 
 public class ServerFoundActivity extends BaseActivity implements ServerFoundView {
 
   public static final String KEY_SERVER = "server";
 
-  @Inject ServerFoundPresenter presenter;
   private ServerFoundComponent serverFoundComponent;
 
-  @BindView(R.id.world_name) TextView worldNameView;
-  @BindView(R.id.player_name) TextView playerNameView;
-  @BindView(R.id.network_info) TextView networkInfoView;
-  @BindView(R.id.button_accept) Button acceptButton;
-  @BindView(R.id.button_cancel) Button cancelButton;
+  @Inject ServerFoundPresenter presenter;
+  @Inject ImageLoader imageLoader;
+
+  @BindView(R.id.server_info) ServerInfoView serverInfoView;
 
   public static Intent getCallingIntent(Context context, ServerModel serverModel) {
     Intent intent = new Intent(context, ServerFoundActivity.class);
@@ -73,27 +73,33 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     }
   }
 
-  @Override public void renderWorldName(String worldName) {
-    worldNameView.setText(worldName);
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        presenter.onClickCancel();
+        return true;
+    }
+
+    return super.onOptionsItemSelected(item);
   }
 
-  @Override public void renderPlayerName(String playerName) {
-    playerNameView.setText(playerName);
+  @Override public void renderServer(ServerModel serverModel) {
+    serverInfoView.renderServer(this, serverModel, imageLoader);
+
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setTitle(serverModel.getWorldName());
+    }
   }
 
-  @Override public void renderNetworkInfo(String networkInfo) {
-    networkInfoView.setText(networkInfo);
+  @Override public void showError(String errorMessage) {
+    Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
   }
 
   @Override public void navigateBack(boolean isSuccess, ServerModel serverModel) {
     navigator.finishActivity(this, isSuccess, KEY_SERVER, serverModel);
   }
 
-  @OnClick(R.id.button_accept) public void onClickAccept(View view) {
+  @OnClick(R.id.button_connect) public void onClickAccept(View view) {
     presenter.onClickAccept();
-  }
-
-  @OnClick(R.id.button_cancel) public void onClickCancel(View view) {
-    presenter.onClickCancel();
   }
 }

@@ -43,7 +43,6 @@ public class ServerFoundPresenter implements Presenter<ServerFoundView> {
   }
 
   private void showServerInView(ServerModel serverModel) {
-    // TODO Check if it's a valid Server as well
     if (serverModel == null) {
       showErrorServerInView();
     } else {
@@ -52,14 +51,10 @@ public class ServerFoundPresenter implements Presenter<ServerFoundView> {
   }
 
   private void showErrorServerInView() {
-    view.renderWorldName("Invalid Server");
-    view.renderPlayerName("");
-    view.renderNetworkInfo("0.0.0.0");
+    view.showError("Invalid Server");
   }
 
   private void showValidServerInView(ServerModel serverModel) {
-    view.renderWorldName(serverModel.getWorldName());
-    view.renderPlayerName(serverModel.getPlayerName());
-    view.renderNetworkInfo(String.format("%s @ %s", serverModel.getIp(), serverModel.getSsid()));
+    view.renderServer(serverModel);
   }
 }
