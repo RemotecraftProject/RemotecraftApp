@@ -2,9 +2,8 @@ package com.zireck.remotecraft.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.Toast;
 import com.zireck.remotecraft.BuildConfig;
-import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.RemotecraftApp;
 import com.zireck.remotecraft.dagger.components.ApplicationComponent;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
@@ -20,12 +19,14 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowToast;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@RunWith(RobolectricTestRunner.class) @Config(constants = BuildConfig.class, sdk = 24)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 24, application = RemotecraftApp.class)
 public class ServerFoundActivityTest {
 
   private ServerFoundActivity serverFoundActivity;
@@ -70,25 +71,15 @@ public class ServerFoundActivityTest {
     assertThat(actualServerModel.getPlayerName(), is("GenerikB"));
   }
 
-  @Test public void shouldProperlyRenderWorldName() throws Exception {
-    serverFoundActivity.renderWorldName("Reign of Giants");
+  @Test public void shouldDisplayError() throws Exception {
+    serverFoundActivity.showError("Something came up");
 
-    TextView worldNameView = (TextView) serverFoundActivity.findViewById(R.id.world_name);
-    assertThat(worldNameView.getText().toString(), is("Reign of Giants"));
-  }
-
-  @Test public void shouldProperlyRenderPlayerName() throws Exception {
-    serverFoundActivity.renderPlayerName("GenerikB");
-
-    TextView playerNameView = (TextView) serverFoundActivity.findViewById(R.id.player_name);
-    assertThat(playerNameView.getText().toString(), is("GenerikB"));
-  }
-
-  @Test public void shouldProperlyRenderNetworkInfo() throws Exception {
-    serverFoundActivity.renderNetworkInfo("192.168.15.47 @ WLAN_C33");
-
-    TextView networkInfoView = (TextView) serverFoundActivity.findViewById(R.id.network_info);
-    assertThat(networkInfoView.getText().toString(), is("192.168.15.47 @ WLAN_C33"));
+    Toast latestToast = ShadowToast.getLatestToast();
+    String textOfLatestToast = ShadowToast.getTextOfLatestToast();
+    assertThat(latestToast, notNullValue());
+    assertThat(latestToast.getDuration(), is(Toast.LENGTH_LONG));
+    assertThat(textOfLatestToast, notNullValue());
+    assertThat(textOfLatestToast, is("Something came up"));
   }
 
   private RemotecraftApp getApp() {

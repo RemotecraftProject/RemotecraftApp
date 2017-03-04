@@ -3,9 +3,9 @@ package com.zireck.remotecraft.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.zireck.remotecraft.R;
@@ -92,7 +92,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   }
 
   @Override public void showError(String errorMessage) {
-    Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_LONG).show();
+    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
   }
 
   @Override public void navigateBack(boolean isSuccess, ServerModel serverModel) {
