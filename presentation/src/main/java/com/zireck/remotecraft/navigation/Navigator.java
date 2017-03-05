@@ -37,6 +37,10 @@ public class Navigator {
     }
     int result = isSuccess ? Activity.RESULT_OK : Activity.RESULT_CANCELED;
     activity.setResult(result, intent);
+    finishActivity(activity);
+  }
+
+  public void finishActivity(Activity activity) {
     activity.finish();
   }
 
@@ -46,6 +50,7 @@ public class Navigator {
   }
 
   public void navigateToServerFoundActivity(Activity activity, final ServerModel serverModel) {
+    checkValidActivity(activity);
     if (serverModel == null) {
       throw new IllegalArgumentException("Cannot navigate using a null ServerModel.");
     }
