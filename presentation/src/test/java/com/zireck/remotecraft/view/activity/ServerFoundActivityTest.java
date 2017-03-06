@@ -42,7 +42,7 @@ public class ServerFoundActivityTest {
   }
 
   @Test public void shouldGetValidCallingIntent() throws Exception {
-    ServerModel serverModel = new ServerModel.Builder()
+    ServerModel serverModel = ServerModel.builder()
         .ssid("WLAN_C33")
         .ip("192.168.15.47")
         .hostname("iMac")
@@ -61,14 +61,14 @@ public class ServerFoundActivityTest {
     assertThat(extras.containsKey(ServerFoundActivity.KEY_SERVER), is(true));
     ServerModel actualServerModel = extras.getParcelable(ServerFoundActivity.KEY_SERVER);
     assertThat(actualServerModel, notNullValue());
-    assertThat(actualServerModel.getSsid(), is("WLAN_C33"));
-    assertThat(actualServerModel.getIp(), is("192.168.15.47"));
-    assertThat(actualServerModel.getHostname(), is("iMac"));
-    assertThat(actualServerModel.getOs(), is("macOS Sierra"));
-    assertThat(actualServerModel.getVersion(), is("2.4"));
-    assertThat(actualServerModel.getSeed(), is("4955335923"));
-    assertThat(actualServerModel.getWorldName(), is("Reign of Giants"));
-    assertThat(actualServerModel.getPlayerName(), is("GenerikB"));
+    assertThat(actualServerModel.ssid(), is("WLAN_C33"));
+    assertThat(actualServerModel.ip(), is("192.168.15.47"));
+    assertThat(actualServerModel.hostname(), is("iMac"));
+    assertThat(actualServerModel.os(), is("macOS Sierra"));
+    assertThat(actualServerModel.version(), is("2.4"));
+    assertThat(actualServerModel.seed(), is("4955335923"));
+    assertThat(actualServerModel.worldName(), is("Reign of Giants"));
+    assertThat(actualServerModel.playerName(), is("GenerikB"));
   }
 
   @Test public void shouldDisplayError() throws Exception {

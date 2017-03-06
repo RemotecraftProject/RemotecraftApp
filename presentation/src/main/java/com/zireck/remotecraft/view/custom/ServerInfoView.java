@@ -39,12 +39,12 @@ public class ServerInfoView extends RelativeLayout {
   public void renderServer(Context context, ServerModel serverModel, ImageLoader imageLoader) {
     inflateView(context);
 
-    loadAvatarFor(serverModel.getPlayerName(), imageLoader);
-    playerNameView.setText(serverModel.getPlayerName());
-    worldNameView.setText(serverModel.getWorldName());
-    ssidAndIpView.setText(String.format("%s (%s)", serverModel.getSsid(), serverModel.getIp()));
+    loadAvatarFor(serverModel.playerName(), imageLoader);
+    playerNameView.setText(serverModel.playerName());
+    worldNameView.setText(serverModel.worldName());
+    ssidAndIpView.setText(String.format("%s (%s)", serverModel.ssid(), serverModel.ip()));
     hostnameAndOsView.setText(
-        String.format("%s (%s)", serverModel.getHostname(), serverModel.getOs()));
+        String.format("%s (%s)", serverModel.hostname(), serverModel.os()));
   }
 
   private View inflateView(Context context) {

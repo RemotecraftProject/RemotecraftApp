@@ -45,7 +45,16 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
   @Test(expected = IllegalArgumentException.class)
   public void shouldThrowExceptionNavigatingToServerFoundActivityGivenNullActivity()
       throws Exception {
-    ServerModel serverModel = new ServerModel.Builder().worldName("Reign of Giants").build();
+    ServerModel serverModel = ServerModel.builder()
+        .ssid("WLAN_C33")
+        .ip("192.168.1.34")
+        .hostname("iMac")
+        .os("macOS")
+        .version("1.48")
+        .seed("34640505599934")
+        .worldName("Reign of Giants")
+        .playerName("Zireck")
+        .build();
 
     navigator.navigateToServerFoundActivity(null, serverModel);
   }

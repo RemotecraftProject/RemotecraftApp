@@ -87,7 +87,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     serverInfoView.renderServer(this, serverModel, imageLoader);
 
     if (getSupportActionBar() != null) {
-      getSupportActionBar().setTitle(serverModel.getWorldName());
+      getSupportActionBar().setTitle(serverModel.worldName());
     }
   }
 

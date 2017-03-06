@@ -33,7 +33,7 @@ public class ServerModelDataMapperTest {
   }
 
   @Test public void shouldNotReturnNullWorldModelWhenMappingValidWorld() throws Exception {
-    Server server = getFakeWorld();
+    Server server = getFakeServer();
 
     ServerModel serverModel = serverModelDataMapper.transform(server);
 
@@ -47,7 +47,7 @@ public class ServerModelDataMapperTest {
   }
 
   @Test public void shouldReturnWorldModelInstanceWhenMappingWorld() throws Exception {
-    Server server = getFakeWorld();
+    Server server = getFakeServer();
 
     ServerModel serverModel = serverModelDataMapper.transform(server);
 
@@ -55,16 +55,16 @@ public class ServerModelDataMapperTest {
   }
 
   @Test public void shouldTransformProperlyAllFieldsWhenMappingWorld() throws Exception {
-    Server server = getFakeWorld();
+    Server server = getFakeServer();
 
     ServerModel serverModel = serverModelDataMapper.transform(server);
 
-    assertThat(FAKE_SSID, is(serverModel.getSsid()));
-    assertThat(FAKE_IP, is(serverModel.getIp()));
-    assertThat(FAKE_VERSION, is(serverModel.getVersion()));
-    assertThat(FAKE_SEED, is(serverModel.getSeed()));
-    assertThat(FAKE_WORLD_NAME, is(serverModel.getWorldName()));
-    assertThat(FAKE_PLAYER_NAME, is(serverModel.getPlayerName()));
+    assertThat(FAKE_SSID, is(serverModel.ssid()));
+    assertThat(FAKE_IP, is(serverModel.ip()));
+    assertThat(FAKE_VERSION, is(serverModel.version()));
+    assertThat(FAKE_SEED, is(serverModel.seed()));
+    assertThat(FAKE_WORLD_NAME, is(serverModel.worldName()));
+    assertThat(FAKE_PLAYER_NAME, is(serverModel.playerName()));
   }
 
   @Test public void shouldReturnEmptyWorldModelCollectionWhenMappingEmptyWorldCollection()
@@ -78,9 +78,9 @@ public class ServerModelDataMapperTest {
   @Test public void shouldReturnTheSameAmountOfElementsWhenMappingWorldCollection()
       throws Exception {
     ArrayList<Server> servers = new ArrayList<>();
-    servers.add(mock(Server.class));
-    servers.add(mock(Server.class));
-    servers.add(mock(Server.class));
+    servers.add(getFakeServer());
+    servers.add(getFakeServer());
+    servers.add(getFakeServer());
 
     Collection<ServerModel> serverModels = serverModelDataMapper.transform(servers);
 
@@ -91,9 +91,9 @@ public class ServerModelDataMapperTest {
   @Test public void shouldReturnWorldModelInstanceCollectionWhenMappingWorldCollection()
       throws Exception {
     ArrayList<Server> servers = new ArrayList<>();
-    servers.add(mock(Server.class));
-    servers.add(mock(Server.class));
-    servers.add(mock(Server.class));
+    servers.add(getFakeServer());
+    servers.add(getFakeServer());
+    servers.add(getFakeServer());
 
     ArrayList<ServerModel> serverModels =
         (ArrayList<ServerModel>) serverModelDataMapper.transform(servers);
@@ -103,7 +103,7 @@ public class ServerModelDataMapperTest {
     assertThat(serverModels.get(2), is(instanceOf(ServerModel.class)));
   }
 
-  private Server getFakeWorld() {
+  private Server getFakeServer() {
     return new Server.Builder()
         .ssid(FAKE_SSID)
         .ip(FAKE_IP)

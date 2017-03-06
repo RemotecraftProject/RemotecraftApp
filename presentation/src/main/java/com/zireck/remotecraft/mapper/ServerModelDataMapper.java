@@ -19,7 +19,7 @@ import javax.inject.Inject;
       throw new IllegalArgumentException("Cannot transform a null Server object.");
     }
 
-    return new ServerModel.Builder()
+    return ServerModel.builder()
         .ssid(server.getSsid())
         .ip(server.getIp())
         .hostname(server.getHostname())
