@@ -2,23 +2,37 @@ package com.zireck.remotecraft;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import com.zireck.remotecraft.dagger.components.ApplicationComponent;
 import com.zireck.remotecraft.dagger.components.DaggerApplicationComponent;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
+import com.zireck.remotecraft.tools.ActivityTracker;
 import timber.log.Timber;
 
-public class RemotecraftApp extends Application implements Application.ActivityLifecycleCallbacks {
+public class RemotecraftApp extends Application {
 
   private ApplicationComponent applicationComponent;
-  private Activity currentActivity;
+  private ActivityTracker activityTracker;
 
   @Override public void onCreate() {
     super.onCreate();
-    this.registerActivityLifecycleCallbacks(this);
+
     this.initLogger();
     this.initializeInjector();
+    this.initActivityTracker();
+  }
+
+  public ApplicationComponent getApplicationComponent() {
+    return this.applicationComponent;
+  }
+
+  @VisibleForTesting
+  public void setApplicationComponent(ApplicationComponent applicationComponent) {
+    this.applicationComponent = applicationComponent;
+  }
+
+  public Activity getCurrentActivity() {
+    return activityTracker != null ? activityTracker.getCurrentActivity() : null;
   }
 
   private void initLogger() {
@@ -33,44 +47,8 @@ public class RemotecraftApp extends Application implements Application.ActivityL
         .build();
   }
 
-  public ApplicationComponent getApplicationComponent() {
-    return this.applicationComponent;
-  }
-
-  @VisibleForTesting
-  public void setApplicationComponent(ApplicationComponent applicationComponent) {
-    this.applicationComponent = applicationComponent;
-  }
-
-  @Override public void onActivityCreated(Activity activity, Bundle bundle) {
-    currentActivity = activity;
-  }
-
-  @Override public void onActivityStarted(Activity activity) {
-    currentActivity = activity;
-  }
-
-  @Override public void onActivityResumed(Activity activity) {
-    currentActivity = activity;
-  }
-
-  @Override public void onActivityPaused(Activity activity) {
-
-  }
-
-  @Override public void onActivityStopped(Activity activity) {
-
-  }
-
-  @Override public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-
-  }
-
-  @Override public void onActivityDestroyed(Activity activity) {
-
-  }
-
-  public Activity getCurrentActivity() {
-    return currentActivity;
+  private void initActivityTracker() {
+    activityTracker = new ActivityTracker();
+    registerActivityLifecycleCallbacks(activityTracker);
   }
 }
