@@ -1,43 +1,26 @@
 package com.zireck.remotecraft.model;
 
-public class NetworkAddressModel {
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import com.google.auto.value.AutoValue;
 
-  private final String ip;
-  private final int port;
+@AutoValue public abstract class NetworkAddressModel implements Parcelable {
 
-  public NetworkAddressModel(Builder builder) {
-    this.ip = builder.ip;
-    this.port = builder.port;
+  public abstract @NonNull String ip();
+  public abstract int port();
+
+  public @NonNull Builder toBuilder() {
+    return new AutoValue_NetworkAddressModel.Builder(this);
   }
 
-  public String getIp() {
-    return ip;
+  public static @NonNull Builder builder() {
+    return new AutoValue_NetworkAddressModel.Builder();
   }
 
-  public int getPort() {
-    return port;
-  }
-
-  public static class Builder {
-    private String ip;
-    private int port;
-
-    public Builder() {
-
-    }
-
-    public NetworkAddressModel build() {
-      return new NetworkAddressModel(this);
-    }
-
-    public Builder with(String ip) {
-      this.ip = ip;
-      return this;
-    }
-
-    public Builder and(int port) {
-      this.port = port;
-      return this;
-    }
+  @AutoValue.Builder
+  public abstract static class Builder {
+    public abstract @NonNull Builder ip(@NonNull String ip);
+    public abstract @NonNull Builder port(int port);
+    public abstract @NonNull NetworkAddressModel build();
   }
 }

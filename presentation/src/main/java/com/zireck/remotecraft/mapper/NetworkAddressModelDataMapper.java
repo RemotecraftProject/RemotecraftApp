@@ -19,9 +19,9 @@ import javax.inject.Inject;
       throw new IllegalArgumentException("Cannot transform a null NetworkAddress object.");
     }
 
-    return new NetworkAddressModel.Builder()
-        .with(networkAddress.getIp())
-        .and(networkAddress.getPort())
+    return NetworkAddressModel.builder()
+        .ip(networkAddress.getIp())
+        .port(networkAddress.getPort())
         .build();
   }
 
@@ -37,8 +37,8 @@ import javax.inject.Inject;
     }
 
     return new NetworkAddress.Builder()
-        .with(networkAddressModel.getIp())
-        .and(networkAddressModel.getPort())
+        .with(networkAddressModel.ip())
+        .and(networkAddressModel.port())
         .build();
   }
 

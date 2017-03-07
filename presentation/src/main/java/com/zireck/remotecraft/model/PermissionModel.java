@@ -1,63 +1,30 @@
 package com.zireck.remotecraft.model;
 
-public class PermissionModel {
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import com.google.auto.value.AutoValue;
 
-  private final String permission;
-  private final String rationaleTitle;
-  private final String rationaleMessage;
-  private final String deniedMessage;
+@AutoValue public abstract class PermissionModel implements Parcelable {
 
-  private PermissionModel(Builder builder) {
-    this.permission = builder.permission;
-    this.rationaleTitle = builder.rationaleTitle;
-    this.rationaleMessage = builder.rationaleMessage;
-    this.deniedMessage = builder.deniedMessage;
+  public abstract @NonNull String permission();
+  public abstract @NonNull String rationaleTitle();
+  public abstract @NonNull String rationaleMessage();
+  public abstract @NonNull String deniedMessage();
+
+  public @NonNull Builder toBuilder() {
+    return new AutoValue_PermissionModel.Builder(this);
   }
 
-  public String getPermission() {
-    return permission;
+  public static @NonNull Builder builder() {
+    return new AutoValue_PermissionModel.Builder();
   }
 
-  public String getRationaleTitle() {
-    return rationaleTitle;
-  }
-
-  public String getRationaleMessage() {
-    return rationaleMessage;
-  }
-
-  public String getDeniedMessage() {
-    return deniedMessage;
-  }
-
-  public static class Builder {
-    private String permission;
-    private String rationaleTitle;
-    private String rationaleMessage;
-    private String deniedMessage;
-
-    public PermissionModel build() {
-      return new PermissionModel(this);
-    }
-
-    public Builder permission(String permission) {
-      this.permission = permission;
-      return this;
-    }
-
-    public Builder rationaleTitle(String rationaleTitle) {
-      this.rationaleTitle = rationaleTitle;
-      return this;
-    }
-
-    public Builder rationaleMessage(String rationaleMessage) {
-      this.rationaleMessage = rationaleMessage;
-      return this;
-    }
-
-    public Builder deniedMessage(String deniedMessage) {
-      this.deniedMessage = deniedMessage;
-      return this;
-    }
+  @AutoValue.Builder
+  public abstract static class Builder {
+    public abstract @NonNull Builder permission(@NonNull String permission);
+    public abstract @NonNull Builder rationaleTitle(@NonNull String rationaleTitle);
+    public abstract @NonNull Builder rationaleMessage(@NonNull String rationaleMessage);
+    public abstract @NonNull Builder deniedMessage(@NonNull String deniedMessage);
+    public abstract @NonNull PermissionModel build();
   }
 }

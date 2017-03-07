@@ -19,7 +19,7 @@ import javax.inject.Inject;
       throw new IllegalArgumentException("Cannot transform a null Permission object.");
     }
 
-    return new PermissionModel.Builder()
+    return PermissionModel.builder()
         .permission(permission.getPermission())
         .rationaleTitle(permission.getRationaleTitle())
         .rationaleMessage(permission.getRationaleMessage())
@@ -39,10 +39,10 @@ import javax.inject.Inject;
     }
 
     return new Permission.Builder()
-        .permission(permissionModel.getPermission())
-        .rationaleTitle(permissionModel.getRationaleTitle())
-        .rationaleMessage(permissionModel.getRationaleMessage())
-        .deniedMessage(permissionModel.getDeniedMessage())
+        .permission(permissionModel.permission())
+        .rationaleTitle(permissionModel.rationaleTitle())
+        .rationaleMessage(permissionModel.rationaleMessage())
+        .deniedMessage(permissionModel.deniedMessage())
         .build();
   }
 

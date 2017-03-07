@@ -16,7 +16,7 @@ public class PermissionsModule {
   }
 
   @Provides @PerActivity PermissionModel provideCameraPermissionModel(Resources resources) {
-    return new PermissionModel.Builder()
+    return PermissionModel.builder()
         .permission(Manifest.permission.CAMERA)
         .rationaleTitle(resources.getString(R.string.permission_camera_rationale_title))
         .rationaleMessage(resources.getString(R.string.permission_camera_rationale_message))

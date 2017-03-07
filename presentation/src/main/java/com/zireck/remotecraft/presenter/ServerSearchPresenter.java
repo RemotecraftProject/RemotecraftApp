@@ -146,9 +146,9 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
       return;
     }
 
-    NetworkAddressModel networkAddressModel = new NetworkAddressModel.Builder()
-        .with(ip)
-        .and(Integer.parseInt(port))
+    NetworkAddressModel networkAddressModel = NetworkAddressModel.builder()
+        .ip(ip)
+        .port(Integer.parseInt(port))
         .build();
 
     view.closeMenu();
@@ -192,9 +192,9 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
       return null;
     }
 
-    return new NetworkAddressModel.Builder()
-        .with(ip)
-        .and(Integer.parseInt(port))
+    return NetworkAddressModel.builder()
+        .ip(ip)
+        .port(Integer.parseInt(port))
         .build();
   }
 

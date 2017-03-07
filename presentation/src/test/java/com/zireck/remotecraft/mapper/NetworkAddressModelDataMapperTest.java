@@ -40,9 +40,9 @@ import static org.junit.Assert.assertThat;
 
     assertThat(networkAddressModel, notNullValue());
     assertThat(networkAddressModel, instanceOf(NetworkAddressModel.class));
-    assertThat(networkAddressModel.getIp(), notNullValue());
-    assertThat(networkAddressModel.getIp(), is("192.168.1.45"));
-    assertThat(networkAddressModel.getPort(), is(9999));
+    assertThat(networkAddressModel.ip(), notNullValue());
+    assertThat(networkAddressModel.ip(), is("192.168.1.45"));
+    assertThat(networkAddressModel.port(), is(9999));
   }
 
   @Test public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressModelCollection()
@@ -68,16 +68,16 @@ import static org.junit.Assert.assertThat;
         (NetworkAddressModel) networkAddressModels.toArray()[0];
     assertThat(networkAddressModel1, notNullValue());
     assertThat(networkAddressModel1, instanceOf(NetworkAddressModel.class));
-    assertThat(networkAddressModel1.getIp(), notNullValue());
-    assertThat(networkAddressModel1.getIp(), is("192.168.1.45"));
-    assertThat(networkAddressModel1.getPort(), is(9999));
+    assertThat(networkAddressModel1.ip(), notNullValue());
+    assertThat(networkAddressModel1.ip(), is("192.168.1.45"));
+    assertThat(networkAddressModel1.port(), is(9999));
     NetworkAddressModel networkAddressModel2 =
         (NetworkAddressModel) networkAddressModels.toArray()[1];
     assertThat(networkAddressModel2, notNullValue());
     assertThat(networkAddressModel2, instanceOf(NetworkAddressModel.class));
-    assertThat(networkAddressModel2.getIp(), notNullValue());
-    assertThat(networkAddressModel2.getIp(), is("192.168.1.80"));
-    assertThat(networkAddressModel2.getPort(), is(1111));
+    assertThat(networkAddressModel2.ip(), notNullValue());
+    assertThat(networkAddressModel2.ip(), is("192.168.1.80"));
+    assertThat(networkAddressModel2.port(), is(1111));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -88,9 +88,9 @@ import static org.junit.Assert.assertThat;
   }
 
   @Test public void shouldProperlyMapNetworkAddressModelIntoNetworkAddress() throws Exception {
-    NetworkAddressModel networkAddressModel = new NetworkAddressModel.Builder()
-        .with("192.168.1.45")
-        .and(9999)
+    NetworkAddressModel networkAddressModel = NetworkAddressModel.builder()
+        .ip("192.168.1.45")
+        .port(9999)
         .build();
 
     NetworkAddress networkAddress =
@@ -105,13 +105,13 @@ import static org.junit.Assert.assertThat;
 
   @Test public void shouldProperlyMapNetworkAddressModelCollectionIntoNetworkAddressCollection()
       throws Exception {
-    NetworkAddressModel networkAddressModel1 = new NetworkAddressModel.Builder()
-        .with("192.168.1.45")
-        .and(9999)
+    NetworkAddressModel networkAddressModel1 = NetworkAddressModel.builder()
+        .ip("192.168.1.45")
+        .port(9999)
         .build();
-    NetworkAddressModel networkAddressModel2 = new NetworkAddressModel.Builder()
-        .with("192.168.1.80")
-        .and(1111)
+    NetworkAddressModel networkAddressModel2 = NetworkAddressModel.builder()
+        .ip("192.168.1.80")
+        .port(1111)
         .build();
     ArrayList<NetworkAddressModel> networkAddressModels = new ArrayList<>();
     networkAddressModels.add(networkAddressModel1);

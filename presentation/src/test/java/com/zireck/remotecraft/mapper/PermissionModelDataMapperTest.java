@@ -41,14 +41,14 @@ import static org.junit.Assert.assertThat;
 
     assertThat(permissionModel, notNullValue());
     assertThat(permissionModel, instanceOf(PermissionModel.class));
-    assertThat(permissionModel.getPermission(), notNullValue());
-    assertThat(permissionModel.getPermission(), is("CAMERA"));
-    assertThat(permissionModel.getRationaleTitle(), notNullValue());
-    assertThat(permissionModel.getRationaleTitle(), is("Permission Request"));
-    assertThat(permissionModel.getRationaleMessage(), notNullValue());
-    assertThat(permissionModel.getRationaleMessage(), is("You should allow it"));
-    assertThat(permissionModel.getDeniedMessage(), notNullValue());
-    assertThat(permissionModel.getDeniedMessage(), is("Allow it!"));
+    assertThat(permissionModel.permission(), notNullValue());
+    assertThat(permissionModel.permission(), is("CAMERA"));
+    assertThat(permissionModel.rationaleTitle(), notNullValue());
+    assertThat(permissionModel.rationaleTitle(), is("Permission Request"));
+    assertThat(permissionModel.rationaleMessage(), notNullValue());
+    assertThat(permissionModel.rationaleMessage(), is("You should allow it"));
+    assertThat(permissionModel.deniedMessage(), notNullValue());
+    assertThat(permissionModel.deniedMessage(), is("Allow it!"));
   }
 
   @Test public void shouldProperlyMapPermissionCollectionIntoPermissionModelCollection()
@@ -76,13 +76,13 @@ import static org.junit.Assert.assertThat;
     PermissionModel permissionModel1 = (PermissionModel) permissionModels.toArray()[0];
     assertThat(permissionModel1, notNullValue());
     assertThat(permissionModel1, instanceOf(PermissionModel.class));
-    assertThat(permissionModel1.getPermission(), notNullValue());
-    assertThat(permissionModel1.getPermission(), is("CAMERA"));
+    assertThat(permissionModel1.permission(), notNullValue());
+    assertThat(permissionModel1.permission(), is("CAMERA"));
     PermissionModel permissionModel2 = (PermissionModel) permissionModels.toArray()[1];
     assertThat(permissionModel2, notNullValue());
     assertThat(permissionModel2, instanceOf(PermissionModel.class));
-    assertThat(permissionModel2.getPermission(), notNullValue());
-    assertThat(permissionModel2.getPermission(), is("CONTACTS"));
+    assertThat(permissionModel2.permission(), notNullValue());
+    assertThat(permissionModel2.permission(), is("CONTACTS"));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -93,7 +93,7 @@ import static org.junit.Assert.assertThat;
   }
 
   @Test public void shouldProperlyMapPermissionModelIntoPermission() throws Exception {
-    PermissionModel permissionModel = new PermissionModel.Builder()
+    PermissionModel permissionModel = PermissionModel.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
         .rationaleMessage("You should allow it")
@@ -116,13 +116,13 @@ import static org.junit.Assert.assertThat;
 
   @Test public void shouldProperlyMapPermissionModelCollectionIntoPermissionCollection()
       throws Exception {
-    PermissionModel permissionModel1 = new PermissionModel.Builder()
+    PermissionModel permissionModel1 = PermissionModel.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
         .rationaleMessage("You should allow it")
         .deniedMessage("Allow it!")
         .build();
-    PermissionModel permissionModel2 = new PermissionModel.Builder()
+    PermissionModel permissionModel2 = PermissionModel.builder()
         .permission("CONTACTS")
         .rationaleTitle("Permission Request")
         .rationaleMessage("You should allow it, please")
