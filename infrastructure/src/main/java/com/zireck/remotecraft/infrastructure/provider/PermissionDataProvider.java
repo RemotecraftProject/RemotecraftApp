@@ -2,7 +2,6 @@ package com.zireck.remotecraft.infrastructure.provider;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.view.ViewGroup;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;

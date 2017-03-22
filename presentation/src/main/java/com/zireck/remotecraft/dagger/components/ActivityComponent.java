@@ -1,13 +1,8 @@
 package com.zireck.remotecraft.dagger.components;
 
 import android.app.Activity;
-import com.zireck.remotecraft.dagger.PerActivity;
-import com.zireck.remotecraft.dagger.modules.ActivityModule;
-import dagger.Component;
+import dagger.MembersInjector;
 
-@PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
-public interface ActivityComponent {
-  // Exposed to subgraph
-  Activity activity();
+public interface ActivityComponent<A extends Activity> extends MembersInjector<A> {
+
 }

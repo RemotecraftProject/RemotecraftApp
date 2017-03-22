@@ -2,15 +2,22 @@ package com.zireck.remotecraft;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.support.annotation.VisibleForTesting;
+import com.zireck.remotecraft.dagger.ActivityComponentBuilder;
+import com.zireck.remotecraft.dagger.HasActivitySubcomponentBuilders;
 import com.zireck.remotecraft.dagger.components.ApplicationComponent;
 import com.zireck.remotecraft.dagger.components.DaggerApplicationComponent;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
 import com.zireck.remotecraft.tools.ActivityTracker;
+import java.util.Map;
+import javax.inject.Inject;
 import timber.log.Timber;
 
-public class RemotecraftApp extends Application {
+public class RemotecraftApp extends Application implements HasActivitySubcomponentBuilders {
 
+  @Inject
+  Map<Class<? extends Activity>, ActivityComponentBuilder> activityComponentBuilders;
   private ApplicationComponent applicationComponent;
   private ActivityTracker activityTracker;
 
@@ -22,8 +29,13 @@ public class RemotecraftApp extends Application {
     this.initActivityTracker();
   }
 
-  public ApplicationComponent getApplicationComponent() {
-    return this.applicationComponent;
+  public static HasActivitySubcomponentBuilders get(Context context) {
+    return (HasActivitySubcomponentBuilders) context.getApplicationContext();
+  }
+
+  @Override public ActivityComponentBuilder getActivityComponentBuilder(
+      Class<? extends Activity> activityClass) {
+    return activityComponentBuilders.get(activityClass);
   }
 
   @VisibleForTesting
@@ -42,9 +54,10 @@ public class RemotecraftApp extends Application {
   }
 
   private void initializeInjector() {
-    this.applicationComponent = DaggerApplicationComponent.builder()
+    applicationComponent = DaggerApplicationComponent.builder()
         .applicationModule(new ApplicationModule(this))
         .build();
+    applicationComponent.inject(this);
   }
 
   private void initActivityTracker() {

@@ -1,25 +1,29 @@
 package com.zireck.remotecraft.dagger.components;
 
+import com.zireck.remotecraft.dagger.ActivityComponentBuilder;
 import com.zireck.remotecraft.dagger.PerActivity;
-import com.zireck.remotecraft.dagger.modules.ActivityModule;
 import com.zireck.remotecraft.dagger.modules.InteractorsModule;
 import com.zireck.remotecraft.dagger.modules.PermissionsModule;
 import com.zireck.remotecraft.dagger.modules.PresentersModule;
+import com.zireck.remotecraft.dagger.modules.activitymodules.ServerSearchModule;
 import com.zireck.remotecraft.dagger.modules.UiModule;
 import com.zireck.remotecraft.view.activity.ServerSearchActivity;
-import dagger.Component;
+import dagger.Subcomponent;
 
 @PerActivity
-@Component(
-    dependencies = ApplicationComponent.class,
+@Subcomponent(
     modules = {
-        ActivityModule.class,
+        ServerSearchModule.class,
         UiModule.class,
         InteractorsModule.class,
         PresentersModule.class,
         PermissionsModule.class
     }
 )
-public interface ServerSearchComponent extends ActivityComponent {
-  void inject(ServerSearchActivity serverSearchActivity);
+public interface ServerSearchComponent extends ActivityComponent<ServerSearchActivity> {
+
+  @Subcomponent.Builder
+  interface Builder extends ActivityComponentBuilder<ServerSearchModule, ServerSearchComponent> {
+
+  }
 }

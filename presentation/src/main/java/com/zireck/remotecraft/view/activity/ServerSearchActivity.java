@@ -25,11 +25,9 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.zireck.remotecraft.R;
-import com.zireck.remotecraft.dagger.HasComponent;
-import com.zireck.remotecraft.dagger.components.DaggerServerSearchComponent;
+import com.zireck.remotecraft.dagger.HasActivitySubcomponentBuilders;
 import com.zireck.remotecraft.dagger.components.ServerSearchComponent;
-import com.zireck.remotecraft.dagger.modules.InteractorsModule;
-import com.zireck.remotecraft.dagger.modules.UiModule;
+import com.zireck.remotecraft.dagger.modules.activitymodules.ServerSearchModule;
 import com.zireck.remotecraft.exception.ErrorMessageFactory;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.model.ServerModel;
@@ -37,8 +35,7 @@ import com.zireck.remotecraft.presenter.ServerSearchPresenter;
 import com.zireck.remotecraft.view.ServerSearchView;
 import javax.inject.Inject;
 
-public class ServerSearchActivity extends BaseActivity
-    implements HasComponent<ServerSearchComponent>, ServerSearchView {
+public class ServerSearchActivity extends BaseActivity implements ServerSearchView {
 
   @Inject ServerSearchPresenter presenter;
   @Inject ImageLoader imageLoader;
@@ -59,7 +56,6 @@ public class ServerSearchActivity extends BaseActivity
   @BindView(R.id.version) TextView version;
   @BindView(R.id.world) TextView world;
   @BindView(R.id.player) TextView player;
-  private ServerSearchComponent serverSearchComponent;
 
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, ServerSearchActivity.class);
@@ -69,7 +65,6 @@ public class ServerSearchActivity extends BaseActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_server_search);
 
-    initInjector();
     initUi();
     presenter.attachView(this);
   }
@@ -97,12 +92,17 @@ public class ServerSearchActivity extends BaseActivity
     presenter.onNavigationResult(requestCode, isSuccess, serverModel);
   }
 
-  @Override public void onBackPressed() {
-    super.onBackPressed();
+  @Override
+  protected void injectMembers(HasActivitySubcomponentBuilders hasActivitySubcomponentBuilders) {
+    ((ServerSearchComponent.Builder) hasActivitySubcomponentBuilders.getActivityComponentBuilder(
+        ServerSearchActivity.class))
+        .activityModule(new ServerSearchModule(this))
+        .build()
+        .injectMembers(this);
   }
 
-  @Override public ServerSearchComponent getComponent() {
-    return serverSearchComponent;
+  @Override public void onBackPressed() {
+    super.onBackPressed();
   }
 
   @Override public void navigateToServerDetail(ServerModel serverModel) {
@@ -179,17 +179,6 @@ public class ServerSearchActivity extends BaseActivity
 
   @OnClick(R.id.close_camera_button) public void onClickCloseCamera(View view) {
     presenter.onClickCloseCamera();
-  }
-
-  private void initInjector() {
-    serverSearchComponent = DaggerServerSearchComponent.builder()
-        .applicationComponent(getApplicationComponent())
-        .activityModule(getActivityModule())
-        .uiModule(new UiModule())
-        .interactorsModule(new InteractorsModule())
-        .build();
-
-    serverSearchComponent.inject(this);
   }
 
   private void initUi() {

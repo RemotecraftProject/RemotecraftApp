@@ -1,7 +1,7 @@
 ext.version = [
     // General Purpose
     timber                    : "4.3.1",
-    dagger                    : "2.6",
+    dagger                    : "2.7",
     rxJava                    : "2.0.5",
     rxAndroid                 : "2.0.1",
     javaxAnnotation           : "1.0",

@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.dagger.modules;
+package com.zireck.remotecraft.dagger.modules.activitymodules;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -7,18 +7,19 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ActivityModule {
-  private final Activity activity;
+public abstract class ActivityModule<T extends Activity> {
 
-  public ActivityModule(Activity activity) {
+  private final T activity;
+
+  public ActivityModule(T activity) {
     this.activity = activity;
   }
 
-  @Provides @PerActivity Activity activity() {
+  @Provides Activity provideActivity() {
     return this.activity;
   }
 
-  @Provides @PerActivity Resources resources() {
+  @Provides @PerActivity Resources provideResources() {
     return this.activity.getResources();
   }
 }

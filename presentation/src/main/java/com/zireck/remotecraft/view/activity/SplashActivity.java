@@ -3,7 +3,9 @@ package com.zireck.remotecraft.view.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import com.zireck.remotecraft.R;
-import com.zireck.remotecraft.dagger.components.DaggerActivityComponent;
+import com.zireck.remotecraft.dagger.HasActivitySubcomponentBuilders;
+import com.zireck.remotecraft.dagger.components.SplashComponent;
+import com.zireck.remotecraft.dagger.modules.activitymodules.SplashModule;
 
 public class SplashActivity extends BaseActivity {
 
@@ -13,16 +15,17 @@ public class SplashActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash);
 
-    initInjector();
     initUi();
     initTimeout();
   }
 
-  private void initInjector() {
-    DaggerActivityComponent.builder()
-        .applicationComponent(getApplicationComponent())
-        .activityModule(getActivityModule())
-        .build();
+  @Override
+  protected void injectMembers(HasActivitySubcomponentBuilders hasActivitySubcomponentBuilders) {
+    ((SplashComponent.Builder) hasActivitySubcomponentBuilders.getActivityComponentBuilder(
+        SplashActivity.class))
+        .activityModule(new SplashModule(this))
+        .build()
+        .injectMembers(this);
   }
 
   private void initUi() {

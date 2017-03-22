@@ -9,9 +9,9 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.zireck.remotecraft.R;
-import com.zireck.remotecraft.dagger.components.DaggerServerFoundComponent;
+import com.zireck.remotecraft.dagger.HasActivitySubcomponentBuilders;
 import com.zireck.remotecraft.dagger.components.ServerFoundComponent;
-import com.zireck.remotecraft.dagger.modules.PresentersModule;
+import com.zireck.remotecraft.dagger.modules.activitymodules.ServerFoundModule;
 import com.zireck.remotecraft.imageloader.ImageLoader;
 import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.presenter.ServerFoundPresenter;
@@ -22,8 +22,6 @@ import javax.inject.Inject;
 public class ServerFoundActivity extends BaseActivity implements ServerFoundView {
 
   public static final String KEY_SERVER = "server";
-
-  private ServerFoundComponent serverFoundComponent;
 
   @Inject ServerFoundPresenter presenter;
   @Inject ImageLoader imageLoader;
@@ -44,20 +42,18 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_server_found);
 
-    initInjector();
     initUi();
     presenter.attachView(this);
     mapExtras();
   }
 
-  private void initInjector() {
-    serverFoundComponent = DaggerServerFoundComponent.builder()
-        .applicationComponent(getApplicationComponent())
-        .activityModule(getActivityModule())
-        .presentersModule(new PresentersModule())
-        .build();
-
-    serverFoundComponent.inject(this);
+  @Override
+  protected void injectMembers(HasActivitySubcomponentBuilders hasActivitySubcomponentBuilders) {
+    ((ServerFoundComponent.Builder) hasActivitySubcomponentBuilders.getActivityComponentBuilder(
+        ServerFoundActivity.class))
+        .activityModule(new ServerFoundModule(this))
+        .build()
+        .injectMembers(this);
   }
 
   private void initUi() {

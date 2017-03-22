@@ -7,8 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import com.zireck.remotecraft.RemotecraftApp;
-import com.zireck.remotecraft.dagger.components.ApplicationComponent;
-import com.zireck.remotecraft.dagger.modules.ActivityModule;
+import com.zireck.remotecraft.dagger.HasActivitySubcomponentBuilders;
 import com.zireck.remotecraft.navigation.Navigator;
 import javax.inject.Inject;
 
@@ -18,7 +17,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    this.getApplicationComponent().inject(this);
+    initInjector();
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -30,18 +29,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     bindViews();
   }
 
+  protected abstract void injectMembers(
+      HasActivitySubcomponentBuilders hasActivitySubcomponentBuilders);
+
   protected void addFragment(int containerViewId, Fragment fragment) {
     FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
     fragmentTransaction.add(containerViewId, fragment);
     fragmentTransaction.commit();
   }
 
-  protected ApplicationComponent getApplicationComponent() {
-    return ((RemotecraftApp) getApplication()).getApplicationComponent();
-  }
-
-  protected ActivityModule getActivityModule() {
-    return new ActivityModule(this);
+  private void initInjector() {
+    injectMembers(RemotecraftApp.get(this));
   }
 
   private void bindViews() {
