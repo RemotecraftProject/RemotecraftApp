@@ -42,6 +42,14 @@ android {
     disable 'OldTargetApi'
   }
 
+  testOptions {
+    unitTests.all {
+      jacoco {
+        includeNoLocationClasses = true
+      }
+    }
+  }
+
   buildTypes {
     debug {
       testCoverageEnabled = true
