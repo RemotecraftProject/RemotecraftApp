@@ -45,7 +45,7 @@ Learn more about AutoValue: <br />
 http://rst-it.com/blog/autovalue/
 
 ### Injecting mock dependencies in Robolectric tests using Dagger subcomponents
-Once I started learning Robolectric I was facing the problem of injecting mock collaborators when testing activities. At first, I tried using [DaggerMock](https://github.com/fabioCollini/DaggerMock) but I couldn't make it work, got frustrated and forgot about it for quite some time. Recently I came across this blog post ["Activities Subcomponents Multibinding in Dagger 2"](http://frogermcs.github.io/activities-multibinding-in-dagger-2/) which was so enlightening because I learned about this new way of injecting dependencies using subcomponents, only available in Dagger 2.7 onwards.
+Once I started learning Robolectric I was facing the problem of injecting mock collaborators when testing activities. At first, I tried using [DaggerMock](https://github.com/fabioCollini/DaggerMock) but I was unable make it work, got frustrated and forgot about it for quite some time. Recently I came across this blog post ["Activities Subcomponents Multibinding in Dagger 2"](http://frogermcs.github.io/activities-multibinding-in-dagger-2/) which was so enlightening because I learned about this new way of injecting dependencies using subcomponents, only available in Dagger 2.7 onwards.
 
 After that, I just had to define my mock collaborators, create a new subcomponent where I get an activity reference that lets me inject these collaborators, mock the subcomponent builder to return the subcomponent I previously created, and finally add it to the application's **activityComponentBuilders** map.
 
@@ -98,6 +98,9 @@ http://www.jameselsey.co.uk/blogs/techblog/asserting-for-a-toast-message-using-r
 
 **AutoValue - get rid of boilerplate code in your Android app** <br />
 http://rst-it.com/blog/autovalue/
+
+**Activities Subcomponents Multibinding in Dagger 2** <br />
+http://frogermcs.github.io/activities-multibinding-in-dagger-2/
 
 ## License
 
