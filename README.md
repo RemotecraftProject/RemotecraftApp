@@ -8,6 +8,7 @@ Connect and remotely manage your Minecraft server using cutting edge technology!
 - [Running tests](#running-tests)
 - [Technical Documentation](#technical-documentation)
     - [AutoValue](#autovalue)
+    - [Injecting mock dependencies in Robolectric tests using Dagger subcomponents](#injecting-mock-dependencies-in-robolectric-tests-using-dagger-subcomponents)
 - [Credits](#credits)
 - [License](#license)
 
@@ -22,12 +23,12 @@ I wrote a fake server so you don't actually need to be running the videogame its
 
 ## Running tests
 Run the unit tests
-```
+```bash
 ./gradlew check
 ```
 
 Run the UI/Espresso tests
-```
+```bash
 ./gradlew connectedCheck
 ```
 
@@ -42,6 +43,39 @@ It is also worth noting that it is not only desirable but also a good practice t
 
 Learn more about AutoValue: <br />
 http://rst-it.com/blog/autovalue/
+
+### Injecting mock dependencies in Robolectric tests using Dagger subcomponents
+Once I started learning Robolectric I was facing the problem of injecting mock collaborators when testing activities. At first, I tried using [DaggerMock](https://github.com/fabioCollini/DaggerMock) but I couldn't make it work, got frustrated and forgot about it for quite some time. Recently I came across this blog post ["Activities Subcomponents Multibinding in Dagger 2"](http://frogermcs.github.io/activities-multibinding-in-dagger-2/) which was so enlightening because I learned about this new way of injecting dependencies using subcomponents, only available in Dagger 2.7 onwards.
+
+After that, I just had to define my mock collaborators, create a new subcomponent where I get an activity reference that lets me inject these collaborators, mock the subcomponent builder to return the subcomponent I previously created, and finally add it to the application's **activityComponentBuilders** map.
+
+```java
+  @Mock private ServerSearchComponent.Builder mockBuilder;
+  @Mock private Navigator mockNavigator;
+  @Mock private ServerSearchPresenter mockServerSearchPresenter;
+  @Mock private ImageLoader mockImageLoader;
+  
+  private ServerSearchComponent serverSearchComponent = new ServerSearchComponent() {
+    @Override public void injectMembers(ServerSearchActivity instance) {
+      instance.navigator = mockNavigator;
+      instance.presenter = mockServerSearchPresenter;
+      instance.imageLoader = mockImageLoader;
+    }
+  };
+  
+  @Before public void setUp() throws Exception {
+    MockitoAnnotations.initMocks(this);
+
+    when(mockBuilder.build()).thenReturn(serverSearchComponent);
+    when(mockBuilder.activityModule(any(ServerSearchModule.class))).thenReturn(mockBuilder);
+    ((RemotecraftMockApp) RuntimeEnvironment.application).putActivityComponentBuilder(mockBuilder, ServerSearchActivity.class);
+
+    // ...
+    serverSearchActivity = Robolectric.setupActivity(ServerSearchActivity.class);
+    // ...
+  }
+```
+*ServerSearchActivityTest.java*
 
 ## Credits
 
