@@ -26,6 +26,7 @@ dependencies {
   compile "${library.apacheCommonsValidator}"
 
   testCompile "${libraryTest.jUnit}"
+  testCompile "${libraryTest.assertJ}"
   testCompile "${libraryTest.mockito}"
 }
 

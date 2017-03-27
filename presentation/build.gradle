@@ -116,9 +116,9 @@ dependencies {
   compile "${library.floatingActionButton}"
 
   testCompile "${libraryTest.jUnit}"
+  testCompile "${libraryTest.assertJ}"
   testCompile "${libraryTest.mockito}"
   testCompile "${libraryTest.robolectric}"
-  testCompile "${libraryTest.daggerMock}"
   testCompile "${libraryTest.openGlApi}"
 
   androidTestCompile "${libraryTest.espresso}"

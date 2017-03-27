@@ -59,6 +59,7 @@ dependencies {
   compile "${library.dexter}"
 
   testCompile "${libraryTest.jUnit}"
+  testCompile "${libraryTest.assertJ}"
   testCompile "${libraryTest.powermock}"
   testCompile "${libraryTest.powermockrunner}"
   testCompile "${libraryTest.powermockito}"
