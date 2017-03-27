@@ -1,7 +1,6 @@
 package com.zireck.remotecraft.presenter;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
@@ -23,12 +22,11 @@ import com.zireck.remotecraft.tools.UriParser;
 import com.zireck.remotecraft.view.ServerSearchView;
 import timber.log.Timber;
 
-public class ServerSearchPresenter implements Presenter<ServerSearchView> {
+public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
 
   private static final String QUERY_PARAMETER_IP = "ip";
   private static final String QUERY_PARAMETER_PORT = "port";
 
-  private ServerSearchView view;
   private final MaybeInteractor getWifiStateInteractor;
   private final SearchServerInteractor searchServerInteractor;
   private final SearchServerForIpInteractor searchServerForIpInteractor;
@@ -61,26 +59,25 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
     this.uriParser = uriParser;
   }
 
-  @Override public void attachView(@NonNull ServerSearchView view) {
-    this.view = view;
-  }
+  public void resume() {
+    checkViewAttached();
 
-  @Override public void resume() {
     if (!isScanningWifi && !isScanningQr) {
-      view.hideLoading();
+      getView().hideLoading();
     }
 
     if (isScanningQr) {
-      view.startQrScanner();
+      getView().startQrScanner();
     }
   }
 
-  @Override public void pause() {
-    view.closeMenu();
-    view.stopQrScanner();
+  public void pause() {
+    checkViewAttached();
+    getView().closeMenu();
+    getView().stopQrScanner();
   }
 
-  @Override public void destroy() {
+  public void destroy() {
     searchServerInteractor.dispose();
     searchServerForIpInteractor.dispose();
   }
@@ -88,7 +85,8 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   public void onNavigationResult(int requestCode, boolean isSuccess, ServerModel serverModel) {
     if (requestCode == Navigator.RequestCode.SERVER_FOUND) {
       if (isSuccess) {
-        view.navigateToMainScreen(serverModel);
+        checkViewAttached();
+        getView().navigateToMainScreen(serverModel);
       }
     }
   }
@@ -98,18 +96,21 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   }
 
   public void onClickScanQrCode() {
+    checkViewAttached();
+
     if (anyActionCurrentlyInProgress()) {
-      view.showError(new RuntimeException("Action already in progress."));
+      getView().showError(new RuntimeException("Action already in progress."));
       return;
     }
 
-    view.closeMenu();
+    getView().closeMenu();
     checkIfPermissionGranted(cameraPermissionModel);
   }
 
   public void onClickEnterNetworkAddress() {
-    view.closeMenu();
-    view.showEnterNetworkAddressDialog();
+    checkViewAttached();
+    getView().closeMenu();
+    getView().showEnterNetworkAddressDialog();
   }
 
   public void onClickCloseCamera() {
@@ -120,25 +121,29 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   }
 
   public void onReadQrCode(String qrCode) {
+    checkViewAttached();
+
     isScanningQr = false;
     stopQrScanning();
 
     if (qrCode == null || qrCode.isEmpty()) {
-      view.showError(new IllegalArgumentException("Couldn't read QR Code."));
+      getView().showError(new IllegalArgumentException("Couldn't read QR Code."));
       return;
     }
 
     NetworkAddressModel networkAddressModel = getNetworkAddressFromQrCode(qrCode);
     if (networkAddressModel == null) {
-      view.showError(new RuntimeException("Couldn't determine server address."));
+      getView().showError(new RuntimeException("Couldn't determine server address."));
     } else {
       scanWifi(networkAddressModel);
     }
   }
 
   public void onEnterNetworkAddress(String ip, String port) {
+    checkViewAttached();
+
     if (anyActionCurrentlyInProgress()) {
-      view.showError(new RuntimeException("Action already in progress."));
+      getView().showError(new RuntimeException("Action already in progress."));
       return;
     }
 
@@ -151,8 +156,8 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
         .port(Integer.parseInt(port))
         .build();
 
-    view.closeMenu();
-    view.showLoading();
+    getView().closeMenu();
+    getView().showLoading();
     isScanningWifi = true;
 
     NetworkAddress networkAddress =
@@ -163,13 +168,15 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   }
 
   private void scanWifi(NetworkAddressModel networkAddressModel) {
+    checkViewAttached();
+
     if (anyActionCurrentlyInProgress()) {
-      view.showError(new RuntimeException("Action already in progress."));
+      getView().showError(new RuntimeException("Action already in progress."));
       return;
     }
 
-    view.closeMenu();
-    view.showLoading();
+    getView().closeMenu();
+    getView().showLoading();
     isScanningWifi = true;
 
     if (networkAddressModel == null) {
@@ -203,15 +210,17 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   }
 
   private boolean areValidIpAndPort(String ip, String port) {
+    checkViewAttached();
+
     if (ip == null || port == null) {
-      view.showError(new IllegalArgumentException("Invalid Network Address."));
+      getView().showError(new IllegalArgumentException("Invalid Network Address."));
       return false;
     }
 
     ip = ip.trim();
     port = port.trim();
     if (ip.isEmpty() || port.isEmpty()) {
-      view.showError(new IllegalArgumentException("Invalid Network Address."));
+      getView().showError(new IllegalArgumentException("Invalid Network Address."));
       return false;
     }
 
@@ -219,7 +228,7 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
       Integer.parseInt(port);
     } catch (NumberFormatException e) {
       Timber.e(e.getMessage());
-      view.showError(new IllegalArgumentException("Invalid port."));
+      getView().showError(new IllegalArgumentException("Invalid port."));
       return false;
     }
 
@@ -227,19 +236,22 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   }
 
   private void startQrScanning() {
-    view.closeMenu();
-    view.showLoading();
+    checkViewAttached();
+    getView().closeMenu();
+    getView().showLoading();
     isScanningQr = true;
-    view.startQrScanner();
+    getView().startQrScanner();
   }
 
   private void stopQrScanning() {
-    view.hideLoading();
-    view.stopQrScanner();
+    checkViewAttached();
+    getView().hideLoading();
+    getView().stopQrScanner();
   }
 
   private void checkIfPermissionGranted(PermissionModel permissionModel) {
-    view.showLoading();
+    checkViewAttached();
+    getView().showLoading();
     Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
     CheckIfPermissionGrantedInteractor.Params params =
         CheckIfPermissionGrantedInteractor.Params.forPermission(permission);
@@ -247,7 +259,8 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
   }
 
   private void requestPermission(PermissionModel permissionModel) {
-    view.showLoading();
+    checkViewAttached();
+    getView().showLoading();
     Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
     RequestPermissionInteractor.Params params = RequestPermissionInteractor.Params.forPermission(permission);
     requestPermissionInteractor.execute(new RequestPermissionObserver(), params);
@@ -258,20 +271,32 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
       isScanningWifi = false;
       Timber.d("Received Server: %s", server.getWorldName());
 
-      view.hideLoading();
+      if (!isViewAttached()) {
+        return;
+      }
+
+      getView().hideLoading();
       ServerModel serverModel = serverModelDataMapper.transform(server);
-      view.navigateToServerDetail(serverModel);
+      getView().navigateToServerDetail(serverModel);
     }
 
     @Override public void onError(Throwable e) {
       isScanningWifi = false;
-      view.hideLoading();
-      view.showError((Exception) e);
+
+      if (!isViewAttached()) {
+        return;
+      }
+      getView().hideLoading();
+      getView().showError((Exception) e);
     }
   }
 
   private final class IsPermissionGrantedObserver extends DefaultSingleObserver<Boolean> {
     @Override public void onSuccess(Boolean granted) {
+      if (!isViewAttached()) {
+        return;
+      }
+
       if (granted) {
         startQrScanning();
       } else {
@@ -280,24 +305,34 @@ public class ServerSearchPresenter implements Presenter<ServerSearchView> {
     }
 
     @Override public void onError(Throwable e) {
+      if (!isViewAttached()) {
+        return;
+      }
       stopQrScanning();
-      view.showError((Exception) e);
+      getView().showError((Exception) e);
     }
   }
 
   private final class RequestPermissionObserver extends DefaultSingleObserver<Boolean> {
     @Override public void onSuccess(Boolean granted) {
+      if (!isViewAttached()) {
+        return;
+      }
+
       if (granted) {
         startQrScanning();
       } else {
-        view.hideLoading();
+        getView().hideLoading();
         //view.showMessage("Error. Permission not granted");
       }
     }
 
     @Override public void onError(Throwable e) {
-      view.hideLoading();
-      view.showError((Exception) e);
+      if (!isViewAttached()) {
+        return;
+      }
+      getView().hideLoading();
+      getView().showError((Exception) e);
     }
   }
 }

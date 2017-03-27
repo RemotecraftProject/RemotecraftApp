@@ -1,12 +1,10 @@
 package com.zireck.remotecraft.presenter;
 
-import android.support.annotation.NonNull;
 import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.view.ServerFoundView;
 
-public class ServerFoundPresenter implements Presenter<ServerFoundView> {
+public class ServerFoundPresenter extends BasePresenter<ServerFoundView> {
 
-  private ServerFoundView view;
   private ServerModel serverModel;
 
   public ServerFoundPresenter() {
@@ -18,28 +16,18 @@ public class ServerFoundPresenter implements Presenter<ServerFoundView> {
     showServerInView(serverModel);
   }
 
-  @Override public void attachView(@NonNull ServerFoundView view) {
-    this.view = view;
-  }
-
-  @Override public void resume() {
+  public void resume() {
     showServerInView(serverModel);
   }
 
-  @Override public void pause() {
-
-  }
-
-  @Override public void destroy() {
-
-  }
-
   public void onClickAccept() {
-    view.navigateBack(true, serverModel);
+    checkViewAttached();
+    getView().navigateBack(true, serverModel);
   }
 
   public void onClickCancel() {
-    view.navigateBack(false, serverModel);
+    checkViewAttached();
+    getView().navigateBack(false, serverModel);
   }
 
   private void showServerInView(ServerModel serverModel) {
@@ -51,10 +39,12 @@ public class ServerFoundPresenter implements Presenter<ServerFoundView> {
   }
 
   private void showErrorServerInView() {
-    view.showError("Invalid Server");
+    checkViewAttached();
+    getView().showError("Invalid Server");
   }
 
   private void showValidServerInView(ServerModel serverModel) {
-    view.renderServer(serverModel);
+    checkViewAttached();
+    getView().renderServer(serverModel);
   }
 }

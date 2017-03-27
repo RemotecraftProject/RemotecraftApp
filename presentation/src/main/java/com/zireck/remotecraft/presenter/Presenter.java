@@ -5,7 +5,6 @@ import com.zireck.remotecraft.view.BaseView;
 
 public interface Presenter<V extends BaseView> {
   void attachView(@NonNull V view);
-  void resume();
-  void pause();
-  void destroy();
+  void detachView();
+  V getView();
 }

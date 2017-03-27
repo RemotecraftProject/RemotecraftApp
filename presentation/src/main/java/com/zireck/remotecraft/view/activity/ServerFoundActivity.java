@@ -47,6 +47,11 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     mapExtras();
   }
 
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    presenter.detachView();
+  }
+
   @Override
   protected void injectMembers(HasActivitySubcomponentBuilders hasActivitySubcomponentBuilders) {
     ((ServerFoundComponent.Builder) hasActivitySubcomponentBuilders.getActivityComponentBuilder(

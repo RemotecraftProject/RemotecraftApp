@@ -82,6 +82,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   @Override protected void onDestroy() {
     super.onDestroy();
     presenter.destroy();
+    presenter.detachView();
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
