@@ -76,6 +76,14 @@ configurations.all {
   }
 }
 
+tasks.withType(Test) {
+  testLogging {
+    exceptionFormat "full"
+    events "started", "skipped", "passed", "failed"
+    showStandardStreams true
+  }
+}
+
 dependencies {
   def library = rootProject.ext.presentationDependencies;
   def libraryTest = rootProject.ext.presentationTestDependencies;
