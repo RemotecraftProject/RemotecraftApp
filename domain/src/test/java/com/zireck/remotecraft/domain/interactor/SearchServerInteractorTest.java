@@ -10,8 +10,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -45,7 +44,7 @@ public class SearchServerInteractorTest {
 
     Maybe reactiveStream = searchServerInteractor.buildReactiveStream(null);
 
-    assertNotNull(reactiveStream);
+    assertThat(reactiveStream).isNotNull();
   }
 
   @Test public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
@@ -53,7 +52,7 @@ public class SearchServerInteractorTest {
 
     Maybe reactiveStream = searchServerInteractor.buildReactiveStream(null);
 
-    assertNotNull(reactiveStream);
+    assertThat(reactiveStream).isNotNull();
   }
 
   @Test public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
@@ -61,7 +60,7 @@ public class SearchServerInteractorTest {
 
     Maybe reactiveStream = searchServerInteractor.buildReactiveStream(null);
 
-    assertEquals(getEmptyReactiveStream(), reactiveStream);
+    assertThat(getEmptyReactiveStream()).isEqualTo(reactiveStream);
   }
 
   private Maybe<Server> getValidWorldReactiveStream() {

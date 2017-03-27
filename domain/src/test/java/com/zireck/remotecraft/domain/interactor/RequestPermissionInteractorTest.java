@@ -13,8 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class) public class RequestPermissionInteractorTest {
@@ -36,7 +35,7 @@ import static org.mockito.Mockito.when;
   @Test public void shouldReturnErrorGivenNullPermission() throws Exception {
     Single<Boolean> reactiveStream = requestPermissionInteractor.buildReactiveStream(null);
 
-    assertThat(reactiveStream, notNullValue());
+    assertThat(reactiveStream).isNotNull();
     TestObserver<Boolean> testObserver = reactiveStream.test();
     testObserver.assertError(IllegalArgumentException.class);
     testObserver.assertErrorMessage("Invalid Permission");
@@ -51,7 +50,7 @@ import static org.mockito.Mockito.when;
 
     Single<Boolean> reactiveStream = requestPermissionInteractor.buildReactiveStream(params);
 
-    assertThat(reactiveStream, notNullValue());
+    assertThat(reactiveStream).isNotNull();
     TestObserver<Boolean> testObserver = reactiveStream.test();
     testObserver.assertNoErrors();
     testObserver.assertValue(true);
@@ -66,7 +65,7 @@ import static org.mockito.Mockito.when;
 
     Single<Boolean> reactiveStream = requestPermissionInteractor.buildReactiveStream(params);
 
-    assertThat(reactiveStream, notNullValue());
+    assertThat(reactiveStream).isNotNull();
     TestObserver<Boolean> testObserver = reactiveStream.test();
     testObserver.assertNoErrors();
     testObserver.assertValue(false);

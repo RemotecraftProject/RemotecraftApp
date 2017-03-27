@@ -2,11 +2,7 @@ package com.zireck.remotecraft.domain.exception;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultErrorBundleTest {
 
@@ -17,7 +13,7 @@ public class DefaultErrorBundleTest {
 
     Exception exception = defaultErrorBundle.getException();
 
-    assertThat(exception, nullValue());
+    assertThat(exception).isNull();
   }
 
   @Test public void shouldReturnTheRightException() throws Exception {
@@ -26,8 +22,8 @@ public class DefaultErrorBundleTest {
 
     Exception exception = defaultErrorBundle.getException();
 
-    assertThat(exception, notNullValue());
-    assertThat(exception, is(instanceOf(RuntimeException.class)));
+    assertThat(exception).isNotNull();
+    assertThat(exception).isInstanceOf(RuntimeException.class);
   }
 
   @Test public void shouldReturnTheRightErrorMessageForAGivenException() throws Exception {
@@ -36,9 +32,9 @@ public class DefaultErrorBundleTest {
 
     String errorMessage = defaultErrorBundle.getErrorMessage();
 
-    assertThat(errorMessage, notNullValue());
-    assertThat(errorMessage, is(instanceOf(String.class)));
-    assertThat(errorMessage, is("This cannot be null!"));
+    assertThat(errorMessage).isNotNull();
+    assertThat(errorMessage).isInstanceOf(String.class);
+    assertThat(errorMessage).isEqualTo("This cannot be null!");
   }
 
   @Test public void shouldReturnNullErrorMessageForAnExceptionWithoutMessage() throws Exception {
@@ -47,7 +43,7 @@ public class DefaultErrorBundleTest {
 
     String errorMessage = defaultErrorBundle.getErrorMessage();
 
-    assertThat(errorMessage, nullValue());
+    assertThat(errorMessage).isNullOrEmpty();
   }
 
   @Test public void shouldReturnDefaultErrorMessageGivenANullException() throws Exception {
@@ -55,8 +51,8 @@ public class DefaultErrorBundleTest {
 
     String errorMessage = defaultErrorBundle.getErrorMessage();
 
-    assertThat(errorMessage, notNullValue());
-    assertThat(errorMessage, is(instanceOf(String.class)));
-    assertThat(errorMessage, is("Unknown error"));
+    assertThat(errorMessage).isNotNull();
+    assertThat(errorMessage).isInstanceOf(String.class);
+    assertThat(errorMessage).isEqualTo("Unknown error");
   }
 }

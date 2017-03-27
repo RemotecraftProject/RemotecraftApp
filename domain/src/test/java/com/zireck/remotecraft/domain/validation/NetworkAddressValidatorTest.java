@@ -6,8 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class) public class NetworkAddressValidatorTest {
 
@@ -20,7 +19,7 @@ import static org.junit.Assert.assertThat;
   @Test public void shouldCheckInvalidWhenNullGiven() throws Exception {
     boolean valid = networkAddressValidator.isValid(null);
 
-    assertThat(valid, is(false));
+    assertThat(valid).isFalse();
   }
 
   @Test public void shouldCheckInvalidWhenNullIpGiven() throws Exception {
@@ -31,7 +30,7 @@ import static org.junit.Assert.assertThat;
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
 
-    assertThat(valid, is(false));
+    assertThat(valid).isFalse();
   }
 
   @Test public void shouldCheckInvalidWhenEmptyIpGiven() throws Exception {
@@ -42,7 +41,7 @@ import static org.junit.Assert.assertThat;
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
 
-    assertThat(valid, is(false));
+    assertThat(valid).isFalse();
   }
 
   @Test public void shouldCheckInvalidWhenNegativePortNumberGiven() throws Exception {
@@ -53,7 +52,7 @@ import static org.junit.Assert.assertThat;
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
 
-    assertThat(valid, is(false));
+    assertThat(valid).isFalse();
   }
 
   @Test public void shouldCheckInvalidWhenPortNumberExceedingLimitGiven() throws Exception {
@@ -64,7 +63,7 @@ import static org.junit.Assert.assertThat;
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
 
-    assertThat(valid, is(false));
+    assertThat(valid).isFalse();
   }
 
   @Test public void shouldCheckInvalidWhenInvalidIpGiven() throws Exception {
@@ -75,7 +74,7 @@ import static org.junit.Assert.assertThat;
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
 
-    assertThat(valid, is(false));
+    assertThat(valid).isFalse();
   }
 
   @Test public void shouldCheckValidWhenValidIpAndPortGiven() throws Exception {
@@ -86,6 +85,6 @@ import static org.junit.Assert.assertThat;
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
 
-    assertThat(valid, is(true));
+    assertThat(valid).isTrue();
   }
 }

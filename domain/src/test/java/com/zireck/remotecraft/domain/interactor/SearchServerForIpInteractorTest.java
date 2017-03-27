@@ -13,10 +13,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -66,7 +64,7 @@ public class SearchServerForIpInteractorTest {
         SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
     Maybe reactiveStream = searchServerForIpInteractor.buildReactiveStream(params);
 
-    assertNotNull(reactiveStream);
+    assertThat(reactiveStream).isNotNull();
   }
 
   @Test public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
@@ -79,7 +77,7 @@ public class SearchServerForIpInteractorTest {
         SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
     Maybe reactiveStream = searchServerForIpInteractor.buildReactiveStream(params);
 
-    assertNotNull(reactiveStream);
+    assertThat(reactiveStream).isNotNull();
   }
 
   @Test public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
@@ -93,7 +91,7 @@ public class SearchServerForIpInteractorTest {
         SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
     Maybe reactiveStream = searchServerForIpInteractor.buildReactiveStream(params);
 
-    assertEquals(getEmptyReactiveStream(), reactiveStream);
+    assertThat(getEmptyReactiveStream()).isEqualTo(reactiveStream);
   }
 
   @Test public void shouldThrowExceptionWhenNullNetworkAddressIsSet() throws Exception {
@@ -101,7 +99,7 @@ public class SearchServerForIpInteractorTest {
 
     TestObserver<Object> testObserver = new TestObserver<>();
     serverMaybe.subscribe(testObserver);
-    assertThat(testObserver.errorCount(), is(1));
+    assertThat(testObserver.errorCount()).isEqualTo(1);
     testObserver.assertErrorMessage("Invalid IP Address");
   }
 
@@ -116,7 +114,7 @@ public class SearchServerForIpInteractorTest {
 
     TestObserver<Object> testObserver = new TestObserver<>();
     serverMaybe.subscribe(testObserver);
-    assertThat(testObserver.errorCount(), is(1));
+    assertThat(testObserver.errorCount()).isEqualTo(1);
     testObserver.assertErrorMessage("Invalid IP Address");
   }
 
