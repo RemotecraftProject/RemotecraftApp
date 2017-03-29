@@ -30,9 +30,9 @@ import static org.junit.Assert.assertThat;
   }
 
   @Test public void shouldProperlyMapNetworkAddressIntoNetworkAddressModel() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("192.168.1.45")
-        .and(9999)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("192.168.1.45")
+        .port(9999)
         .build();
 
     NetworkAddressModel networkAddressModel =
@@ -47,13 +47,13 @@ import static org.junit.Assert.assertThat;
 
   @Test public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressModelCollection()
       throws Exception {
-    NetworkAddress networkAddress1 = new NetworkAddress.Builder()
-        .with("192.168.1.45")
-        .and(9999)
+    NetworkAddress networkAddress1 = NetworkAddress.builder()
+        .ip("192.168.1.45")
+        .port(9999)
         .build();
-    NetworkAddress networkAddress2 = new NetworkAddress.Builder()
-        .with("192.168.1.80")
-        .and(1111)
+    NetworkAddress networkAddress2 = NetworkAddress.builder()
+        .ip("192.168.1.80")
+        .port(1111)
         .build();
     ArrayList<NetworkAddress> networkAddresses = new ArrayList<>();
     networkAddresses.add(networkAddress1);
@@ -98,9 +98,9 @@ import static org.junit.Assert.assertThat;
 
     assertThat(networkAddress, notNullValue());
     assertThat(networkAddress, instanceOf(NetworkAddress.class));
-    assertThat(networkAddress.getIp(), notNullValue());
-    assertThat(networkAddress.getIp(), is("192.168.1.45"));
-    assertThat(networkAddress.getPort(), is(9999));
+    assertThat(networkAddress.ip(), notNullValue());
+    assertThat(networkAddress.ip(), is("192.168.1.45"));
+    assertThat(networkAddress.port(), is(9999));
   }
 
   @Test public void shouldProperlyMapNetworkAddressModelCollectionIntoNetworkAddressCollection()
@@ -126,15 +126,15 @@ import static org.junit.Assert.assertThat;
         (NetworkAddress) networkAddresses.toArray()[0];
     assertThat(networkAddress1, notNullValue());
     assertThat(networkAddress1, instanceOf(NetworkAddress.class));
-    assertThat(networkAddress1.getIp(), notNullValue());
-    assertThat(networkAddress1.getIp(), is("192.168.1.45"));
-    assertThat(networkAddress1.getPort(), is(9999));
+    assertThat(networkAddress1.ip(), notNullValue());
+    assertThat(networkAddress1.ip(), is("192.168.1.45"));
+    assertThat(networkAddress1.port(), is(9999));
     NetworkAddress networkAddress2 =
         (NetworkAddress) networkAddresses.toArray()[1];
     assertThat(networkAddress2, notNullValue());
     assertThat(networkAddress2, instanceOf(NetworkAddress.class));
-    assertThat(networkAddress2.getIp(), notNullValue());
-    assertThat(networkAddress2.getIp(), is("192.168.1.80"));
-    assertThat(networkAddress2.getPort(), is(1111));
+    assertThat(networkAddress2.ip(), notNullValue());
+    assertThat(networkAddress2.ip(), is("192.168.1.80"));
+    assertThat(networkAddress2.port(), is(1111));
   }
 }

@@ -18,7 +18,7 @@ public class PermissionEntityDataMapper {
       return null;
     }
 
-    return new Permission.Builder()
+    return Permission.builder()
         .permission(permissionEntity.getPermission())
         .rationaleTitle(permissionEntity.getRationaleTitle())
         .rationaleMessage(permissionEntity.getRationaleMessage())
@@ -38,10 +38,10 @@ public class PermissionEntityDataMapper {
     }
 
     return new PermissionEntity.Builder()
-        .permission(permission.getPermission())
-        .rationaleTitle(permission.getRationaleTitle())
-        .rationaleMessage(permission.getRationaleMessage())
-        .deniedMessage(permission.getDeniedMessage())
+        .permission(permission.permission())
+        .rationaleTitle(permission.rationaleTitle())
+        .rationaleMessage(permission.rationaleMessage())
+        .deniedMessage(permission.deniedMessage())
         .build();
   }
 

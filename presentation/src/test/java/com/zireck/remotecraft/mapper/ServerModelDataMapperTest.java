@@ -104,7 +104,7 @@ public class ServerModelDataMapperTest {
   }
 
   private Server getFakeServer() {
-    return new Server.Builder()
+    return Server.builder()
         .ssid(FAKE_SSID)
         .ip(FAKE_IP)
         .hostname(FAKE_HOSTNAME)

@@ -23,6 +23,7 @@ dependencies {
   provided "${library.javaxAnnotation}"
   compile "${library.javaxInject}"
   compile "${library.lightweightStreamApi}"
+  compile "${library.autovalue}"
   compile "${library.apacheCommonsValidator}"
 
   testCompile "${libraryTest.jUnit}"

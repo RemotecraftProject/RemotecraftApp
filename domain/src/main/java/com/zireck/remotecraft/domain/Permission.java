@@ -1,63 +1,28 @@
 package com.zireck.remotecraft.domain;
 
-public class Permission {
+import com.google.auto.value.AutoValue;
 
-  private final String permission;
-  private final String rationaleTitle;
-  private final String rationaleMessage;
-  private final String deniedMessage;
+@AutoValue public abstract class Permission {
 
-  private Permission(Builder builder) {
-    this.permission = builder.permission;
-    this.rationaleTitle = builder.rationaleTitle;
-    this.rationaleMessage = builder.rationaleMessage;
-    this.deniedMessage = builder.deniedMessage;
+  public abstract String permission();
+  public abstract String rationaleTitle();
+  public abstract String rationaleMessage();
+  public abstract String deniedMessage();
+
+  public Builder toBuilder() {
+    return new AutoValue_Permission.Builder(this);
   }
 
-  public String getPermission() {
-    return permission;
+  public static Builder builder() {
+    return new AutoValue_Permission.Builder();
   }
 
-  public String getRationaleTitle() {
-    return rationaleTitle;
-  }
-
-  public String getRationaleMessage() {
-    return rationaleMessage;
-  }
-
-  public String getDeniedMessage() {
-    return deniedMessage;
-  }
-
-  public static class Builder {
-    private String permission;
-    private String rationaleTitle;
-    private String rationaleMessage;
-    private String deniedMessage;
-
-    public Permission build() {
-      return new Permission(this);
-    }
-
-    public Builder permission(String permission) {
-      this.permission = permission;
-      return this;
-    }
-
-    public Builder rationaleTitle(String rationaleTitle) {
-      this.rationaleTitle = rationaleTitle;
-      return this;
-    }
-
-    public Builder rationaleMessage(String rationaleMessage) {
-      this.rationaleMessage = rationaleMessage;
-      return this;
-    }
-
-    public Builder deniedMessage(String deniedMessage) {
-      this.deniedMessage = deniedMessage;
-      return this;
-    }
+  @AutoValue.Builder
+  public abstract static class Builder {
+    public abstract Builder permission(String permission);
+    public abstract Builder rationaleTitle(String rationaleTitle);
+    public abstract Builder rationaleMessage(String rationaleMessage);
+    public abstract Builder deniedMessage(String deniedMessage);
+    public abstract Permission build();
   }
 }

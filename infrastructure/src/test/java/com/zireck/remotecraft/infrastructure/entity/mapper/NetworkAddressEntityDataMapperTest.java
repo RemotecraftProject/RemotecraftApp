@@ -41,9 +41,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
     assertThat(networkAddress, notNullValue());
     assertThat(networkAddress, instanceOf(NetworkAddress.class));
-    assertThat(networkAddress.getIp(), notNullValue());
-    assertThat(networkAddress.getIp(), is("192.168.1.1"));
-    assertThat(networkAddress.getPort(), is(8889));
+    assertThat(networkAddress.ip(), notNullValue());
+    assertThat(networkAddress.ip(), is("192.168.1.1"));
+    assertThat(networkAddress.port(), is(8889));
   }
 
   @Test public void shouldProperlyMapNetworkAddressEntityCollectionIntoNetworkAddressCollection()
@@ -67,12 +67,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(networkAddressEntities.size(), is(2));
     NetworkAddress networkAddress1 = (NetworkAddress) networkAddresses.toArray()[0];
     assertThat(networkAddress1, notNullValue());
-    assertThat(networkAddress1.getIp(), is("192.168.1.1"));
-    assertThat(networkAddress1.getPort(), is(8889));
+    assertThat(networkAddress1.ip(), is("192.168.1.1"));
+    assertThat(networkAddress1.port(), is(8889));
     NetworkAddress networkAddress2 = (NetworkAddress) networkAddresses.toArray()[1];
     assertThat(networkAddress2, notNullValue());
-    assertThat(networkAddress2.getIp(), is("192.168.1.2"));
-    assertThat(networkAddress2.getPort(), is(8890));
+    assertThat(networkAddress2.ip(), is("192.168.1.2"));
+    assertThat(networkAddress2.port(), is(8890));
   }
 
   @Test public void shouldReturnNullNetworkAddressEntityGivenNullNetworkAddress() throws Exception {
@@ -85,9 +85,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
   }
 
   @Test public void shouldProperlyMapNetworkAddressIntoNetworkAddressEntity() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("192.168.24.33")
-        .and(9991)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("192.168.24.33")
+        .port(9991)
         .build();
 
     NetworkAddressEntity networkAddressEntity =
@@ -101,13 +101,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
   @Test public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressEntityCollection()
       throws Exception {
-    NetworkAddress networkAddress1 = new NetworkAddress.Builder()
-        .with("192.168.24.33")
-        .and(9991)
+    NetworkAddress networkAddress1 = NetworkAddress.builder()
+        .ip("192.168.24.33")
+        .port(9991)
         .build();
-    NetworkAddress networkAddress2 = new NetworkAddress.Builder()
-        .with("192.168.53.88")
-        .and(9944)
+    NetworkAddress networkAddress2 = NetworkAddress.builder()
+        .ip("192.168.53.88")
+        .port(9944)
         .build();
     ArrayList<NetworkAddress> networkAddresses = new ArrayList<>();
     networkAddresses.add(networkAddress1);

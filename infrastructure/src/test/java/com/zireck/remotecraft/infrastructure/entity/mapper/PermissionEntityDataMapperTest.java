@@ -43,14 +43,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
     assertThat(permissionCamera, notNullValue());
     assertThat(permissionCamera, instanceOf(Permission.class));
-    assertThat(permissionCamera.getPermission(), notNullValue());
-    assertThat(permissionCamera.getPermission(), is("CAMERA"));
-    assertThat(permissionCamera.getRationaleTitle(), notNullValue());
-    assertThat(permissionCamera.getRationaleTitle(), is("Permission Request"));
-    assertThat(permissionCamera.getRationaleMessage(), notNullValue());
-    assertThat(permissionCamera.getRationaleMessage(), is("You should allow this permission"));
-    assertThat(permissionCamera.getDeniedMessage(), notNullValue());
-    assertThat(permissionCamera.getDeniedMessage(),
+    assertThat(permissionCamera.permission(), notNullValue());
+    assertThat(permissionCamera.permission(), is("CAMERA"));
+    assertThat(permissionCamera.rationaleTitle(), notNullValue());
+    assertThat(permissionCamera.rationaleTitle(), is("Permission Request"));
+    assertThat(permissionCamera.rationaleMessage(), notNullValue());
+    assertThat(permissionCamera.rationaleMessage(), is("You should allow this permission"));
+    assertThat(permissionCamera.deniedMessage(), notNullValue());
+    assertThat(permissionCamera.deniedMessage(),
         is("You must allow this permission in order for this feature to work"));
   }
 
@@ -78,10 +78,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(permissions.size(), is(2));
     Permission permission1 = (Permission) permissions.toArray()[0];
     assertThat(permission1, notNullValue());
-    assertThat(permission1.getPermission(), is("CAMERA"));
+    assertThat(permission1.permission(), is("CAMERA"));
     Permission permission2 = (Permission) permissions.toArray()[1];
     assertThat(permission2, notNullValue());
-    assertThat(permission2.getPermission(), is("CONTACTS"));
+    assertThat(permission2.permission(), is("CONTACTS"));
   }
 
   @Test public void shouldReturnNullValueGivenANullPermission() throws Exception {
@@ -93,7 +93,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
   }
 
   @Test public void shouldProperlyMapPermissionIntoPermissionEntity() throws Exception {
-    Permission permissionCamera = new Permission.Builder()
+    Permission permissionCamera = Permission.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
         .rationaleMessage("You should allow this permission")
@@ -118,13 +118,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
   @Test public void shouldProperlyMapPermissionCollectionIntoPermissionEntityCollection()
       throws Exception {
-    Permission cameraPermission = new Permission.Builder()
+    Permission cameraPermission = Permission.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
         .rationaleMessage("You should allow this permission")
         .deniedMessage("You must allow this permission in order for this feature to work")
         .build();
-    Permission contactsPermission = new Permission.Builder()
+    Permission contactsPermission = Permission.builder()
         .permission("CONTACTS")
         .rationaleTitle("Permission Request")
         .rationaleMessage("You should allow this permission")

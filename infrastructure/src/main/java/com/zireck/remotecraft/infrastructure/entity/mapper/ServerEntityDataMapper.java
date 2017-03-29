@@ -15,7 +15,7 @@ public class ServerEntityDataMapper {
       return null;
     }
 
-    return new Server.Builder()
+    return Server.builder()
         .ssid(serverEntity.getSsid())
         .ip(serverEntity.getIp())
         .hostname(serverEntity.getHostname())

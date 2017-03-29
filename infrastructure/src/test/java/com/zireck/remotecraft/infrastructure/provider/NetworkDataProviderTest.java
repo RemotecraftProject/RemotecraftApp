@@ -70,8 +70,8 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldReturnServerForAGivenNetworkAddress() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("192.168.1.1")
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("192.168.1.1")
         .build();
     NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
         .with("192.168.1.1")
@@ -96,8 +96,8 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldNotReturnAnyServerForACertainNetworkAddress() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("192.168.1.435")
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("192.168.1.435")
         .build();
     NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
         .with("192.168.1.435")
@@ -130,7 +130,7 @@ import static org.mockito.Mockito.when;
   }
 
   private Server getServer() {
-    return new Server.Builder()
+    return Server.builder()
         .ssid("WLAN_346Q")
         .ip("192.168.1.1")
         .hostname("iMac")

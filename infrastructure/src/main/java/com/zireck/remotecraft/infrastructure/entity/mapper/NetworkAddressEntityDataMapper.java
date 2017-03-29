@@ -18,9 +18,9 @@ public class NetworkAddressEntityDataMapper {
       return null;
     }
 
-    return new NetworkAddress.Builder()
-        .with(networkAddressEntity.getIp())
-        .and(networkAddressEntity.getPort())
+    return NetworkAddress.builder()
+        .ip(networkAddressEntity.getIp())
+        .port(networkAddressEntity.getPort())
         .build();
   }
 
@@ -37,8 +37,8 @@ public class NetworkAddressEntityDataMapper {
     }
 
     return new NetworkAddressEntity.Builder()
-        .with(networkAddress.getIp())
-        .and(networkAddress.getPort())
+        .with(networkAddress.ip())
+        .and(networkAddress.port())
         .build();
   }
 

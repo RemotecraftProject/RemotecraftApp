@@ -15,8 +15,8 @@ public class NetworkAddressValidator implements Validator<NetworkAddress> {
       return false;
     }
 
-    String ip = networkAddress.getIp();
-    int port = networkAddress.getPort();
+    String ip = networkAddress.ip();
+    int port = networkAddress.port();
     if (ip == null || ip.isEmpty() || port <= 0 || port > 65535) {
       return false;
     }

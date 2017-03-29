@@ -269,7 +269,7 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   private final class SearchServerObserver extends DefaultMaybeObserver<Server> {
     @Override public void onSuccess(Server server) {
       isScanningWifi = false;
-      Timber.d("Received Server: %s", server.getWorldName());
+      Timber.d("Received Server: %s", server.worldName());
 
       if (!isViewAttached()) {
         return;

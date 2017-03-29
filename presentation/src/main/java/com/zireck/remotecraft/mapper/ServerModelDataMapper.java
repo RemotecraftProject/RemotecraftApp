@@ -20,14 +20,14 @@ import javax.inject.Inject;
     }
 
     return ServerModel.builder()
-        .ssid(server.getSsid())
-        .ip(server.getIp())
-        .hostname(server.getHostname())
-        .os(server.getOs())
-        .version(server.getVersion())
-        .seed(server.getSeed())
-        .worldName(server.getWorldName())
-        .playerName(server.getPlayerName())
+        .ssid(server.ssid())
+        .ip(server.ip())
+        .hostname(server.hostname())
+        .os(server.os())
+        .version(server.version())
+        .seed(server.seed())
+        .worldName(server.worldName())
+        .playerName(server.playerName())
         .build();
   }
 

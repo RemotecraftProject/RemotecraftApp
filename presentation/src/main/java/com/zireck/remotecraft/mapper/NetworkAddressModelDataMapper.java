@@ -20,8 +20,8 @@ import javax.inject.Inject;
     }
 
     return NetworkAddressModel.builder()
-        .ip(networkAddress.getIp())
-        .port(networkAddress.getPort())
+        .ip(networkAddress.ip())
+        .port(networkAddress.port())
         .build();
   }
 
@@ -36,9 +36,9 @@ import javax.inject.Inject;
       throw new IllegalArgumentException("Cannot transform a null NetworkAddressModel object.");
     }
 
-    return new NetworkAddress.Builder()
-        .with(networkAddressModel.ip())
-        .and(networkAddressModel.port())
+    return NetworkAddress.builder()
+        .ip(networkAddressModel.ip())
+        .port(networkAddressModel.port())
         .build();
   }
 
