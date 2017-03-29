@@ -5,6 +5,7 @@ import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
+import com.zireck.remotecraft.domain.provider.NotificationProvider;
 import com.zireck.remotecraft.domain.validation.NetworkAddressValidator;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
@@ -25,15 +26,16 @@ public class SearchServerInteractorTest {
   private SearchServerInteractor searchServerInteractor;
 
   @Mock private NetworkProvider mockNetworkProvider;
+  @Mock private NetworkAddressValidator mockNetworkAddressValidator;
+  @Mock private NotificationProvider mockNotificationProvider;
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
-  @Mock private NetworkAddressValidator mockNetworkAddressValidator;
 
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     searchServerInteractor =
         new SearchServerInteractor(mockNetworkProvider, mockNetworkAddressValidator,
-            mockThreadExecutor, mockPostExecutionThread);
+            mockNotificationProvider, mockThreadExecutor, mockPostExecutionThread);
   }
 
   @Test public void shouldBuildReactiveStreamForEmptyParams() throws Exception {
