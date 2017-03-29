@@ -6,7 +6,10 @@ import com.zireck.remotecraft.UiThread;
 import com.zireck.remotecraft.data.executor.JobExecutor;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
+import com.zireck.remotecraft.domain.provider.NotificationProvider;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
+import com.zireck.remotecraft.infrastructure.manager.AndroidNotificationManager;
+import com.zireck.remotecraft.infrastructure.provider.NotificationDataProvider;
 import com.zireck.remotecraft.infrastructure.provider.ReceiversDataProvider;
 import com.zireck.remotecraft.navigation.Navigator;
 import dagger.Module;
@@ -41,5 +44,10 @@ public class ApplicationModule {
   @Provides @Singleton
   public ReceiversProvider provideReceiversProvider(ReceiversDataProvider receiversDataProvider) {
     return receiversDataProvider;
+  }
+
+  @Provides @Singleton NotificationProvider provideNotificationProvider(
+      NotificationDataProvider notificationDataProvider) {
+    return notificationDataProvider;
   }
 }

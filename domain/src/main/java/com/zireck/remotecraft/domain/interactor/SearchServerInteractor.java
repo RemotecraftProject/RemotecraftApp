@@ -1,6 +1,7 @@
 package com.zireck.remotecraft.domain.interactor;
 
 import com.zireck.remotecraft.domain.NetworkAddress;
+import com.zireck.remotecraft.domain.Notification;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
@@ -8,6 +9,7 @@ import com.zireck.remotecraft.domain.interactor.base.ObservableInteractor;
 import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import com.zireck.remotecraft.domain.observer.DefaultObservableObserver;
 import com.zireck.remotecraft.domain.provider.NetworkProvider;
+import com.zireck.remotecraft.domain.provider.NotificationProvider;
 import com.zireck.remotecraft.domain.validation.Validator;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
@@ -18,15 +20,17 @@ public class SearchServerInteractor
 
   private final NetworkProvider networkProvider;
   private final Validator<NetworkAddress> networkAddressValidator;
+  private final NotificationProvider notificationProvider;
   private DisposableObserver domainObserver;
   private DisposableObserver presentationObserver;
 
   public SearchServerInteractor(NetworkProvider networkProvider,
-      Validator<NetworkAddress> networkAddressValidator, ThreadExecutor threadExecutor,
-      PostExecutionThread postExecutionThread) {
+      Validator<NetworkAddress> networkAddressValidator, NotificationProvider notificationProvider,
+      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.networkProvider = networkProvider;
     this.networkAddressValidator = networkAddressValidator;
+    this.notificationProvider = notificationProvider;
   }
 
   @Override protected Observable<Server> buildReactiveStream(Params params) {
@@ -74,11 +78,20 @@ public class SearchServerInteractor
 
   private void displayNotificationForServer(Server server) {
     // TODO: show notification using a DomainService
+    Notification notification = Notification.builder()
+        .title(server.worldName())
+        .content(String.format("Hey, %s. We found your world!", server.playerName()))
+        .deeplink(String.format("remotecraft://server?ip=%s", server.ip())) // TODO: define deeplink
+        .build();
+    notificationProvider.displayNotification(notification);
   }
 
   private final class SearchServerDomainObserver extends DefaultObservableObserver<Server> {
     @Override public void onNext(Server server) {
-      processFoundServer(server);
+      // TODO: reenable this:
+      //processFoundServer(server);
+
+      displayNotificationForServer(server);
     }
 
     @Override public void onComplete() {
