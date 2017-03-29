@@ -7,8 +7,8 @@ public class MockDataProvider implements ServerProvider {
 
   @Override public ServerMessage getServerData() {
     ServerProtocol serverProtocol =
-        new ServerProtocol("MOVISTAR_C33", "85.215.47.129", "iMac", "Mac OS X", "2.8.14",
-            "4346234563458034", "The New World", "Zireck");
+        new ServerProtocol("MOVISTAR_C33", "85.215.47.129", "iMac", "macOS Sierra", "2.8.14",
+            "4346234563458034", "Reign of Giants", "Etho");
 
     return new ServerMessage.Builder()
         .with(serverProtocol)
