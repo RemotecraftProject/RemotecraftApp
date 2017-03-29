@@ -8,7 +8,7 @@ import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.NetworkAddressEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.entity.mapper.ServerEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
-import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,13 +41,16 @@ import static org.mockito.Mockito.when;
   @Test public void shouldReturnValidServer() throws Exception {
     ServerEntity serverEntity = getServerEntity();
     Server server = getServer();
-    Maybe<ServerEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(serverEntity));
-    when(mockServerSearchManager.searchServer()).thenReturn(maybe);
+    Observable<ServerEntity> observable = Observable.create(subscriber -> {
+      subscriber.onNext(serverEntity);
+      subscriber.onComplete();
+    });
+    when(mockServerSearchManager.searchServer()).thenReturn(observable);
     when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Maybe<Server> serverMaybe = networkProvider.searchServer();
+    Observable<Server> serverObservable = networkProvider.searchServer();
 
-    TestObserver<Server> testObserver = serverMaybe.test();
+    TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertNoErrors();
     testObserver.assertComplete();
     testObserver.assertResult(server);
@@ -57,11 +60,11 @@ import static org.mockito.Mockito.when;
   }
 
   @Test public void shouldNotReturnAnyServer() throws Exception {
-    when(mockServerSearchManager.searchServer()).thenReturn(Maybe.never());
+    when(mockServerSearchManager.searchServer()).thenReturn(Observable.never());
 
-    Maybe<Server> serverMaybe = networkProvider.searchServer();
+    Observable<Server> serverObservable = networkProvider.searchServer();
 
-    TestObserver<Server> testObserver = serverMaybe.test();
+    TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertEmpty();
     testObserver.assertNotComplete();
     verify(mockServerSearchManager, times(1)).searchServer();
@@ -72,21 +75,26 @@ import static org.mockito.Mockito.when;
   @Test public void shouldReturnServerForAGivenNetworkAddress() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("192.168.1.1")
+        .port(9998)
         .build();
     NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
         .with("192.168.1.1")
+        .and(9998)
         .build();
     ServerEntity serverEntity = getServerEntity();
     Server server = getServer();
-    Maybe<ServerEntity> maybe = Maybe.create(subscriber -> subscriber.onSuccess(serverEntity));
+    Observable<ServerEntity> observable = Observable.create(subscriber -> {
+      subscriber.onNext(serverEntity);
+      subscriber.onComplete();
+    });
     when(mockNetworkAddressEntityDataMapper.transformInverse(networkAddress)).thenReturn(
         networkAddressEntity);
-    when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(maybe);
+    when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(observable);
     when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Maybe<Server> serverMaybe = networkProvider.searchServer(networkAddress);
+    Observable<Server> serverObservable = networkProvider.searchServer(networkAddress);
 
-    TestObserver<Server> testObserver = serverMaybe.test();
+    TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertNoErrors();
     testObserver.assertComplete();
     testObserver.assertResult(server);
@@ -98,17 +106,19 @@ import static org.mockito.Mockito.when;
   @Test public void shouldNotReturnAnyServerForACertainNetworkAddress() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("192.168.1.435")
+        .port(9998)
         .build();
     NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
         .with("192.168.1.435")
+        .and(9998)
         .build();
     when(mockNetworkAddressEntityDataMapper.transformInverse(networkAddress)).thenReturn(
         networkAddressEntity);
-    when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(Maybe.never());
+    when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(Observable.never());
 
-    Maybe<Server> serverMaybe = networkProvider.searchServer(networkAddress);
+    Observable<Server> serverObservable = networkProvider.searchServer(networkAddress);
 
-    TestObserver<Server> testObserver = serverMaybe.test();
+    TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertEmpty();
     testObserver.assertNotComplete();
     verify(mockServerSearchManager, times(1)).searchServer(networkAddressEntity);

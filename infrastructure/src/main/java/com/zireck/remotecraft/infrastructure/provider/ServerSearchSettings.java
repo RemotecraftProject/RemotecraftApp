@@ -10,6 +10,7 @@ public class ServerSearchSettings {
   private final int retryDelayMultiplier;
   private final int responseBufferSize;
   private final int timeout;
+  private final int subscribers;
 
   private ServerSearchSettings(Builder builder) {
     this.port = builder.port;
@@ -18,6 +19,7 @@ public class ServerSearchSettings {
     this.retryDelayMultiplier = builder.retryDelayMultiplier;
     this.responseBufferSize = builder.responseBufferSize;
     this.timeout = builder.timeout;
+    this.subscribers = builder.subscribers;
   }
 
   public int getPort() {
@@ -44,6 +46,10 @@ public class ServerSearchSettings {
     return timeout;
   }
 
+  public int getSubscribers() {
+    return subscribers;
+  }
+
   public static class Builder {
     private int port = 9998;
     private NetworkAddressEntity broadcastAddress;
@@ -51,6 +57,7 @@ public class ServerSearchSettings {
     private int retryDelayMultiplier = 1;
     private int responseBufferSize = 15000;
     private int timeout = 1000;
+    private int subscribers = 1;
 
     public Builder() {
       broadcastAddress = new NetworkAddressEntity.Builder()
@@ -89,6 +96,11 @@ public class ServerSearchSettings {
 
     public Builder timeout(int timeout) {
       this.timeout = timeout;
+      return this;
+    }
+
+    public Builder subscribers(int subscribers) {
+      this.subscribers = subscribers;
       return this;
     }
   }

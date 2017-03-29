@@ -8,7 +8,7 @@ import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.NetworkAddressEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.entity.mapper.ServerEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
-import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import javax.inject.Inject;
 
 public class NetworkDataProvider implements NetworkProvider {
@@ -26,11 +26,11 @@ public class NetworkDataProvider implements NetworkProvider {
     this.networkAddressEntityDataMapper = networkAddressEntityDataMapper;
   }
 
-  @Override public Maybe<Server> searchServer() {
+  @Override public Observable<Server> searchServer() {
     return serverSearchManager.searchServer().map(serverEntityDataMapper::transform);
   }
 
-  @Override public Maybe<Server> searchServer(NetworkAddress networkAddress) {
+  @Override public Observable<Server> searchServer(NetworkAddress networkAddress) {
     NetworkAddressEntity networkAddressEntity =
         networkAddressEntityDataMapper.transformInverse(networkAddress);
     return serverSearchManager.searchServer(networkAddressEntity)

@@ -6,10 +6,9 @@ import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;
 import com.zireck.remotecraft.domain.interactor.RequestPermissionInteractor;
-import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
-import com.zireck.remotecraft.domain.observer.DefaultMaybeObserver;
+import com.zireck.remotecraft.domain.observer.DefaultObservableObserver;
 import com.zireck.remotecraft.domain.observer.DefaultSingleObserver;
 import com.zireck.remotecraft.mapper.NetworkAddressModelDataMapper;
 import com.zireck.remotecraft.mapper.PermissionModelDataMapper;
@@ -29,7 +28,6 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
 
   private final MaybeInteractor getWifiStateInteractor;
   private final SearchServerInteractor searchServerInteractor;
-  private final SearchServerForIpInteractor searchServerForIpInteractor;
   private final CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor;
   private final RequestPermissionInteractor requestPermissionInteractor;
   private final PermissionModel cameraPermissionModel;
@@ -42,14 +40,13 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
 
   public ServerSearchPresenter(MaybeInteractor getWifiStateInteractor,
       SearchServerInteractor searchServerInteractor,
-      SearchServerForIpInteractor searchServerForIpInteractor,
-      CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor, RequestPermissionInteractor requestPermissionInteractor,
+      CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
+      RequestPermissionInteractor requestPermissionInteractor,
       PermissionModel cameraPermissionModel, ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
     this.searchServerInteractor = searchServerInteractor;
-    this.searchServerForIpInteractor = searchServerForIpInteractor;
     this.checkIfPermissionGrantedInteractor = checkIfPermissionGrantedInteractor;
     this.requestPermissionInteractor = requestPermissionInteractor;
     this.cameraPermissionModel = cameraPermissionModel;
@@ -77,9 +74,12 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     getView().stopQrScanner();
   }
 
-  public void destroy() {
+  public void stop() {
     searchServerInteractor.dispose();
-    searchServerForIpInteractor.dispose();
+  }
+
+  public void destroy() {
+
   }
 
   public void onNavigationResult(int requestCode, boolean isSuccess, ServerModel serverModel) {
@@ -162,9 +162,9 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
 
     NetworkAddress networkAddress =
         networkAddressModelDataMapper.transformInverse(networkAddressModel);
-    SearchServerForIpInteractor.Params params =
-        SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
-    searchServerForIpInteractor.execute(new SearchServerObserver(), params);
+    SearchServerInteractor.Params params =
+        SearchServerInteractor.Params.forNetworkAddress(networkAddress);
+    searchServerInteractor.execute(new SearchServerObserver(), params);
   }
 
   private void scanWifi(NetworkAddressModel networkAddressModel) {
@@ -179,15 +179,15 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     getView().showLoading();
     isScanningWifi = true;
 
+    SearchServerInteractor.Params params;
     if (networkAddressModel == null) {
-      searchServerInteractor.execute(new SearchServerObserver(), null);
+      params = SearchServerInteractor.Params.empty();
     } else {
       NetworkAddress networkAddress =
           networkAddressModelDataMapper.transformInverse(networkAddressModel);
-      SearchServerForIpInteractor.Params params =
-          SearchServerForIpInteractor.Params.forNetworkAddress(networkAddress);
-      searchServerForIpInteractor.execute(new SearchServerObserver(), params);
+      params = SearchServerInteractor.Params.forNetworkAddress(networkAddress);
     }
+    searchServerInteractor.execute(new SearchServerObserver(), params);
   }
 
   private NetworkAddressModel getNetworkAddressFromQrCode(String qrCode) {
@@ -266,8 +266,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     requestPermissionInteractor.execute(new RequestPermissionObserver(), params);
   }
 
-  private final class SearchServerObserver extends DefaultMaybeObserver<Server> {
-    @Override public void onSuccess(Server server) {
+  private final class SearchServerObserver extends DefaultObservableObserver<Server> {
+    @Override public void onNext(Server server) {
       isScanningWifi = false;
       Timber.d("Received Server: %s", server.worldName());
 

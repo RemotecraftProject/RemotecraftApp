@@ -14,6 +14,7 @@ import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.Broadcast
 import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import java.net.DatagramPacket;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,6 +65,7 @@ import static org.mockito.Mockito.when;
         .retryDelayMultiplier(0)
         .responseBufferSize(15000)
         .timeout(1500)
+        .subscribers(1)
         .build();
 
     serverSearchManager =
@@ -90,9 +92,9 @@ import static org.mockito.Mockito.when;
     when(mockServerMessageValidator.cast(mockMessage)).thenReturn(mockServerProtocol);
     when(mockServerProtocolMapper.transform(mockServerProtocol)).thenReturn(mockServerEntity);
 
-    Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer();
+    Observable<ServerEntity> serverEntityObservable = serverSearchManager.searchServer();
 
-    ServerEntity serverEntity = serverEntityMaybe.blockingGet();
+    ServerEntity serverEntity = serverEntityObservable.blockingFirst();
     assertThat(serverEntity, notNullValue());
     assertThat(serverEntity.getWorldName(), is("Za warudo"));
 
@@ -128,9 +130,9 @@ import static org.mockito.Mockito.when;
     when(mockServerMessageValidator.cast(mockMessage)).thenReturn(mockServerProtocol);
     when(mockServerProtocolMapper.transform(mockServerProtocol)).thenReturn(mockServerEntity);
 
-    Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer();
+    Observable<ServerEntity> serverEntityObservable = serverSearchManager.searchServer();
 
-    ServerEntity serverEntity = serverEntityMaybe.blockingGet();
+    ServerEntity serverEntity = serverEntityObservable.blockingFirst();
   }
 
   @Test(expected = RuntimeException.class) public void shouldNotFindServerGivenANonServerResponse()
@@ -152,9 +154,9 @@ import static org.mockito.Mockito.when;
     when(mockServerMessageValidator.cast(mockMessage)).thenReturn(mockServerProtocol);
     when(mockServerProtocolMapper.transform(mockServerProtocol)).thenReturn(mockServerEntity);
 
-    Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer();
+    Observable<ServerEntity> serverEntityObservable = serverSearchManager.searchServer();
 
-    ServerEntity serverEntity = serverEntityMaybe.blockingGet();
+    ServerEntity serverEntity = serverEntityObservable.blockingFirst();
   }
 
   @Test public void shouldFindServerForIpAddressGivenAValidNetworkResponse() throws Exception {
@@ -178,9 +180,9 @@ import static org.mockito.Mockito.when;
     NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
         .with("127.0.0.1")
         .build();
-    Maybe<ServerEntity> serverEntityMaybe = serverSearchManager.searchServer(networkAddressEntity);
+    Observable<ServerEntity> serverEntityObservable = serverSearchManager.searchServer(networkAddressEntity);
 
-    ServerEntity serverEntity = serverEntityMaybe.blockingGet();
+    ServerEntity serverEntity = serverEntityObservable.blockingFirst();
     assertThat(serverEntity, notNullValue());
     assertThat(serverEntity.getWorldName(), is("Za warudo"));
 

@@ -74,7 +74,7 @@ import static org.mockito.Mockito.when;
   }
 
   private Permission getPermission() {
-    return new Permission.Builder()
+    return Permission.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
         .rationaleMessage("You should allow this permission")

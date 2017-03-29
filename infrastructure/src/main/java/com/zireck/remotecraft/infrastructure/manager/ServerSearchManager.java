@@ -14,8 +14,8 @@ import com.zireck.remotecraft.infrastructure.provider.ServerSearchSettings;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
 import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
+import io.reactivex.observables.ConnectableObservable;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -34,6 +34,7 @@ public class ServerSearchManager {
   private final ServerProtocolMapper serverProtocolMapper;
   private final ServerMessageValidator serverValidator;
   private NetworkAddressEntity networkAddressEntity;
+  private int subscribers = -1;
 
   public ServerSearchManager(ServerSearchSettings serverSearchSettings,
       NetworkConnectionlessTransmitter networkConnectionlessTransmitter,
@@ -49,16 +50,26 @@ public class ServerSearchManager {
     this.serverValidator = serverValidator;
   }
 
-  public Maybe<ServerEntity> searchServer(NetworkAddressEntity networkAddressEntity) {
+  public void setSubscribers(int subscribers) {
+    if (subscribers <= 0) {
+      return;
+    }
+
+    this.subscribers = subscribers;
+  }
+
+  public Observable<ServerEntity> searchServer(NetworkAddressEntity networkAddressEntity) {
     this.networkAddressEntity = networkAddressEntity;
     return searchServer();
   }
 
-  public Maybe<ServerEntity> searchServer() {
-    return performSearch().map(serverProtocolMapper::transform);
+  public Observable<ServerEntity> searchServer() {
+    int subscribers =
+        this.subscribers <= 0 ? serverSearchSettings.getSubscribers() : this.subscribers;
+    return performSearch().autoConnect(subscribers).map(serverProtocolMapper::transform);
   }
 
-  private Maybe<ServerProtocol> performSearch() {
+  private ConnectableObservable<ServerProtocol> performSearch() {
     return Observable.<Message>create(emitter -> {
       DatagramPacket incomingPacket = null;
       Message message = null;
@@ -73,6 +84,7 @@ public class ServerSearchManager {
 
       if (message != null) {
         emitter.onNext(message);
+        emitter.onComplete();
       }
     }).retryWhen(errors -> {
       Observable<Integer> range = Observable.range(1, serverSearchSettings.getRetryCount());
@@ -83,8 +95,8 @@ public class ServerSearchManager {
       return Observable.merge(zipWith);
     })
       .filter(serverValidator::isValid)
-      .firstElement()
-      .map(serverValidator::cast);
+      .map(serverValidator::cast)
+      .publish();
   }
 
   private void sendDiscoveryRequest() throws IOException {

@@ -79,6 +79,11 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     presenter.pause();
   }
 
+  @Override protected void onStop() {
+    super.onStop();
+    presenter.stop();
+  }
+
   @Override protected void onDestroy() {
     super.onDestroy();
     presenter.destroy();

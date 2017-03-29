@@ -4,7 +4,6 @@ import com.zireck.remotecraft.dagger.PerActivity;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
 import com.zireck.remotecraft.domain.interactor.RequestPermissionInteractor;
-import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.mapper.NetworkAddressModelDataMapper;
 import com.zireck.remotecraft.mapper.PermissionModelDataMapper;
@@ -25,16 +24,14 @@ public class PresentersModule {
 
   @Provides @PerActivity ServerSearchPresenter provideServerSearchPresenter(
       GetWifiStateInteractor getWifiStateInteractor, SearchServerInteractor searchServerInteractor,
-      SearchServerForIpInteractor searchServerForIpInteractor,
       CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
       RequestPermissionInteractor requestPermissionInteractor,
       PermissionModel cameraPermissionModel, ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     return new ServerSearchPresenter(getWifiStateInteractor, searchServerInteractor,
-        searchServerForIpInteractor, checkIfPermissionGrantedInteractor,
-        requestPermissionInteractor, cameraPermissionModel, serverModelDataMapper,
-        networkAddressModelDataMapper, permissionModelDataMapper, uriParser);
+        checkIfPermissionGrantedInteractor, requestPermissionInteractor, cameraPermissionModel,
+        serverModelDataMapper, networkAddressModelDataMapper, permissionModelDataMapper, uriParser);
   }
 
   @Provides @PerActivity ServerFoundPresenter provideServerFoundPresenter() {

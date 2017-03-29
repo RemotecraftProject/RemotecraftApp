@@ -11,9 +11,9 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class ObservableInteractor<T, P extends BaseParams>
     implements Interactor<DisposableObserver, P> {
 
-  private final ThreadExecutor threadExecutor;
-  private final PostExecutionThread postExecutionThread;
-  private final CompositeDisposable disposables;
+  protected final ThreadExecutor threadExecutor;
+  protected final PostExecutionThread postExecutionThread;
+  protected final CompositeDisposable disposables;
 
   public ObservableInteractor(ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {

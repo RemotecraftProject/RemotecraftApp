@@ -6,7 +6,6 @@ import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;
 import com.zireck.remotecraft.domain.interactor.GetWifiStateInteractor;
 import com.zireck.remotecraft.domain.interactor.RequestPermissionInteractor;
-import com.zireck.remotecraft.domain.interactor.SearchServerForIpInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.provider.ReceiversProvider;
 import com.zireck.remotecraft.domain.validation.NetworkAddressValidator;
@@ -29,16 +28,10 @@ public class InteractorsModule {
   }
 
   @Provides @PerActivity SearchServerInteractor provideSearchServerInteractor(
-      NetworkDataProvider networkDataProvider, ThreadExecutor threadExecutor,
-      PostExecutionThread postExecutionThread) {
-    return new SearchServerInteractor(networkDataProvider, threadExecutor, postExecutionThread);
-  }
-
-  @Provides @PerActivity SearchServerForIpInteractor provideSearchServerForIpInteractor(
       NetworkDataProvider networkDataProvider, NetworkAddressValidator networkAddressValidator,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    return new SearchServerForIpInteractor(networkDataProvider, networkAddressValidator,
-        threadExecutor, postExecutionThread);
+    return new SearchServerInteractor(networkDataProvider, networkAddressValidator, threadExecutor,
+        postExecutionThread);
   }
 
   @Provides @PerActivity CheckIfPermissionGrantedInteractor provideCheckIfPermissionGranted(

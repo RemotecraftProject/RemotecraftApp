@@ -23,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test public void shouldCheckInvalidWhenNullIpGiven() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with(null)
-        .and(4356)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("")
+        .port(4356)
         .build();
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
@@ -34,9 +34,9 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test public void shouldCheckInvalidWhenEmptyIpGiven() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("")
-        .and(4356)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("")
+        .port(4356)
         .build();
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
@@ -45,9 +45,9 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test public void shouldCheckInvalidWhenNegativePortNumberGiven() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("192.168.1.45")
-        .and(-4356)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("192.168.1.45")
+        .port(-4356)
         .build();
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
@@ -56,9 +56,9 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test public void shouldCheckInvalidWhenPortNumberExceedingLimitGiven() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("192.168.1.45")
-        .and(4356545)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("192.168.1.45")
+        .port(4356545)
         .build();
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
@@ -67,9 +67,9 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test public void shouldCheckInvalidWhenInvalidIpGiven() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("945.333.0.257")
-        .and(4356)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("945.333.0.257")
+        .port(4356)
         .build();
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
@@ -78,9 +78,9 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test public void shouldCheckValidWhenValidIpAndPortGiven() throws Exception {
-    NetworkAddress networkAddress = new NetworkAddress.Builder()
-        .with("192.168.1.45")
-        .and(4356)
+    NetworkAddress networkAddress = NetworkAddress.builder()
+        .ip("192.168.1.45")
+        .port(4356)
         .build();
 
     boolean valid = networkAddressValidator.isValid(networkAddress);
