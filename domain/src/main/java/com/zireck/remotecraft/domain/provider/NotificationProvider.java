@@ -1,7 +1,7 @@
 package com.zireck.remotecraft.domain.provider;
 
-import com.zireck.remotecraft.domain.Notification;
+import com.zireck.remotecraft.domain.Server;
 
 public interface NotificationProvider {
-  void displayNotification(Notification notification);
+  void notifyServerFound(Server server);
 }

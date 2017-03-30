@@ -37,6 +37,8 @@ import javax.inject.Inject;
 
 public class ServerSearchActivity extends BaseActivity implements ServerSearchView {
 
+  private static final String KEY_SERVER_FOUND = "server_found";
+
   @Inject ServerSearchPresenter presenter;
   @Inject ImageLoader imageLoader;
 
@@ -61,12 +63,23 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     return new Intent(context, ServerSearchActivity.class);
   }
 
+  public static Intent getCallingIntent(Context context, ServerModel serverModel) {
+    Intent intent = new Intent(context, ServerSearchActivity.class);
+
+    Bundle bundle = new Bundle();
+    bundle.putParcelable(KEY_SERVER_FOUND, serverModel);
+    intent.putExtras(bundle);
+
+    return intent;
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_server_search);
 
     initUi();
     presenter.attachView(this);
+    mapExtras(getIntent());
   }
 
   @Override protected void onResume() {
@@ -90,10 +103,19 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     presenter.detachView();
   }
 
+  @Override protected void onNewIntent(Intent intent) {
+    mapExtras(intent);
+    super.onNewIntent(intent);
+  }
+
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
     boolean isSuccess = resultCode == RESULT_OK;
+    if (!isSuccess) {
+      return;
+    }
+
     ServerModel serverModel = data.getExtras().getParcelable(ServerFoundActivity.KEY_SERVER);
     presenter.onNavigationResult(requestCode, isSuccess, serverModel);
   }
@@ -116,7 +138,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   }
 
   @Override public void navigateToMainScreen(ServerModel serverModel) {
-    Toast.makeText(this, "Finally connecting to server", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "Connecting to server: " + serverModel.worldName(), Toast.LENGTH_SHORT).show();
   }
 
   @Override public void showMessage(String message) {
@@ -200,6 +222,23 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     });
 
     setupQrCodeReader();
+  }
+
+  private void mapExtras(Intent intent) {
+    if (intent == null || intent.getExtras() == null) {
+      return;
+    }
+
+    Bundle extras = intent.getExtras();
+    if (extras.getParcelable(KEY_SERVER_FOUND) != null) {
+      ServerModel serverModel = extras.getParcelable(KEY_SERVER_FOUND);
+      presenter.onServerFound(serverModel);
+    }
+
+    // TODO: remove this
+    if (extras.getString("key_hello") != null) {
+      showMessage(extras.getString("key_hello"));
+    }
   }
 
   private void setupQrCodeReader() {

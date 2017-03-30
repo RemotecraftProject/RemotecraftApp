@@ -85,10 +85,14 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   public void onNavigationResult(int requestCode, boolean isSuccess, ServerModel serverModel) {
     if (requestCode == Navigator.RequestCode.SERVER_FOUND) {
       if (isSuccess) {
-        checkViewAttached();
-        getView().navigateToMainScreen(serverModel);
+        onServerFound(serverModel);
       }
     }
+  }
+
+  public void onServerFound(ServerModel serverModel) {
+    checkViewAttached();
+    getView().navigateToMainScreen(serverModel);
   }
 
   public void onClickScanWifi() {

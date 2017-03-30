@@ -1,7 +1,6 @@
 package com.zireck.remotecraft.domain.interactor;
 
 import com.zireck.remotecraft.domain.NetworkAddress;
-import com.zireck.remotecraft.domain.Notification;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
@@ -65,7 +64,9 @@ public class SearchServerInteractor
   }
 
   @Override public void dispose() {
-    disposables.remove(presentationObserver);
+    if (presentationObserver != null && !presentationObserver.isDisposed()) {
+      disposables.remove(presentationObserver);
+    }
   }
 
   private void processFoundServer(Server server) {
@@ -78,12 +79,7 @@ public class SearchServerInteractor
 
   private void displayNotificationForServer(Server server) {
     // TODO: show notification using a DomainService
-    Notification notification = Notification.builder()
-        .title(server.worldName())
-        .content(String.format("Hey, %s. We found your world!", server.playerName()))
-        .deeplink(String.format("remotecraft://server?ip=%s", server.ip())) // TODO: define deeplink
-        .build();
-    notificationProvider.displayNotification(notification);
+    notificationProvider.notifyServerFound(server);
   }
 
   private final class SearchServerDomainObserver extends DefaultObservableObserver<Server> {

@@ -26,4 +26,21 @@ public class ServerEntityDataMapper {
         .playerName(serverEntity.getPlayerName())
         .build();
   }
+
+  public ServerEntity transformInverse(Server server) {
+    if (server == null) {
+      return null;
+    }
+
+    return new ServerEntity.Builder()
+        .ssid(server.ssid())
+        .ip(server.ip())
+        .hostname(server.hostname())
+        .os(server.os())
+        .version(server.version())
+        .seed(server.seed())
+        .worldName(server.worldName())
+        .playerName(server.playerName())
+        .build();
+  }
 }
