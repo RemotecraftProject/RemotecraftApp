@@ -110,7 +110,7 @@ public class ServerSearchManager {
   }
 
   private void sendRequestTo(NetworkAddressEntity networkAddressEntity) throws IOException {
-    InetAddress inetAddress = InetAddress.getByName(networkAddressEntity.getIp());
+    InetAddress inetAddress = InetAddress.getByName(networkAddressEntity.ip());
     DatagramPacket outgoingPacket = getTransmissionPacket(inetAddress);
     networkConnectionlessTransmitter.send(outgoingPacket);
   }

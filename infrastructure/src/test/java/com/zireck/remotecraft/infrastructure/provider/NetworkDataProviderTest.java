@@ -77,9 +77,9 @@ import static org.mockito.Mockito.when;
         .ip("192.168.1.1")
         .port(9998)
         .build();
-    NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
-        .with("192.168.1.1")
-        .and(9998)
+    NetworkAddressEntity networkAddressEntity = NetworkAddressEntity.builder()
+        .ip("192.168.1.1")
+        .port(9998)
         .build();
     ServerEntity serverEntity = getServerEntity();
     Server server = getServer();
@@ -108,9 +108,9 @@ import static org.mockito.Mockito.when;
         .ip("192.168.1.435")
         .port(9998)
         .build();
-    NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
-        .with("192.168.1.435")
-        .and(9998)
+    NetworkAddressEntity networkAddressEntity = NetworkAddressEntity.builder()
+        .ip("192.168.1.435")
+        .port(9998)
         .build();
     when(mockNetworkAddressEntityDataMapper.transformInverse(networkAddress)).thenReturn(
         networkAddressEntity);
@@ -127,7 +127,7 @@ import static org.mockito.Mockito.when;
   }
 
   private ServerEntity getServerEntity() {
-    return new ServerEntity.Builder()
+    return ServerEntity.builder()
         .ssid("WLAN_346Q")
         .ip("192.168.1.1")
         .hostname("iMac")

@@ -36,13 +36,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
     assertThat(serverEntity, notNullValue());
     assertThat(serverEntity, is(instanceOf(ServerEntity.class)));
-    assertThat(serverEntity.getSsid(), is("WLAN_C33C"));
-    assertThat(serverEntity.getIp(), is("127.0.0.1"));
-    assertThat(serverEntity.getHostname(), is("iMac"));
-    assertThat(serverEntity.getOs(), is("Mac OS X"));
-    assertThat(serverEntity.getVersion(), is("2.4.9"));
-    assertThat(serverEntity.getSeed(), is("34344343"));
-    assertThat(serverEntity.getWorldName(), is("Za warudo"));
-    assertThat(serverEntity.getPlayerName(), is("Da beasto"));
+    assertThat(serverEntity.ssid(), is("WLAN_C33C"));
+    assertThat(serverEntity.ip(), is("127.0.0.1"));
+    assertThat(serverEntity.hostname(), is("iMac"));
+    assertThat(serverEntity.os(), is("Mac OS X"));
+    assertThat(serverEntity.version(), is("2.4.9"));
+    assertThat(serverEntity.seed(), is("34344343"));
+    assertThat(serverEntity.worldName(), is("Za warudo"));
+    assertThat(serverEntity.playerName(), is("Da beasto"));
   }
 }

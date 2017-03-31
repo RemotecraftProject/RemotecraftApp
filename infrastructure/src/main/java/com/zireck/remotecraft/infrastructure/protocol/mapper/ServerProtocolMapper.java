@@ -15,7 +15,7 @@ public class ServerProtocolMapper {
       return null;
     }
 
-    return new ServerEntity.Builder()
+    return ServerEntity.builder()
         .ssid(serverProtocol.getSsid())
         .ip(serverProtocol.getIp())
         .hostname(serverProtocol.getHostname())

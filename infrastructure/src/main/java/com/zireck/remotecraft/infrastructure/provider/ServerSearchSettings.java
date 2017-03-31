@@ -60,8 +60,9 @@ public class ServerSearchSettings {
     private int subscribers = 1;
 
     public Builder() {
-      broadcastAddress = new NetworkAddressEntity.Builder()
-          .with("255.255.255.255")
+      broadcastAddress = NetworkAddressEntity.builder()
+          .ip("255.255.255.255")
+          .port(9998)
           .build();
     }
 

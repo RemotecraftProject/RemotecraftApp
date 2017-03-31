@@ -16,14 +16,14 @@ public class ServerEntityDataMapper {
     }
 
     return Server.builder()
-        .ssid(serverEntity.getSsid())
-        .ip(serverEntity.getIp())
-        .hostname(serverEntity.getHostname())
-        .os(serverEntity.getOs())
-        .version(serverEntity.getVersion())
-        .seed(serverEntity.getSeed())
-        .worldName(serverEntity.getWorldName())
-        .playerName(serverEntity.getPlayerName())
+        .ssid(serverEntity.ssid())
+        .ip(serverEntity.ip())
+        .hostname(serverEntity.hostname())
+        .os(serverEntity.os())
+        .version(serverEntity.version())
+        .seed(serverEntity.seed())
+        .worldName(serverEntity.worldName())
+        .playerName(serverEntity.playerName())
         .build();
   }
 
@@ -32,7 +32,7 @@ public class ServerEntityDataMapper {
       return null;
     }
 
-    return new ServerEntity.Builder()
+    return ServerEntity.builder()
         .ssid(server.ssid())
         .ip(server.ip())
         .hostname(server.hostname())

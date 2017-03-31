@@ -1,43 +1,24 @@
 package com.zireck.remotecraft.infrastructure.entity;
 
-public class NetworkAddressEntity {
+import com.google.auto.value.AutoValue;
 
-  private final String ip;
-  private final int port;
+@AutoValue public abstract class NetworkAddressEntity {
 
-  private NetworkAddressEntity(Builder builder) {
-    this.ip = builder.ip;
-    this.port = builder.port;
+  public abstract String ip();
+  public abstract int port();
+
+  public Builder toBuilder() {
+    return new AutoValue_NetworkAddressEntity.Builder(this);
   }
 
-  public String getIp() {
-    return ip;
+  public static Builder builder() {
+    return new AutoValue_NetworkAddressEntity.Builder();
   }
 
-  public int getPort() {
-    return port;
-  }
-
-  public static class Builder {
-    private String ip;
-    private int port;
-
-    public Builder() {
-
-    }
-
-    public NetworkAddressEntity build() {
-      return new NetworkAddressEntity(this);
-    }
-
-    public Builder with(String ip) {
-      this.ip = ip;
-      return this;
-    }
-
-    public Builder and(int port) {
-      this.port = port;
-      return this;
-    }
+  @AutoValue.Builder
+  public abstract static class Builder {
+    public abstract Builder ip(String ip);
+    public abstract Builder port(int port);
+    public abstract NetworkAddressEntity build();
   }
 }

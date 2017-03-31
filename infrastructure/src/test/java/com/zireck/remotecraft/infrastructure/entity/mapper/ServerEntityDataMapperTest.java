@@ -28,7 +28,7 @@ import static org.hamcrest.core.Is.is;
   }
 
   @Test public void shouldProperlyMapServerEntityIntoServer() throws Exception {
-    ServerEntity serverEntity = new ServerEntity.Builder()
+    ServerEntity serverEntity = ServerEntity.builder()
         .ssid("WLAN_CCQ4")
         .ip("127.0.0.1")
         .hostname("iMac")

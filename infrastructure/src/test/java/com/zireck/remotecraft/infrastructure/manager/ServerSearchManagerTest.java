@@ -54,9 +54,9 @@ import static org.mockito.Mockito.when;
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
-        .with("192.168.1.15")
-        .and(8889)
+    NetworkAddressEntity networkAddressEntity = NetworkAddressEntity.builder()
+        .ip("192.168.1.15")
+        .port(8889)
         .build();
     mockServerSearchSettings = new ServerSearchSettings.Builder()
         .port(8889)
@@ -96,7 +96,7 @@ import static org.mockito.Mockito.when;
 
     ServerEntity serverEntity = serverEntityObservable.blockingFirst();
     assertThat(serverEntity, notNullValue());
-    assertThat(serverEntity.getWorldName(), is("Za warudo"));
+    assertThat(serverEntity.worldName(), is("Za warudo"));
 
     verify(mockNetworkConnectionlessTransmitter, times(1)).setBroadcast(true);
     verify(mockProtocolMessageComposer, atLeastOnce()).composeGetServerInfoCommand();
@@ -177,14 +177,15 @@ import static org.mockito.Mockito.when;
     when(mockServerMessageValidator.cast(mockMessage)).thenReturn(mockServerProtocol);
     when(mockServerProtocolMapper.transform(mockServerProtocol)).thenReturn(mockServerEntity);
 
-    NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
-        .with("127.0.0.1")
+    NetworkAddressEntity networkAddressEntity = NetworkAddressEntity.builder()
+        .ip("127.0.0.1")
+        .port(9999)
         .build();
     Observable<ServerEntity> serverEntityObservable = serverSearchManager.searchServer(networkAddressEntity);
 
     ServerEntity serverEntity = serverEntityObservable.blockingFirst();
     assertThat(serverEntity, notNullValue());
-    assertThat(serverEntity.getWorldName(), is("Za warudo"));
+    assertThat(serverEntity.worldName(), is("Za warudo"));
 
     verify(mockNetworkConnectionlessTransmitter, never()).setBroadcast(true);
     verify(mockProtocolMessageComposer, atLeastOnce()).composeGetServerInfoCommand();
@@ -205,7 +206,7 @@ import static org.mockito.Mockito.when;
   }
 
   private ServerEntity getMockServerEntity() {
-    return new ServerEntity.Builder()
+    return ServerEntity.builder()
         .ssid("WLAN_C33C")
         .ip("127.0.0.1")
         .hostname("iMac")

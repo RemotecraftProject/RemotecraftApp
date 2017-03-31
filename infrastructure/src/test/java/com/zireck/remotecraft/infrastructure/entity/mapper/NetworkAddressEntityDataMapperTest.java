@@ -32,9 +32,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
   }
 
   @Test public void shouldProperlyMapNetworkAddressEntityIntoNetworkAddress() throws Exception {
-    NetworkAddressEntity networkAddressEntity = new NetworkAddressEntity.Builder()
-        .with("192.168.1.1")
-        .and(8889)
+    NetworkAddressEntity networkAddressEntity = NetworkAddressEntity.builder()
+        .ip("192.168.1.1")
+        .port(8889)
         .build();
 
     NetworkAddress networkAddress = networkAddressEntityDataMapper.transform(networkAddressEntity);
@@ -48,13 +48,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
   @Test public void shouldProperlyMapNetworkAddressEntityCollectionIntoNetworkAddressCollection()
       throws Exception {
-    NetworkAddressEntity networkAddressEntity1 = new NetworkAddressEntity.Builder()
-        .with("192.168.1.1")
-        .and(8889)
+    NetworkAddressEntity networkAddressEntity1 = NetworkAddressEntity.builder()
+        .ip("192.168.1.1")
+        .port(8889)
         .build();
-    NetworkAddressEntity networkAddressEntity2 = new NetworkAddressEntity.Builder()
-        .with("192.168.1.2")
-        .and(8890)
+    NetworkAddressEntity networkAddressEntity2 = NetworkAddressEntity.builder()
+        .ip("192.168.1.2")
+        .port(8890)
         .build();
     ArrayList<NetworkAddressEntity> networkAddressEntities = new ArrayList<>();
     networkAddressEntities.add(networkAddressEntity1);
@@ -95,8 +95,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
     assertThat(networkAddressEntity, notNullValue());
     assertThat(networkAddressEntity, instanceOf(NetworkAddressEntity.class));
-    assertThat(networkAddressEntity.getIp(), is("192.168.24.33"));
-    assertThat(networkAddressEntity.getPort(), is(9991));
+    assertThat(networkAddressEntity.ip(), is("192.168.24.33"));
+    assertThat(networkAddressEntity.port(), is(9991));
   }
 
   @Test public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressEntityCollection()
@@ -121,12 +121,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
     NetworkAddressEntity networkAddressEntity1 =
         (NetworkAddressEntity) networkAddressEntities.toArray()[0];
     assertThat(networkAddressEntity1, notNullValue());
-    assertThat(networkAddressEntity1.getIp(), is("192.168.24.33"));
-    assertThat(networkAddressEntity1.getPort(), is(9991));
+    assertThat(networkAddressEntity1.ip(), is("192.168.24.33"));
+    assertThat(networkAddressEntity1.port(), is(9991));
     NetworkAddressEntity networkAddressEntity2 =
         (NetworkAddressEntity) networkAddressEntities.toArray()[1];
     assertThat(networkAddressEntity2, notNullValue());
-    assertThat(networkAddressEntity2.getIp(), is("192.168.53.88"));
-    assertThat(networkAddressEntity2.getPort(), is(9944));
+    assertThat(networkAddressEntity2.ip(), is("192.168.53.88"));
+    assertThat(networkAddressEntity2.port(), is(9944));
   }
 }

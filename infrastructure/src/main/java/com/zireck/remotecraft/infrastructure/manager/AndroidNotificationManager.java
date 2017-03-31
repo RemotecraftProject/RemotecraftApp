@@ -23,14 +23,14 @@ public class AndroidNotificationManager {
   public void notifyServerFound(ServerEntity serverEntity) {
     Intent notificationIntent = new Intent(context, serverSearchActivityClass);
     // TODO: remove this and send the server instead
-    notificationIntent.putExtra("key_hello", "Hello, " + serverEntity.getPlayerName() + "!");
+    notificationIntent.putExtra("key_hello", "Hello, " + serverEntity.playerName() + "!");
     PendingIntent notificationPendingIntent =
         PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context)
         .setSmallIcon(R.drawable.ic_wifi_white) // TODO: somehow set the proper icon...
-        .setContentTitle(serverEntity.getWorldName())
-        .setContentText(String.format("Hey, %s. We found your world!", serverEntity.getPlayerName()))
+        .setContentTitle(serverEntity.worldName())
+        .setContentText(String.format("Hey, %s. We found your world!", serverEntity.playerName()))
         .setAutoCancel(true)
         .setContentIntent(notificationPendingIntent);
 
