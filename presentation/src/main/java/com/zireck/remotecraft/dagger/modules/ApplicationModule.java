@@ -14,6 +14,7 @@ import com.zireck.remotecraft.navigation.Navigator;
 import com.zireck.remotecraft.view.activity.ServerSearchActivity;
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @SuppressWarnings("WeakerAccess")
@@ -41,8 +42,8 @@ public class ApplicationModule {
     return new Navigator();
   }
 
-  // TODO: add qualifier for this
-  @Provides @Singleton public Class provideServerSearchActivityClass() {
+  @Provides @Singleton @Named("ServerSearchActivityClass")
+  public Class provideServerSearchActivityClass() {
     return ServerSearchActivity.class;
   }
 

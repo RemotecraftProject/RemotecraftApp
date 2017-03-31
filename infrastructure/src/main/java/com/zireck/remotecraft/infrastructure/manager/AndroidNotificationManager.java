@@ -8,13 +8,14 @@ import android.support.v4.app.NotificationCompat;
 import com.zireck.remotecraft.infrastructure.R;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class AndroidNotificationManager {
 
   private static final int NOTIFICATION_SERVER_FOUND = 1;
 
   @Inject Context context;
-  @Inject Class serverSearchActivityClass;
+  @Inject @Named("ServerSearchActivityClass") Class serverSearchActivityClass;
 
   @Inject public AndroidNotificationManager() {
 
