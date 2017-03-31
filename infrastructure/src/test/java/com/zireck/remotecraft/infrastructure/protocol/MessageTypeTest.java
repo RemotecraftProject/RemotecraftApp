@@ -5,18 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class) public class MessageTypeTest {
 
   @Test public void shouldReturnValidStringForACertainMessageType() throws Exception {
     String messageTypeString = MessageType.INFO.toString();
 
-    assertThat(messageTypeString, notNullValue());
-    assertThat(messageTypeString, is(instanceOf(String.class)));
-    assertThat(messageTypeString, is("info"));
+    assertThat(messageTypeString).isNotNull();
+    assertThat(messageTypeString).isInstanceOf(String.class);
+    assertThat(messageTypeString).isEqualTo("info");
   }
 }

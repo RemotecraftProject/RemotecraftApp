@@ -9,10 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -34,8 +31,8 @@ import static org.mockito.Mockito.when;
 
     ServerProtocol serverProtocol = serverMessageValidator.cast(mockMessage);
 
-    assertThat(serverProtocol, notNullValue());
-    assertThat(serverProtocol, is(instanceOf(ServerProtocol.class)));
+    assertThat(serverProtocol).isNotNull();
+    assertThat(serverProtocol).isInstanceOf(ServerProtocol.class);
     verify(mockMessage, times(1)).getServer();
     verifyNoMoreInteractions(mockMessage);
   }
@@ -46,9 +43,9 @@ import static org.mockito.Mockito.when;
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
 
-    assertThat(isValid, is(false));
-    assertThat(invalidServerData, notNullValue());
-    assertThat(invalidServerData.size(), is(1));
+    assertThat(isValid).isFalse();
+    assertThat(invalidServerData).isNotNull();
+    assertThat(invalidServerData.size()).isEqualTo(1);
   }
 
   @Test public void shouldCheckInvalidMessageGivenANotServerMessage() throws Exception {
@@ -58,9 +55,9 @@ import static org.mockito.Mockito.when;
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
 
-    assertThat(isValid, is(false));
-    assertThat(invalidServerData, notNullValue());
-    assertThat(invalidServerData.size(), is(1));
+    assertThat(isValid).isFalse();
+    assertThat(invalidServerData).isNotNull();
+    assertThat(invalidServerData.size()).isEqualTo(1);
   }
 
   @Test public void shouldCheckInvalidMessageGivenNullIp() throws Exception {
@@ -73,9 +70,9 @@ import static org.mockito.Mockito.when;
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
 
-    assertThat(isValid, is(false));
-    assertThat(invalidServerData, notNullValue());
-    assertThat(invalidServerData.size(), is(1));
+    assertThat(isValid).isFalse();
+    assertThat(invalidServerData).isNotNull();
+    assertThat(invalidServerData.size()).isEqualTo(1);
   }
 
   @Test public void shouldCheckInvalidMessageGivenEmptyIp() throws Exception {
@@ -88,9 +85,9 @@ import static org.mockito.Mockito.when;
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
 
-    assertThat(isValid, is(false));
-    assertThat(invalidServerData, notNullValue());
-    assertThat(invalidServerData.size(), is(1));
+    assertThat(isValid).isFalse();
+    assertThat(invalidServerData).isNotNull();
+    assertThat(invalidServerData.size()).isEqualTo(1);
   }
 
   @Test public void shouldCheckInvalidMessageGivenNullSeed() throws Exception {
@@ -103,9 +100,9 @@ import static org.mockito.Mockito.when;
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
 
-    assertThat(isValid, is(false));
-    assertThat(invalidServerData, notNullValue());
-    assertThat(invalidServerData.size(), is(1));
+    assertThat(isValid).isFalse();
+    assertThat(invalidServerData).isNotNull();
+    assertThat(invalidServerData.size()).isEqualTo(1);
   }
 
   @Test public void shouldCheckInvalidMessageGivenEmptySeed() throws Exception {
@@ -118,9 +115,9 @@ import static org.mockito.Mockito.when;
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
 
-    assertThat(isValid, is(false));
-    assertThat(invalidServerData, notNullValue());
-    assertThat(invalidServerData.size(), is(1));
+    assertThat(isValid).isFalse();
+    assertThat(invalidServerData).isNotNull();
+    assertThat(invalidServerData.size()).isEqualTo(1);
   }
 
   @Test public void shouldReturnTwoInvalidDataWhenIpAndSeedAreInvalid() throws Exception {
@@ -133,8 +130,8 @@ import static org.mockito.Mockito.when;
     boolean isValid = serverMessageValidator.isValid(mockMessage);
     List<InvalidServerData> invalidServerData = serverMessageValidator.getInvalidServerData();
 
-    assertThat(isValid, is(false));
-    assertThat(invalidServerData, notNullValue());
-    assertThat(invalidServerData.size(), is(2));
+    assertThat(isValid).isFalse();
+    assertThat(invalidServerData).isNotNull();
+    assertThat(invalidServerData.size()).isEqualTo(2);
   }
 }

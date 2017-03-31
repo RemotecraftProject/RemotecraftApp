@@ -7,10 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class) public class AndroidNetworkInterfaceProviderTest {
 
@@ -24,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
     Collection<NetworkInterface> networkInterfaces =
         androidNetworkInterfaceProvider.getNetworkInterfaces();
 
-    assertThat(networkInterfaces, notNullValue());
-    assertThat(networkInterfaces, is(instanceOf(Collection.class)));
+    assertThat(networkInterfaces).isNotNull();
+    assertThat(networkInterfaces).isInstanceOf(Collection.class);
   }
 }

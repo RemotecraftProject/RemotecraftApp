@@ -7,10 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class) public class GsonSerializerTest {
 
@@ -28,16 +25,16 @@ import static org.junit.Assert.assertThat;
     Integer integer = new Integer(359);
     String serializedObject = gsonSerializer.toJson(integer);
 
-    assertThat(serializedObject, notNullValue());
-    assertThat(serializedObject, is(instanceOf(String.class)));
-    assertThat(serializedObject, is("359"));
+    assertThat(serializedObject).isNotNull();
+    assertThat(serializedObject).isInstanceOf(String.class);
+    assertThat(serializedObject).isEqualTo("359");
   }
 
   @Test public void shouldProperlyDeserializeAnyGivenObject() throws Exception {
     Integer deserializedObject = gsonSerializer.fromJson("1080", Integer.class);
 
-    assertThat(deserializedObject, notNullValue());
-    assertThat(deserializedObject, is(instanceOf(Integer.class)));
-    assertThat(deserializedObject, is(1080));
+    assertThat(deserializedObject).isNotNull();
+    assertThat(deserializedObject).isInstanceOf(Integer.class);
+    assertThat(deserializedObject).isEqualTo(1080);
   }
 }

@@ -9,8 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -34,13 +33,13 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
         new NetworkConnectionlessDatagramTransmitter(null);
     boolean isReady = networkConnectionlessDatagramTransmitterWithNullDatagramSocket.isReady();
 
-    assertThat(isReady, is(false));
+    assertThat(isReady).isFalse();
   }
 
   @Test public void shouldBeReadyGivenANonNullDatagramSocket() throws Exception {
     boolean isReady = networkConnectionlessDatagramTransmitter.isReady();
 
-    assertThat(isReady, is(true));
+    assertThat(isReady).isTrue();
   }
 
   @Test public void shouldSetBroadcastProperly() throws Exception {

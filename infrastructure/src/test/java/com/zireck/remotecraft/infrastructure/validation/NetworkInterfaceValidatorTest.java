@@ -8,8 +8,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class) @PrepareForTest({ NetworkInterface.class })
@@ -28,7 +27,7 @@ public class NetworkInterfaceValidatorTest {
   @Test public void shouldEvaluateAsInvalidGivenNullInterface() throws Exception {
     boolean isValid = networkInterfaceValidator.isValid(null);
 
-    assertThat(isValid, is(false));
+    assertThat(isValid).isFalse();
   }
 
   @Test public void shouldEvaluateAsInvalidGivenLoopbackInterface() throws Exception {
@@ -36,7 +35,7 @@ public class NetworkInterfaceValidatorTest {
 
     boolean isValid = networkInterfaceValidator.isValid(mockNetworkInterface);
 
-    assertThat(isValid, is(false));
+    assertThat(isValid).isFalse();
   }
 
   @Test public void shouldEvaluateAsInvalidGivenDownInterface() throws Exception {
@@ -45,7 +44,7 @@ public class NetworkInterfaceValidatorTest {
 
     boolean isValid = networkInterfaceValidator.isValid(mockNetworkInterface);
 
-    assertThat(isValid, is(false));
+    assertThat(isValid).isFalse();
   }
 
   @Test public void shouldEvaluateAsValidGivenValidInterface() throws Exception {

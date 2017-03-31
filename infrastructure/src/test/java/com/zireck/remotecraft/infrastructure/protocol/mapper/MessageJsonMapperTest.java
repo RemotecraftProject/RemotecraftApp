@@ -10,10 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,8 +35,8 @@ import static org.mockito.Mockito.when;
 
     Message message = messageJsonMapper.transformMessage(someJson);
 
-    assertThat(message, notNullValue());
-    assertThat(message, is(instanceOf(Message.class)));
+    assertThat(message).isNotNull();
+    assertThat(message).isInstanceOf(Message.class);
     verify(jsonSerializer, times(1)).fromJson(someJson, Message.class);
   }
 
@@ -50,7 +47,7 @@ import static org.mockito.Mockito.when;
 
     String message = messageJsonMapper.transformMessage(errorMessage);
 
-    assertThat(message, notNullValue());
-    assertThat(message.length(), is(fakeSerializedJson.length()));
+    assertThat(message).isNotNull();
+    assertThat(message.length()).isEqualTo(fakeSerializedJson.length());
   }
 }

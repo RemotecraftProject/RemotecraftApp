@@ -7,11 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class) public class ServerProtocolMapperTest {
 
@@ -24,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
   @Test public void shouldReturnNullWorldEntityGivenNullServer() throws Exception {
     ServerEntity serverEntity = serverProtocolMapper.transform(null);
 
-    assertThat(serverEntity, nullValue());
+    assertThat(serverEntity).isNull();
   }
 
   @Test public void shouldProperlyMapServerToWorldEntity() throws Exception {
@@ -34,15 +30,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
     ServerEntity serverEntity = serverProtocolMapper.transform(serverProtocol);
 
-    assertThat(serverEntity, notNullValue());
-    assertThat(serverEntity, is(instanceOf(ServerEntity.class)));
-    assertThat(serverEntity.ssid(), is("WLAN_C33C"));
-    assertThat(serverEntity.ip(), is("127.0.0.1"));
-    assertThat(serverEntity.hostname(), is("iMac"));
-    assertThat(serverEntity.os(), is("Mac OS X"));
-    assertThat(serverEntity.version(), is("2.4.9"));
-    assertThat(serverEntity.seed(), is("34344343"));
-    assertThat(serverEntity.worldName(), is("Za warudo"));
-    assertThat(serverEntity.playerName(), is("Da beasto"));
+    assertThat(serverEntity).isNotNull();
+    assertThat(serverEntity).isInstanceOf(ServerEntity.class);
+    assertThat(serverEntity.ssid()).isEqualTo("WLAN_C33C");
+    assertThat(serverEntity.ip()).isEqualTo("127.0.0.1");
+    assertThat(serverEntity.hostname()).isEqualTo("iMac");
+    assertThat(serverEntity.os()).isEqualTo("Mac OS X");
+    assertThat(serverEntity.version()).isEqualTo("2.4.9");
+    assertThat(serverEntity.seed()).isEqualTo("34344343");
+    assertThat(serverEntity.worldName()).isEqualTo("Za warudo");
+    assertThat(serverEntity.playerName()).isEqualTo("Da beasto");
   }
 }

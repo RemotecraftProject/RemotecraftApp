@@ -16,9 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.when;
@@ -47,13 +45,13 @@ import static org.mockito.Mockito.when;
 
     Single<Boolean> isGranted = permissionProvider.isGranted(permission);
 
-    assertThat(isGranted, notNullValue());
+    assertThat(isGranted).isNotNull();
     TestObserver<Boolean> testObserver = isGranted.test();
     testObserver.assertNoErrors();
     List<Boolean> streamValues = testObserver.values();
-    assertThat(streamValues, notNullValue());
-    assertThat(streamValues.size(), is(1));
-    assertThat(streamValues.get(0), is(true));
+    assertThat(streamValues).isNotNull();
+    assertThat(streamValues.size()).isEqualTo(1);
+    assertThat(streamValues.get(0)).isTrue();
   }
 
   @Test public void shouldNotifyPermissionNotGrantedWhenItsActuallyNotGranted() throws Exception {
@@ -66,13 +64,13 @@ import static org.mockito.Mockito.when;
 
     Single<Boolean> isGranted = permissionProvider.isGranted(permission);
 
-    assertThat(isGranted, notNullValue());
+    assertThat(isGranted).isNotNull();
     TestObserver<Boolean> testObserver = isGranted.test();
     testObserver.assertNoErrors();
     List<Boolean> streamValues = testObserver.values();
-    assertThat(streamValues, notNullValue());
-    assertThat(streamValues.size(), is(1));
-    assertThat(streamValues.get(0), is(false));
+    assertThat(streamValues).isNotNull();
+    assertThat(streamValues.size()).isEqualTo(1);
+    assertThat(streamValues.get(0)).isFalse();
   }
 
   private Permission getPermission() {
