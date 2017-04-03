@@ -34,10 +34,13 @@ import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.presenter.ServerSearchPresenter;
 import com.zireck.remotecraft.view.ServerSearchView;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 public class ServerSearchActivity extends BaseActivity implements ServerSearchView {
 
-  private static final String KEY_SERVER_FOUND = "server_found";
+  private static final String KEY_SERVER_FOUND = "key_server_found";
+  private static final String KEY_DOMAIN_SERVER_FOUND_SERIALIZED =
+      "key_domain_server_found_serialized";
 
   @Inject ServerSearchPresenter presenter;
   @Inject ImageLoader imageLoader;
@@ -235,9 +238,9 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
       presenter.onServerFound(serverModel);
     }
 
-    // TODO: remove this
-    if (extras.getString("key_hello") != null) {
-      showMessage(extras.getString("key_hello"));
+    if (extras.getString(KEY_DOMAIN_SERVER_FOUND_SERIALIZED) != null) {
+      String serializedServer = extras.getString(KEY_DOMAIN_SERVER_FOUND_SERIALIZED);
+      presenter.onSerializedDomainServerFound(serializedServer);
     }
   }
 

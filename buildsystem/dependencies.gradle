@@ -136,8 +136,10 @@ ext.domainDependencies = [
     rxJava                    : "${dependency.rxJava}",
     javaxAnnotation           : "${dependency.javaxAnnotation}",
     javaxInject               : "${dependency.javaxInject}",
+    gson                      : "${dependency.gson}",
     lightweightStreamApi      : "${dependency.lightweightStreamApi}",
     autovalue                 : "${dependency.autovalue}",
+    autovalueGson             : "${dependency.autovalueGson}",
     apacheCommonsValidator    : "${dependency.apacheCommonsValidator}"
 ]
 

@@ -22,8 +22,10 @@ dependencies {
   compile "${library.rxJava}"
   provided "${library.javaxAnnotation}"
   compile "${library.javaxInject}"
+  compile "${library.gson}"
   compile "${library.lightweightStreamApi}"
   compile "${library.autovalue}"
+  provided "${library.autovalueGson}"
   compile "${library.apacheCommonsValidator}"
 
   testCompile "${libraryTest.jUnit}"

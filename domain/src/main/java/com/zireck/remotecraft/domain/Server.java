@@ -1,6 +1,8 @@
 package com.zireck.remotecraft.domain;
 
 import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 @AutoValue public abstract class Server {
 
@@ -32,5 +34,9 @@ import com.google.auto.value.AutoValue;
     public abstract Builder worldName(String worldName);
     public abstract Builder playerName(String playerName);
     public abstract Server build();
+  }
+
+  public static TypeAdapter<Server> typeAdapter(Gson gson) {
+    return new AutoValue_Server.GsonTypeAdapter(gson);
   }
 }

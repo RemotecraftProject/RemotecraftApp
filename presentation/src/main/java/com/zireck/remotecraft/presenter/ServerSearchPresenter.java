@@ -4,6 +4,7 @@ import android.net.Uri;
 import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
+import com.zireck.remotecraft.domain.ServerDeserializer;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;
 import com.zireck.remotecraft.domain.interactor.RequestPermissionInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
@@ -31,6 +32,7 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   private final CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor;
   private final RequestPermissionInteractor requestPermissionInteractor;
   private final PermissionModel cameraPermissionModel;
+  private final ServerDeserializer serverDeserializer;
   private final ServerModelDataMapper serverModelDataMapper;
   private final NetworkAddressModelDataMapper networkAddressModelDataMapper;
   private final PermissionModelDataMapper permissionModelDataMapper;
@@ -42,7 +44,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
       SearchServerInteractor searchServerInteractor,
       CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
       RequestPermissionInteractor requestPermissionInteractor,
-      PermissionModel cameraPermissionModel, ServerModelDataMapper serverModelDataMapper,
+      PermissionModel cameraPermissionModel, ServerDeserializer serverDeserializer,
+      ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
@@ -50,6 +53,7 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     this.checkIfPermissionGrantedInteractor = checkIfPermissionGrantedInteractor;
     this.requestPermissionInteractor = requestPermissionInteractor;
     this.cameraPermissionModel = cameraPermissionModel;
+    this.serverDeserializer = serverDeserializer;
     this.serverModelDataMapper = serverModelDataMapper;
     this.networkAddressModelDataMapper = networkAddressModelDataMapper;
     this.permissionModelDataMapper = permissionModelDataMapper;
@@ -92,6 +96,15 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
 
   public void onServerFound(ServerModel serverModel) {
     checkViewAttached();
+    getView().navigateToMainScreen(serverModel);
+  }
+
+  public void onSerializedDomainServerFound(String serializedDomainServer) {
+    checkViewAttached();
+
+    Server server = serverDeserializer.deserialize(serializedDomainServer);
+
+    ServerModel serverModel = serverModelDataMapper.transform(server);
     getView().navigateToMainScreen(serverModel);
   }
 
