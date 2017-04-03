@@ -29,6 +29,7 @@ ext.version = [
     materialDesignColors      : "3.0.0",
     androidSpinKit            : "1.0.5",
     floatingActionButton      : "1.6.4",
+    kenBurnsView              : "1.0.7",
 
     // Testing
     jUnit                     : "4.12",
@@ -75,6 +76,7 @@ ext.dependency = [
     materialDesignColors      : "com.wada811:android-material-design-colors:${version.materialDesignColors}",
     androidSpinKit            : "com.github.ybq:Android-SpinKit:${version.androidSpinKit}",
     floatingActionButton      : "com.github.clans:fab:${version.floatingActionButton}",
+    kenBurnsView              : "com.flaviofaria:kenburnsview:${version.kenBurnsView}",
 
     jUnit                     : "junit:junit:${version.jUnit}",
     assertJ                   : "org.assertj:assertj-core:${version.assertJ}",
@@ -172,7 +174,8 @@ ext.presentationDependencies = [
     picasso                   : "${dependency.picasso}",
     materialDesignColors      : "${dependency.materialDesignColors}",
     androidSpinKit            : "${dependency.androidSpinKit}",
-    floatingActionButton      : "${dependency.floatingActionButton}"
+    floatingActionButton      : "${dependency.floatingActionButton}",
+    kenBurnsView              : "${dependency.kenBurnsView}"
 ]
 
 ext.presentationTestDependencies = [

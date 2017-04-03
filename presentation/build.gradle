@@ -114,6 +114,7 @@ dependencies {
   compile "${library.materialDesignColors}"
   compile "${library.androidSpinKit}"
   compile "${library.floatingActionButton}"
+  compile "${library.kenBurnsView}"
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.assertJ}"

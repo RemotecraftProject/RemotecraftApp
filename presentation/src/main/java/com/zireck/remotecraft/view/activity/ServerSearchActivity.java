@@ -15,12 +15,11 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -34,7 +33,6 @@ import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.presenter.ServerSearchPresenter;
 import com.zireck.remotecraft.view.ServerSearchView;
 import javax.inject.Inject;
-import timber.log.Timber;
 
 public class ServerSearchActivity extends BaseActivity implements ServerSearchView {
 
@@ -46,21 +44,15 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   @Inject ImageLoader imageLoader;
 
   @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
-  @BindView(R.id.loading) SpinKitView loadingView;
+  @BindView(R.id.background) KenBurnsView background;
   @BindView(R.id.dimmer_view) View dimmerView;
-  @BindView(R.id.close_camera_button) ImageButton closeCameraButton;
-  @BindView(R.id.qrCodeReaderView) QRCodeReaderView qrCodeReaderView;
+  @BindView(R.id.loading) SpinKitView loadingView;
   @BindView(R.id.menu) FloatingActionMenu floatingActionMenu;
   @BindView(R.id.fab_wifi) FloatingActionButton floatingActionButtonWifi;
   @BindView(R.id.fab_qrcode) FloatingActionButton floatingActionButtonQrCode;
   @BindView(R.id.fab_ip) FloatingActionButton floatingActionButtonIp;
-  @BindView(R.id.background) ImageView background;
-  @BindView(R.id.found) TextView found;
-  @BindView(R.id.ssid) TextView ssid;
-  @BindView(R.id.ip) TextView ip;
-  @BindView(R.id.version) TextView version;
-  @BindView(R.id.world) TextView world;
-  @BindView(R.id.player) TextView player;
+  @BindView(R.id.close_camera_button) ImageButton closeCameraButton;
+  @BindView(R.id.qrCodeReaderView) QRCodeReaderView qrCodeReaderView;
 
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, ServerSearchActivity.class);
@@ -217,14 +209,34 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
       getSupportActionBar().hide();
     }
 
+    initFabMenuAndButtonColors();
     enableFloatingActionMenuAnimation();
     floatingActionMenu.setClosedOnTouchOutside(true);
     floatingActionMenu.setOnMenuToggleListener(this::dimeBackground);
-    dimmerView.setOnClickListener(view -> {
-      floatingActionMenu.close(true);
-    });
+    dimmerView.setOnClickListener(view -> floatingActionMenu.close(true));
 
     setupQrCodeReader();
+  }
+
+  private void initFabMenuAndButtonColors() {
+    floatingActionMenu.setMenuButtonColorNormal(getResources().getColor(R.color.fab_menu_normal));
+    floatingActionMenu.setMenuButtonColorPressed(getResources().getColor(R.color.fab_menu_pressed));
+    floatingActionMenu.setMenuButtonColorRipple(getResources().getColor(R.color.fab_menu_ripple));
+
+    int fabButtonColorNormal = getResources().getColor(R.color.fab_button_normal);
+    int fabButtonColorPressed = getResources().getColor(R.color.fab_button_pressed);
+    int fabButtonColorRipple = getResources().getColor(R.color.fab_button_ripple);
+    floatingActionButtonIp.setColorNormal(fabButtonColorNormal);
+    floatingActionButtonIp.setColorPressed(fabButtonColorPressed);
+    floatingActionButtonIp.setColorRipple(fabButtonColorRipple);
+
+    floatingActionButtonQrCode.setColorNormal(fabButtonColorNormal);
+    floatingActionButtonQrCode.setColorPressed(fabButtonColorPressed);
+    floatingActionButtonQrCode.setColorRipple(fabButtonColorRipple);
+
+    floatingActionButtonWifi.setColorNormal(fabButtonColorNormal);
+    floatingActionButtonWifi.setColorPressed(fabButtonColorPressed);
+    floatingActionButtonWifi.setColorRipple(fabButtonColorRipple);
   }
 
   private void mapExtras(Intent intent) {
@@ -248,9 +260,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     qrCodeReaderView.setQRDecodingEnabled(true);
     qrCodeReaderView.setAutofocusInterval(2000L);
     qrCodeReaderView.setBackCamera();
-    qrCodeReaderView.setOnQRCodeReadListener(((text, points) -> {
-      presenter.onReadQrCode(text);
-    }));
+    qrCodeReaderView.setOnQRCodeReadListener(((text, points) -> presenter.onReadQrCode(text)));
   }
 
   private void enableFloatingActionMenuAnimation() {
