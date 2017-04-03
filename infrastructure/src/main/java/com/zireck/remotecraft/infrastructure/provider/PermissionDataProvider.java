@@ -2,6 +2,7 @@ package com.zireck.remotecraft.infrastructure.provider;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.view.ViewGroup;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -10,6 +11,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.CompositePermissionListener;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.provider.PermissionProvider;
 import com.zireck.remotecraft.infrastructure.entity.PermissionEntity;
@@ -18,7 +20,6 @@ import com.zireck.remotecraft.infrastructure.permission.AndroidPermissionChecker
 import com.zireck.remotecraft.infrastructure.permission.PermissionChecker;
 import com.zireck.remotecraft.infrastructure.permission.PermissionRationaleDialog;
 import com.zireck.remotecraft.infrastructure.permission.RationaleResponse;
-import com.zireck.remotecraft.infrastructure.permission.SnackbarOnPermanentlyDeniedPermissionListener;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.Single;
@@ -58,6 +59,7 @@ public class PermissionDataProvider implements PermissionProvider {
       Dexter.withActivity(activity)
           .withPermission(permissionEntity.getPermission())
           .withListener(compositePermissionListener)
+          .onSameThread()
           .check();
     })
         .firstElement()
@@ -68,8 +70,10 @@ public class PermissionDataProvider implements PermissionProvider {
       PermissionEntity permissionEntity) {
     ViewGroup view = (ViewGroup) activity.findViewById(android.R.id.content);
 
-    return SnackbarOnPermanentlyDeniedPermissionListener.Builder
+
+    return SnackbarOnDeniedPermissionListener.Builder
         .with(view, permissionEntity.getDeniedMessage())
+        .withDuration(Snackbar.LENGTH_INDEFINITE)
         .withOpenSettingsButton("Settings")
         .build();
   }

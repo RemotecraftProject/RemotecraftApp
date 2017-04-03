@@ -21,7 +21,7 @@ ext.version = [
     recyclerView              : "24.2.0",
     cardView                  : "24.2.0",
     androidAnnotations        : "24.2.0",
-    dexter                    : "3.0.2",
+    dexter                    : "4.1.0",
 
     // UI
     butterKnife               : "8.3.0",
