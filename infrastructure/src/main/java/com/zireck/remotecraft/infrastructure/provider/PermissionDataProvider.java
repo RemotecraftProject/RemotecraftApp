@@ -11,12 +11,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.CompositePermissionListener;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.karumi.dexter.listener.single.SnackbarOnDeniedPermissionListener;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.provider.PermissionProvider;
 import com.zireck.remotecraft.infrastructure.entity.PermissionEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.PermissionEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.permission.AndroidPermissionChecker;
+import com.zireck.remotecraft.infrastructure.permission.ContinuableSnackbarOnDeniedPermissionListener;
 import com.zireck.remotecraft.infrastructure.permission.PermissionChecker;
 import com.zireck.remotecraft.infrastructure.permission.PermissionRationaleDialog;
 import com.zireck.remotecraft.infrastructure.permission.RationaleResponse;
@@ -71,7 +71,7 @@ public class PermissionDataProvider implements PermissionProvider {
     ViewGroup view = (ViewGroup) activity.findViewById(android.R.id.content);
 
 
-    return SnackbarOnDeniedPermissionListener.Builder
+    return ContinuableSnackbarOnDeniedPermissionListener.Builder
         .with(view, permissionEntity.getDeniedMessage())
         .withDuration(Snackbar.LENGTH_INDEFINITE)
         .withOpenSettingsButton("Settings")
