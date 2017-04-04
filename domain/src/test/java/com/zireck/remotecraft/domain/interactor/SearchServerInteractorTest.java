@@ -4,8 +4,8 @@ import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.provider.NetworkProvider;
-import com.zireck.remotecraft.domain.provider.NotificationProvider;
+import com.zireck.remotecraft.domain.service.NotifyServerFoundService;
+import com.zireck.remotecraft.domain.service.SearchServerService;
 import com.zireck.remotecraft.domain.validation.NetworkAddressValidator;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
@@ -25,17 +25,17 @@ public class SearchServerInteractorTest {
 
   private SearchServerInteractor searchServerInteractor;
 
-  @Mock private NetworkProvider mockNetworkProvider;
+  @Mock private SearchServerService searchServerService;
+  @Mock private NotifyServerFoundService notifyServerFoundService;
   @Mock private NetworkAddressValidator mockNetworkAddressValidator;
-  @Mock private NotificationProvider mockNotificationProvider;
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     searchServerInteractor =
-        new SearchServerInteractor(mockNetworkProvider, mockNetworkAddressValidator,
-            mockNotificationProvider, mockThreadExecutor, mockPostExecutionThread);
+        new SearchServerInteractor(searchServerService, notifyServerFoundService,
+            mockNetworkAddressValidator, mockThreadExecutor, mockPostExecutionThread);
   }
 
   @Test public void shouldBuildReactiveStreamForEmptyParams() throws Exception {
@@ -43,8 +43,8 @@ public class SearchServerInteractorTest {
 
     searchServerInteractor.buildReactiveStream(emptyParams);
 
-    verify(mockNetworkProvider).searchServer();
-    verifyNoMoreInteractions(mockNetworkProvider);
+    verify(searchServerService).searchServer();
+    verifyNoMoreInteractions(searchServerService);
     verifyZeroInteractions(mockThreadExecutor);
     verifyZeroInteractions(mockPostExecutionThread);
   }
@@ -60,8 +60,8 @@ public class SearchServerInteractorTest {
 
     searchServerInteractor.buildReactiveStream(params);
 
-    verify(mockNetworkProvider, times(1)).searchServer(networkAddress);
-    verifyNoMoreInteractions(mockNetworkProvider);
+    verify(searchServerService, times(1)).searchServer(networkAddress);
+    verifyNoMoreInteractions(searchServerService);
   }
 
   @Test public void shouldNotBuildReactiveStreamGivenNullParams() throws Exception {
@@ -84,12 +84,12 @@ public class SearchServerInteractorTest {
 
     TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertErrorMessage("Invalid IP Address");
-    verifyZeroInteractions(mockNetworkProvider);
+    verifyZeroInteractions(searchServerService);
   }
 
   @Test public void shoulNotReturnInvalidReactiveStreamWhenValidWorldFound() throws Exception {
     SearchServerInteractor.Params emptyParams = SearchServerInteractor.Params.empty();
-    when(mockNetworkProvider.searchServer()).thenReturn(getValidWorldReactiveStream());
+    when(searchServerService.searchServer()).thenReturn(getValidWorldReactiveStream());
 
     Observable reactiveStream = searchServerInteractor.buildReactiveStream(emptyParams);
 
@@ -98,7 +98,7 @@ public class SearchServerInteractorTest {
 
   @Test public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
     SearchServerInteractor.Params emptyParams = SearchServerInteractor.Params.empty();
-    when(mockNetworkProvider.searchServer()).thenReturn(Observable.empty());
+    when(searchServerService.searchServer()).thenReturn(Observable.empty());
 
     Observable reactiveStream = searchServerInteractor.buildReactiveStream(emptyParams);
 
@@ -107,7 +107,7 @@ public class SearchServerInteractorTest {
 
   @Test public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
     SearchServerInteractor.Params emptyParams = SearchServerInteractor.Params.empty();
-    when(mockNetworkProvider.searchServer()).thenReturn(Observable.empty());
+    when(searchServerService.searchServer()).thenReturn(Observable.empty());
 
     Observable reactiveStream = searchServerInteractor.buildReactiveStream(emptyParams);
 

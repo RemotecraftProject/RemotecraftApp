@@ -1,13 +1,11 @@
 package com.zireck.remotecraft.dagger.modules;
 
-import com.zireck.remotecraft.domain.provider.NetworkProvider;
-import com.zireck.remotecraft.domain.provider.PermissionProvider;
+import com.zireck.remotecraft.domain.provider.NetworkActionProvider;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerProtocolMapper;
 import com.zireck.remotecraft.infrastructure.provider.NetworkDataProvider;
-import com.zireck.remotecraft.infrastructure.provider.PermissionDataProvider;
 import com.zireck.remotecraft.infrastructure.provider.ServerSearchSettings;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.AndroidBroadcastAddressProvider;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
@@ -50,7 +48,7 @@ import javax.inject.Singleton;
     return new ServerSearchSettings.Builder().build();
   }
 
-  @Provides @Singleton NetworkProvider provideNetworkProvider(
+  @Provides @Singleton NetworkActionProvider provideNetworkProvider(
       NetworkDataProvider networkDataProvider) {
     return networkDataProvider;
   }

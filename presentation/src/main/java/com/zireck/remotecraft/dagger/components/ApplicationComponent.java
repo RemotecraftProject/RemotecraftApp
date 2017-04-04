@@ -9,8 +9,8 @@ import com.zireck.remotecraft.dagger.modules.NetworkModule;
 import com.zireck.remotecraft.dagger.modules.ToolsModule;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.provider.NotificationProvider;
-import com.zireck.remotecraft.domain.provider.ReceiversProvider;
+import com.zireck.remotecraft.domain.provider.NotificationActionProvider;
+import com.zireck.remotecraft.domain.provider.ReceiverActionProvider;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import com.zireck.remotecraft.navigation.Navigator;
 import dagger.Component;
@@ -31,7 +31,7 @@ public interface ApplicationComponent {
   ThreadExecutor threadExecutor();
   PostExecutionThread postExecutionThread();
   Navigator navigator();
-  ReceiversProvider receiversProvider();
-  NotificationProvider notificationProvider();
+  ReceiverActionProvider receiversProvider();
+  NotificationActionProvider notificationProvider();
   ServerSearchManager serverSearchManager();
 }

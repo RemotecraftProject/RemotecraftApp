@@ -2,6 +2,6 @@ package com.zireck.remotecraft.domain.provider;
 
 import io.reactivex.Maybe;
 
-public interface ReceiversProvider {
+public interface ReceiverActionProvider {
   Maybe<Integer> getWifiState();
 }

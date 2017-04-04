@@ -2,7 +2,7 @@ package com.zireck.remotecraft.infrastructure.provider;
 
 import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Server;
-import com.zireck.remotecraft.domain.provider.NetworkProvider;
+import com.zireck.remotecraft.domain.provider.NetworkActionProvider;
 import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.NetworkAddressEntityDataMapper;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class) public class NetworkDataProviderTest {
 
-  private NetworkProvider networkProvider;
+  private NetworkActionProvider networkActionProvider;
 
   @Mock private ServerSearchManager mockServerSearchManager;
   @Mock private ServerEntityDataMapper mockServerEntityDataMapper;
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    networkProvider = new NetworkDataProvider(mockServerSearchManager, mockServerEntityDataMapper,
+    networkActionProvider = new NetworkDataProvider(mockServerSearchManager, mockServerEntityDataMapper,
         mockNetworkAddressEntityDataMapper);
   }
 
@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
     when(mockServerSearchManager.searchServer()).thenReturn(observable);
     when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Observable<Server> serverObservable = networkProvider.searchServer();
+    Observable<Server> serverObservable = networkActionProvider.searchServer();
 
     TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertNoErrors();
@@ -62,7 +62,7 @@ import static org.mockito.Mockito.when;
   @Test public void shouldNotReturnAnyServer() throws Exception {
     when(mockServerSearchManager.searchServer()).thenReturn(Observable.never());
 
-    Observable<Server> serverObservable = networkProvider.searchServer();
+    Observable<Server> serverObservable = networkActionProvider.searchServer();
 
     TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertEmpty();
@@ -92,7 +92,7 @@ import static org.mockito.Mockito.when;
     when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(observable);
     when(mockServerEntityDataMapper.transform(serverEntity)).thenReturn(server);
 
-    Observable<Server> serverObservable = networkProvider.searchServer(networkAddress);
+    Observable<Server> serverObservable = networkActionProvider.searchServer(networkAddress);
 
     TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertNoErrors();
@@ -116,7 +116,7 @@ import static org.mockito.Mockito.when;
         networkAddressEntity);
     when(mockServerSearchManager.searchServer(networkAddressEntity)).thenReturn(Observable.never());
 
-    Observable<Server> serverObservable = networkProvider.searchServer(networkAddress);
+    Observable<Server> serverObservable = networkActionProvider.searchServer(networkAddress);
 
     TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertEmpty();

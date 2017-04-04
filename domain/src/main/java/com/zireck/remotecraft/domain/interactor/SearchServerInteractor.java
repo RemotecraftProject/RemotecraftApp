@@ -7,8 +7,8 @@ import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.base.ObservableInteractor;
 import com.zireck.remotecraft.domain.interactor.params.BaseParams;
 import com.zireck.remotecraft.domain.observer.DefaultObservableObserver;
-import com.zireck.remotecraft.domain.provider.NetworkProvider;
-import com.zireck.remotecraft.domain.provider.NotificationProvider;
+import com.zireck.remotecraft.domain.service.NotifyServerFoundService;
+import com.zireck.remotecraft.domain.service.SearchServerService;
 import com.zireck.remotecraft.domain.validation.Validator;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
@@ -17,19 +17,20 @@ import io.reactivex.schedulers.Schedulers;
 public class SearchServerInteractor
     extends ObservableInteractor<Server, SearchServerInteractor.Params> {
 
-  private final NetworkProvider networkProvider;
+  private final SearchServerService searchServerService;
+  private final NotifyServerFoundService notifyServerFoundService;
   private final Validator<NetworkAddress> networkAddressValidator;
-  private final NotificationProvider notificationProvider;
   private DisposableObserver domainObserver;
   private DisposableObserver presentationObserver;
 
-  public SearchServerInteractor(NetworkProvider networkProvider,
-      Validator<NetworkAddress> networkAddressValidator, NotificationProvider notificationProvider,
-      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+  public SearchServerInteractor(SearchServerService searchServerService,
+      NotifyServerFoundService notifyServerFoundService,
+      Validator<NetworkAddress> networkAddressValidator, ThreadExecutor threadExecutor,
+      PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
-    this.networkProvider = networkProvider;
+    this.searchServerService = searchServerService;
+    this.notifyServerFoundService = notifyServerFoundService;
     this.networkAddressValidator = networkAddressValidator;
-    this.notificationProvider = notificationProvider;
   }
 
   @Override protected Observable<Server> buildReactiveStream(Params params) {
@@ -42,9 +43,8 @@ public class SearchServerInteractor
       return Observable.error(new IllegalArgumentException("Invalid IP Address"));
     }
 
-    return networkAddress != null
-        ? networkProvider.searchServer(networkAddress)
-        : networkProvider.searchServer();
+    return networkAddress != null ? searchServerService.searchServer(networkAddress)
+        : searchServerService.searchServer();
   }
 
   @SuppressWarnings("unchecked")
@@ -78,8 +78,7 @@ public class SearchServerInteractor
   }
 
   private void displayNotificationForServer(Server server) {
-    // TODO: show notification using a DomainService
-    notificationProvider.notifyServerFound(server);
+    notifyServerFoundService.notifyServerFound(server);
   }
 
   private final class SearchServerDomainObserver extends DefaultObservableObserver<Server> {

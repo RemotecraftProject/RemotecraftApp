@@ -12,7 +12,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.CompositePermissionListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.zireck.remotecraft.domain.Permission;
-import com.zireck.remotecraft.domain.provider.PermissionProvider;
+import com.zireck.remotecraft.domain.provider.PermissionActionProvider;
 import com.zireck.remotecraft.infrastructure.entity.PermissionEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.PermissionEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.permission.AndroidPermissionChecker;
@@ -25,7 +25,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.Single;
 import javax.inject.Inject;
 
-public class PermissionDataProvider implements PermissionProvider {
+public class PermissionDataProvider implements PermissionActionProvider {
 
   @Inject Context context;
   @Inject Activity activity;

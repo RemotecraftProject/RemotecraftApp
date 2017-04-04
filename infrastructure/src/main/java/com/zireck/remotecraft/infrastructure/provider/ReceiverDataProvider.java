@@ -1,15 +1,15 @@
 package com.zireck.remotecraft.infrastructure.provider;
 
 import android.content.Context;
-import com.zireck.remotecraft.domain.provider.ReceiversProvider;
+import com.zireck.remotecraft.domain.provider.ReceiverActionProvider;
 import io.reactivex.Maybe;
 import javax.inject.Inject;
 
-public class ReceiversDataProvider implements ReceiversProvider {
+public class ReceiverDataProvider implements ReceiverActionProvider {
 
   @Inject Context context;
 
-  @Inject public ReceiversDataProvider() {
+  @Inject public ReceiverDataProvider() {
 
   }
 

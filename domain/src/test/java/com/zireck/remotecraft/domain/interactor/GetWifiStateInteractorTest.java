@@ -2,7 +2,7 @@ package com.zireck.remotecraft.domain.interactor;
 
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.provider.ReceiversProvider;
+import com.zireck.remotecraft.domain.provider.ReceiverActionProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,21 +16,21 @@ public class GetWifiStateInteractorTest {
 
   private GetWifiStateInteractor getWifiStateInteractor;
 
-  @Mock private ReceiversProvider mockReceiversProvider;
+  @Mock private ReceiverActionProvider mockReceiverActionProvider;
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
-    getWifiStateInteractor = new GetWifiStateInteractor(mockReceiversProvider, mockThreadExecutor,
+    getWifiStateInteractor = new GetWifiStateInteractor(mockReceiverActionProvider, mockThreadExecutor,
         mockPostExecutionThread);
   }
 
   @Test public void shouldBuildReactiveStreamProperly() throws Exception {
     getWifiStateInteractor.buildReactiveStream(null);
 
-    verify(mockReceiversProvider).getWifiState();
-    verifyNoMoreInteractions(mockReceiversProvider);
+    verify(mockReceiverActionProvider).getWifiState();
+    verifyNoMoreInteractions(mockReceiverActionProvider);
     verifyZeroInteractions(mockThreadExecutor);
     verifyZeroInteractions(mockPostExecutionThread);
   }

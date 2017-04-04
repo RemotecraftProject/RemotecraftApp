@@ -2,8 +2,10 @@ package com.zireck.remotecraft.dagger.modules;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.zireck.remotecraft.domain.AutoValueGsonTypeAdapterFactory;
-import com.zireck.remotecraft.domain.ServerDeserializer;
+import com.zireck.remotecraft.domain.Server;
+import com.zireck.remotecraft.domain.util.AutoValueGsonTypeAdapterFactory;
+import com.zireck.remotecraft.domain.util.JsonDeserializer;
+import com.zireck.remotecraft.domain.util.ServerDeserializer;
 import com.zireck.remotecraft.infrastructure.tool.GsonSerializer;
 import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import com.zireck.remotecraft.tools.UriParser;
@@ -37,7 +39,7 @@ import javax.inject.Singleton;
     return new AutoValueGsonTypeAdapterFactory();
   }
 
-  @Provides @Singleton ServerDeserializer serverDeserializer(GsonBuilder gsonBuilder,
+  @Provides @Singleton JsonDeserializer<Server> serverDeserializer(GsonBuilder gsonBuilder,
       AutoValueGsonTypeAdapterFactory autoValueGsonTypeAdapterFactory) {
     return new ServerDeserializer(gsonBuilder, autoValueGsonTypeAdapterFactory);
   }

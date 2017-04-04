@@ -4,20 +4,20 @@ import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.params.EmptyParams;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
-import com.zireck.remotecraft.domain.provider.ReceiversProvider;
+import com.zireck.remotecraft.domain.provider.ReceiverActionProvider;
 import io.reactivex.Maybe;
 
 public class GetWifiStateInteractor extends MaybeInteractor<Integer, EmptyParams> {
 
-  private final ReceiversProvider receiversProvider;
+  private final ReceiverActionProvider receiverActionProvider;
 
-  public GetWifiStateInteractor(ReceiversProvider receiversProvider, ThreadExecutor threadExecutor,
+  public GetWifiStateInteractor(ReceiverActionProvider receiverActionProvider, ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
-    this.receiversProvider = receiversProvider;
+    this.receiverActionProvider = receiverActionProvider;
   }
 
   @Override protected Maybe<Integer> buildReactiveStream(EmptyParams params) {
-    return receiversProvider.getWifiState();
+    return receiverActionProvider.getWifiState();
   }
 }

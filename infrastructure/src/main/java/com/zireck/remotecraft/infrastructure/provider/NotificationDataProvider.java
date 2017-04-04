@@ -1,13 +1,13 @@
 package com.zireck.remotecraft.infrastructure.provider;
 
 import com.zireck.remotecraft.domain.Server;
-import com.zireck.remotecraft.domain.provider.NotificationProvider;
+import com.zireck.remotecraft.domain.provider.NotificationActionProvider;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.ServerEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.manager.AndroidNotificationManager;
 import javax.inject.Inject;
 
-public class NotificationDataProvider implements NotificationProvider {
+public class NotificationDataProvider implements NotificationActionProvider {
 
   private final AndroidNotificationManager androidNotificationManager;
   private final ServerEntityDataMapper serverEntityDataMapper;

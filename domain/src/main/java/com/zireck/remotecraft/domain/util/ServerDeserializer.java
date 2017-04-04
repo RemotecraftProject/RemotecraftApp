@@ -1,11 +1,12 @@
-package com.zireck.remotecraft.domain;
+package com.zireck.remotecraft.domain.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.zireck.remotecraft.domain.Server;
 import java.lang.reflect.Type;
 
-public class ServerDeserializer {
+public class ServerDeserializer implements JsonDeserializer<Server> {
 
   private final GsonBuilder gsonBuilder;
   private final AutoValueGsonTypeAdapterFactory autoValueGsonTypeAdapterFactory;
@@ -16,7 +17,7 @@ public class ServerDeserializer {
     this.autoValueGsonTypeAdapterFactory = autoValueGsonTypeAdapterFactory;
   }
 
-  public Server deserialize(String serializedServer) {
+  @Override public Server deserialize(String serializedServer) {
     Gson gson = gsonBuilder
         .registerTypeAdapterFactory(autoValueGsonTypeAdapterFactory)
         .create();

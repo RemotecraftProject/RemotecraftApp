@@ -5,18 +5,18 @@ import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.base.SingleInteractor;
 import com.zireck.remotecraft.domain.interactor.params.BaseParams;
-import com.zireck.remotecraft.domain.provider.PermissionProvider;
+import com.zireck.remotecraft.domain.provider.PermissionActionProvider;
 import io.reactivex.Single;
 
 public class RequestPermissionInteractor
     extends SingleInteractor<Boolean, RequestPermissionInteractor.Params> {
 
-  private final PermissionProvider permissionProvider;
+  private final PermissionActionProvider permissionActionProvider;
 
-  public RequestPermissionInteractor(PermissionProvider permissionProvider, ThreadExecutor threadExecutor,
-      PostExecutionThread postExecutionThread) {
+  public RequestPermissionInteractor(PermissionActionProvider permissionActionProvider,
+      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
-    this.permissionProvider = permissionProvider;
+    this.permissionActionProvider = permissionActionProvider;
   }
 
   @Override protected Single<Boolean> buildReactiveStream(Params params) {
@@ -24,7 +24,7 @@ public class RequestPermissionInteractor
       return Single.error(new IllegalArgumentException("Invalid Permission"));
     }
 
-    return permissionProvider.request(params.permission);
+    return permissionActionProvider.request(params.permission);
   }
 
   public static final class Params implements BaseParams {

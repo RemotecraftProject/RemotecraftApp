@@ -3,7 +3,7 @@ package com.zireck.remotecraft.domain.interactor;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
-import com.zireck.remotecraft.domain.provider.PermissionProvider;
+import com.zireck.remotecraft.domain.provider.PermissionActionProvider;
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
   private RequestPermissionInteractor requestPermissionInteractor;
 
-  @Mock private PermissionProvider mockPermissionProvider;
+  @Mock private PermissionActionProvider mockPermissionActionProvider;
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
     MockitoAnnotations.initMocks(this);
 
     requestPermissionInteractor =
-        new RequestPermissionInteractor(mockPermissionProvider, mockThreadExecutor,
+        new RequestPermissionInteractor(mockPermissionActionProvider, mockThreadExecutor,
             mockPostExecutionThread);
   }
 
@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
     Permission permission = getPermission();
     RequestPermissionInteractor.Params params =
         RequestPermissionInteractor.Params.forPermission(permission);
-    when(mockPermissionProvider.request(permission)).thenReturn(Single.just(true));
+    when(mockPermissionActionProvider.request(permission)).thenReturn(Single.just(true));
 
     Single<Boolean> reactiveStream = requestPermissionInteractor.buildReactiveStream(params);
 
@@ -61,7 +61,7 @@ import static org.mockito.Mockito.when;
     Permission permission = getPermission();
     RequestPermissionInteractor.Params params =
         RequestPermissionInteractor.Params.forPermission(permission);
-    when(mockPermissionProvider.request(permission)).thenReturn(Single.just(false));
+    when(mockPermissionActionProvider.request(permission)).thenReturn(Single.just(false));
 
     Single<Boolean> reactiveStream = requestPermissionInteractor.buildReactiveStream(params);
 

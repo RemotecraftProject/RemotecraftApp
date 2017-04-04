@@ -2,7 +2,7 @@ package com.zireck.remotecraft.infrastructure.provider;
 
 import android.content.Context;
 import com.zireck.remotecraft.domain.Permission;
-import com.zireck.remotecraft.domain.provider.PermissionProvider;
+import com.zireck.remotecraft.domain.provider.PermissionActionProvider;
 import com.zireck.remotecraft.infrastructure.entity.PermissionEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.PermissionEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.permission.AndroidPermissionChecker;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class) public class PermissionDataProviderTest {
 
-  private PermissionProvider permissionProvider;
+  private PermissionActionProvider permissionActionProvider;
 
   @Mock private AndroidPermissionChecker mockAndroidPermissionChecker;
   @Mock private PermissionEntityDataMapper mockPermissionEntityDataMapper;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    permissionProvider =
+    permissionActionProvider =
         new PermissionDataProvider(mockAndroidPermissionChecker, mockPermissionEntityDataMapper);
   }
 
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
         same(permissionEntity))).thenReturn(0);
     when(mockAndroidPermissionChecker.isGranted(0)).thenReturn(true);
 
-    Single<Boolean> isGranted = permissionProvider.isGranted(permission);
+    Single<Boolean> isGranted = permissionActionProvider.isGranted(permission);
 
     assertThat(isGranted).isNotNull();
     TestObserver<Boolean> testObserver = isGranted.test();
@@ -62,7 +62,7 @@ import static org.mockito.Mockito.when;
         same(permissionEntity))).thenReturn(-1);
     when(mockAndroidPermissionChecker.isGranted(-1)).thenReturn(false);
 
-    Single<Boolean> isGranted = permissionProvider.isGranted(permission);
+    Single<Boolean> isGranted = permissionActionProvider.isGranted(permission);
 
     assertThat(isGranted).isNotNull();
     TestObserver<Boolean> testObserver = isGranted.test();

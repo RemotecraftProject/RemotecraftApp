@@ -3,7 +3,7 @@ package com.zireck.remotecraft.infrastructure.provider;
 import android.content.Context;
 import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Server;
-import com.zireck.remotecraft.domain.provider.NetworkProvider;
+import com.zireck.remotecraft.domain.provider.NetworkActionProvider;
 import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.mapper.NetworkAddressEntityDataMapper;
 import com.zireck.remotecraft.infrastructure.entity.mapper.ServerEntityDataMapper;
@@ -11,7 +11,7 @@ import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
 import io.reactivex.Observable;
 import javax.inject.Inject;
 
-public class NetworkDataProvider implements NetworkProvider {
+public class NetworkDataProvider implements NetworkActionProvider {
 
   @Inject Context context;
   private final ServerSearchManager serverSearchManager;

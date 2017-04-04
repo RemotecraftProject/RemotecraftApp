@@ -4,7 +4,8 @@ import android.net.Uri;
 import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
-import com.zireck.remotecraft.domain.ServerDeserializer;
+import com.zireck.remotecraft.domain.util.JsonDeserializer;
+import com.zireck.remotecraft.domain.util.ServerDeserializer;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;
 import com.zireck.remotecraft.domain.interactor.RequestPermissionInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
@@ -32,7 +33,7 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   private final CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor;
   private final RequestPermissionInteractor requestPermissionInteractor;
   private final PermissionModel cameraPermissionModel;
-  private final ServerDeserializer serverDeserializer;
+  private final JsonDeserializer<Server> serverDeserializer;
   private final ServerModelDataMapper serverModelDataMapper;
   private final NetworkAddressModelDataMapper networkAddressModelDataMapper;
   private final PermissionModelDataMapper permissionModelDataMapper;
@@ -44,7 +45,7 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
       SearchServerInteractor searchServerInteractor,
       CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
       RequestPermissionInteractor requestPermissionInteractor,
-      PermissionModel cameraPermissionModel, ServerDeserializer serverDeserializer,
+      PermissionModel cameraPermissionModel, JsonDeserializer<Server> serverDeserializer,
       ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
