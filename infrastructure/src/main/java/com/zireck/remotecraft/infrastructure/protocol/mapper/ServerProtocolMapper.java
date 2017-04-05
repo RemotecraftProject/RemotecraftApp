@@ -26,4 +26,21 @@ public class ServerProtocolMapper {
         .playerName(serverProtocol.getPlayerName())
         .build();
   }
+
+  public ServerProtocol transform(ServerEntity serverEntity) {
+    if (serverEntity == null) {
+      return null;
+    }
+
+    return new ServerProtocol.Builder()
+        .ssid(serverEntity.ssid())
+        .ip(serverEntity.ip())
+        .hostname(serverEntity.hostname())
+        .os(serverEntity.os())
+        .version(serverEntity.version())
+        .seed(serverEntity.seed())
+        .worldName(serverEntity.worldName())
+        .playerName(serverEntity.playerName())
+        .build();
+  }
 }

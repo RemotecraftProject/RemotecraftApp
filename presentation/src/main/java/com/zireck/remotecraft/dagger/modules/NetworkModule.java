@@ -1,7 +1,11 @@
 package com.zireck.remotecraft.dagger.modules;
 
+import com.zireck.remotecraft.BuildConfig;
 import com.zireck.remotecraft.domain.provider.NetworkActionProvider;
 import com.zireck.remotecraft.infrastructure.manager.ServerSearchManager;
+import com.zireck.remotecraft.infrastructure.network.NetworkConnectionlessMockTransmitter;
+import com.zireck.remotecraft.infrastructure.network.NetworkConnectionlessTransmitter;
+import com.zireck.remotecraft.infrastructure.network.NetworkDatagramTransmitter;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.MessageJsonMapper;
 import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerProtocolMapper;
@@ -11,8 +15,7 @@ import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.AndroidBr
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
 import com.zireck.remotecraft.infrastructure.provider.networkinterface.AndroidNetworkInterfaceProvider;
 import com.zireck.remotecraft.infrastructure.provider.networkinterface.NetworkInterfaceProvider;
-import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessDatagramTransmitter;
-import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
+import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import com.zireck.remotecraft.infrastructure.validation.NetworkInterfaceValidator;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import dagger.Module;
@@ -40,8 +43,26 @@ import javax.inject.Singleton;
   }
 
   @Provides @Singleton NetworkConnectionlessTransmitter provideNetworkConnectionlessTransmitter(
+      NetworkDatagramTransmitter networkDatagramTransmitter,
+      NetworkConnectionlessMockTransmitter networkConnectionlessMockTransmitter) {
+    if (BuildConfig.DEBUG) {
+      return networkConnectionlessMockTransmitter;
+    } else {
+      return networkDatagramTransmitter;
+    }
+  }
+
+  @Provides @Singleton NetworkDatagramTransmitter provideNetworkDatagramTransmitter(
       DatagramSocket datagramSocket) {
-    return new NetworkConnectionlessDatagramTransmitter(datagramSocket);
+    return new NetworkDatagramTransmitter(datagramSocket);
+  }
+
+  @Provides @Singleton
+  NetworkConnectionlessMockTransmitter provideNetworkConnectionlessMockTransmitter(
+      JsonSerializer jsonSerializer, ServerProtocolMapper serverProtocolMapper,
+      ProtocolMessageComposer protocolMessageComposer) {
+    return new NetworkConnectionlessMockTransmitter(jsonSerializer, serverProtocolMapper,
+        protocolMessageComposer);
   }
 
   @Provides @Singleton ServerSearchSettings provideServerSearchSettings() {

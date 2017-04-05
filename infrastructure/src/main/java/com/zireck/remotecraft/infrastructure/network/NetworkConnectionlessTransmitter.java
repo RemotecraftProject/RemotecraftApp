@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.infrastructure.tool;
+package com.zireck.remotecraft.infrastructure.network;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -9,5 +9,5 @@ public interface NetworkConnectionlessTransmitter {
   void setBroadcast(boolean isBroadcast) throws SocketException;
   void setTimeout(int timeout) throws SocketException;
   void send(DatagramPacket datagramPacket) throws IOException;
-  void receive(DatagramPacket datagramPacket) throws IOException;
+  DatagramPacket receive(DatagramPacket datagramPacket) throws IOException;
 }

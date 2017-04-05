@@ -12,7 +12,7 @@ import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerProtocolMappe
 import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
 import com.zireck.remotecraft.infrastructure.provider.ServerSearchSettings;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
-import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
+import com.zireck.remotecraft.infrastructure.network.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import io.reactivex.Observable;
 import io.reactivex.observables.ConnectableObservable;
@@ -103,7 +103,7 @@ public class ServerSearchManager {
     if (networkAddressEntity != null) {
       sendRequestTo(networkAddressEntity);
     } else {
-      enableBroadcast();
+      enableBroadcastTransmission();
       sendRequestTo(serverSearchSettings.getBroadcastAddress());
       sendRequestToEveryInterfaceBroadcastAddress();
     }
@@ -115,7 +115,7 @@ public class ServerSearchManager {
     networkConnectionlessTransmitter.send(outgoingPacket);
   }
 
-  private void enableBroadcast() throws SocketException {
+  private void enableBroadcastTransmission() throws SocketException {
     networkConnectionlessTransmitter.setBroadcast(true);
   }
 
@@ -145,7 +145,7 @@ public class ServerSearchManager {
     DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
 
     networkConnectionlessTransmitter.setTimeout(serverSearchSettings.getTimeout());
-    networkConnectionlessTransmitter.receive(responsePacket);
+    responsePacket = networkConnectionlessTransmitter.receive(responsePacket);
 
     return responsePacket;
   }

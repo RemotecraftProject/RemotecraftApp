@@ -2,7 +2,6 @@ package com.zireck.remotecraft.infrastructure.manager;
 
 import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
-import com.zireck.remotecraft.infrastructure.exception.InvalidServerException;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.base.type.ServerProtocol;
@@ -11,9 +10,8 @@ import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerProtocolMappe
 import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
 import com.zireck.remotecraft.infrastructure.provider.ServerSearchSettings;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
-import com.zireck.remotecraft.infrastructure.tool.NetworkConnectionlessTransmitter;
+import com.zireck.remotecraft.infrastructure.network.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import java.net.DatagramPacket;
 import org.junit.Before;
@@ -29,14 +27,12 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class) public class ServerSearchManagerTest {
@@ -67,6 +63,11 @@ import static org.mockito.Mockito.when;
         .timeout(1500)
         .subscribers(1)
         .build();
+
+    DatagramPacket datagramPacket = new DatagramPacket(new byte[] {}, new byte[] {}.length);
+    datagramPacket.setData(new byte[] {});
+    when(mockNetworkConnectionlessTransmitter.receive(any(DatagramPacket.class))).thenReturn(
+        datagramPacket);
 
     serverSearchManager =
         new ServerSearchManager(mockServerSearchSettings, mockNetworkConnectionlessTransmitter,
@@ -201,8 +202,16 @@ import static org.mockito.Mockito.when;
   }
 
   private ServerProtocol getMockServerProtocol() {
-    return new ServerProtocol("WLAN_C33C", "127.0.0.1", "iMac", "Mac OS X", "v1.8", "123456789",
-        "Za warudo", "Zireck");
+    return new ServerProtocol.Builder()
+        .ssid("WLAN_C33C")
+        .ip("127.0.0.1")
+        .hostname("iMac")
+        .os("Mac OS X")
+        .version("v1.8")
+        .seed("123456789")
+        .worldName("Za warudo")
+        .playerName("Zireck")
+        .build();
   }
 
   private ServerEntity getMockServerEntity() {

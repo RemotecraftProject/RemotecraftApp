@@ -1,15 +1,15 @@
-package com.zireck.remotecraft.infrastructure.tool;
+package com.zireck.remotecraft.infrastructure.network;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-public class NetworkConnectionlessDatagramTransmitter implements NetworkConnectionlessTransmitter {
+public class NetworkDatagramTransmitter implements NetworkConnectionlessTransmitter {
 
   private final DatagramSocket datagramSocket;
 
-  public NetworkConnectionlessDatagramTransmitter(DatagramSocket datagramSocket) {
+  public NetworkDatagramTransmitter(DatagramSocket datagramSocket) {
     this.datagramSocket = datagramSocket;
   }
 
@@ -29,7 +29,8 @@ public class NetworkConnectionlessDatagramTransmitter implements NetworkConnecti
     datagramSocket.send(datagramPacket);
   }
 
-  @Override public void receive(DatagramPacket datagramPacket) throws IOException {
+  @Override public DatagramPacket receive(DatagramPacket datagramPacket) throws IOException {
     datagramSocket.receive(datagramPacket);
+    return datagramPacket;
   }
 }

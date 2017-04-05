@@ -1,5 +1,6 @@
 package com.zireck.remotecraft.infrastructure.tool;
 
+import com.zireck.remotecraft.infrastructure.network.NetworkDatagramTransmitter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import org.junit.Before;
@@ -14,43 +15,42 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(MockitoJUnitRunner.class) public class NetworkConnectionlessDatagramTransmitterTest {
+@RunWith(MockitoJUnitRunner.class) public class NetworkDatagramTransmitterTest {
 
-  private NetworkConnectionlessDatagramTransmitter networkConnectionlessDatagramTransmitter;
+  private NetworkDatagramTransmitter networkDatagramTransmitter;
 
   @Mock private DatagramSocket mockDatagramSocket;
 
   @Before public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
-    networkConnectionlessDatagramTransmitter =
-        new NetworkConnectionlessDatagramTransmitter(mockDatagramSocket);
+    networkDatagramTransmitter =
+        new NetworkDatagramTransmitter(mockDatagramSocket);
   }
 
   @Test public void shouldNotBeReadyGivenANullDatagramSocket() throws Exception {
-    NetworkConnectionlessDatagramTransmitter
-        networkConnectionlessDatagramTransmitterWithNullDatagramSocket =
-        new NetworkConnectionlessDatagramTransmitter(null);
-    boolean isReady = networkConnectionlessDatagramTransmitterWithNullDatagramSocket.isReady();
+    NetworkDatagramTransmitter networkDatagramTransmitterWithNullDatagramSocket =
+        new NetworkDatagramTransmitter(null);
+    boolean isReady = networkDatagramTransmitterWithNullDatagramSocket.isReady();
 
     assertThat(isReady).isFalse();
   }
 
   @Test public void shouldBeReadyGivenANonNullDatagramSocket() throws Exception {
-    boolean isReady = networkConnectionlessDatagramTransmitter.isReady();
+    boolean isReady = networkDatagramTransmitter.isReady();
 
     assertThat(isReady).isTrue();
   }
 
   @Test public void shouldSetBroadcastProperly() throws Exception {
-    networkConnectionlessDatagramTransmitter.setBroadcast(true);
+    networkDatagramTransmitter.setBroadcast(true);
 
     verify(mockDatagramSocket, times(1)).setBroadcast(true);
     verifyNoMoreInteractions(mockDatagramSocket);
   }
 
   @Test public void shouldProperlySetTimeout() throws Exception {
-    networkConnectionlessDatagramTransmitter.setTimeout(60);
+    networkDatagramTransmitter.setTimeout(60);
 
     verify(mockDatagramSocket, times(1)).setSoTimeout(60);
     verifyNoMoreInteractions(mockDatagramSocket);
@@ -60,7 +60,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
     String packetValue = "something";
     DatagramPacket datagramPacket =
         new DatagramPacket(packetValue.getBytes(), packetValue.length());
-    networkConnectionlessDatagramTransmitter.send(datagramPacket);
+    networkDatagramTransmitter.send(datagramPacket);
 
     verify(mockDatagramSocket, times(1)).send(datagramPacket);
     verifyNoMoreInteractions(mockDatagramSocket);
@@ -70,7 +70,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
     String packetValue = "something";
     DatagramPacket datagramPacket =
         new DatagramPacket(packetValue.getBytes(), packetValue.length());
-    networkConnectionlessDatagramTransmitter.receive(datagramPacket);
+    networkDatagramTransmitter.receive(datagramPacket);
 
     verify(mockDatagramSocket, times(1)).receive(datagramPacket);
     verifyNoMoreInteractions(mockDatagramSocket);
