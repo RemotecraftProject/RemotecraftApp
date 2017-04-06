@@ -1,6 +1,6 @@
 package com.zireck.remotecraft.dagger.modules;
 
-import com.zireck.remotecraft.dagger.PerActivity;
+import com.zireck.remotecraft.dagger.qualifiers.PerActivity;
 import com.zireck.remotecraft.domain.executor.PostExecutionThread;
 import com.zireck.remotecraft.domain.executor.ThreadExecutor;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;

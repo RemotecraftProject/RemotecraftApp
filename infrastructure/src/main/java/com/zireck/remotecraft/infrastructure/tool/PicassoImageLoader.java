@@ -1,7 +1,8 @@
-package com.zireck.remotecraft.imageloader;
+package com.zireck.remotecraft.infrastructure.tool;
 
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import java.io.File;
 
 public class PicassoImageLoader implements ImageLoader {
@@ -22,5 +23,9 @@ public class PicassoImageLoader implements ImageLoader {
 
   @Override public void load(int resource, ImageView imageView) {
     picasso.load(resource).into(imageView);
+  }
+
+  @Override public void load(String url, Target target) {
+    picasso.load(url).into(target);
   }
 }

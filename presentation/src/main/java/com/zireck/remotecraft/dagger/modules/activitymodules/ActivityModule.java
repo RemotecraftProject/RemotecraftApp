@@ -2,7 +2,7 @@ package com.zireck.remotecraft.dagger.modules.activitymodules;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import com.zireck.remotecraft.dagger.PerActivity;
+import com.zireck.remotecraft.dagger.qualifiers.PerActivity;
 import dagger.Module;
 import dagger.Provides;
 

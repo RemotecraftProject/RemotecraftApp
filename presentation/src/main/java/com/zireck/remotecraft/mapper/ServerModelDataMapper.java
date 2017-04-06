@@ -2,7 +2,7 @@ package com.zireck.remotecraft.mapper;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
-import com.zireck.remotecraft.dagger.PerActivity;
+import com.zireck.remotecraft.dagger.qualifiers.PerActivity;
 import com.zireck.remotecraft.domain.Server;
 import com.zireck.remotecraft.model.ServerModel;
 import java.util.Collection;

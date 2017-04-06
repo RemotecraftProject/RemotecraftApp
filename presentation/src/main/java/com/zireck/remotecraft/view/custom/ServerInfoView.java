@@ -10,13 +10,12 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.zireck.remotecraft.R;
-import com.zireck.remotecraft.imageloader.ImageLoader;
+import com.zireck.remotecraft.infrastructure.tool.ImageLoader;
 import com.zireck.remotecraft.model.ServerModel;
 
 public class ServerInfoView extends RelativeLayout {
 
   private static final int LAYOUT_RESOURCE = R.layout.server_info_view;
-  private static final String AVATAR_URL = "https://minotar.net/helm/%s/%s.png";
 
   @BindView(R.id.player_avatar) ImageView playerAvatarView;
   @BindView(R.id.player_name) TextView playerNameView;
@@ -36,10 +35,11 @@ public class ServerInfoView extends RelativeLayout {
     super(context, attrs, defStyleAttr);
   }
 
-  public void renderServer(Context context, ServerModel serverModel, ImageLoader imageLoader) {
+  public void renderServer(Context context, ServerModel serverModel, ImageLoader imageLoader,
+      String playerAvatarUrl) {
     inflateView(context);
 
-    loadAvatarFor(serverModel.playerName(), imageLoader);
+    loadAvatarFor(serverModel.playerName(), imageLoader, playerAvatarUrl);
     playerNameView.setText(serverModel.playerName());
     worldNameView.setText(serverModel.worldName());
     ssidAndIpView.setText(String.format("%s (%s)", serverModel.ssid(), serverModel.ip()));
@@ -55,9 +55,9 @@ public class ServerInfoView extends RelativeLayout {
     return view;
   }
 
-  private void loadAvatarFor(String playerName, ImageLoader imageLoader) {
+  private void loadAvatarFor(String playerName, ImageLoader imageLoader, String playerAvatarUrl) {
     final String avatarSize = "100";
-    final String avatarUrl = String.format(AVATAR_URL, playerName, avatarSize);
+    final String avatarUrl = String.format(playerAvatarUrl, playerName, avatarSize);
     imageLoader.load(avatarUrl, playerAvatarView);
   }
 }

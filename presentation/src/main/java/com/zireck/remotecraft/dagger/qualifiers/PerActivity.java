@@ -1,4 +1,4 @@
-package com.zireck.remotecraft.dagger;
+package com.zireck.remotecraft.dagger.qualifiers;
 
 import java.lang.annotation.Retention;
 import javax.inject.Scope;

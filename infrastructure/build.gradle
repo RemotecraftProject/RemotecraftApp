@@ -58,6 +58,7 @@ dependencies {
   compile "${library.lightweightStreamApi}"
   compile "${library.androidAnnotations}"
   compile "${library.dexter}"
+  compile "${library.picasso}"
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.assertJ}"

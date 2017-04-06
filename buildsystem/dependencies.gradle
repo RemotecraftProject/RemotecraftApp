@@ -105,7 +105,8 @@ ext.infrastructureDependencies = [
     lightweightStreamApi      : "${dependency.lightweightStreamApi}",
 
     androidAnnotations        : "${dependency.androidAnnotations}",
-    dexter                    : "${dependency.dexter}"
+    dexter                    : "${dependency.dexter}",
+    picasso                   : "${dependency.picasso}"
 ]
 
 ext.infrastructureTestDependencies = [

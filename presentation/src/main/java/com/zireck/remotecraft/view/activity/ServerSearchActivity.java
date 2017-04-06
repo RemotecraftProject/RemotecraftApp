@@ -28,7 +28,7 @@ import com.zireck.remotecraft.dagger.HasActivitySubcomponentBuilders;
 import com.zireck.remotecraft.dagger.components.ServerSearchComponent;
 import com.zireck.remotecraft.dagger.modules.activitymodules.ServerSearchModule;
 import com.zireck.remotecraft.exception.ErrorMessageFactory;
-import com.zireck.remotecraft.imageloader.ImageLoader;
+import com.zireck.remotecraft.infrastructure.tool.ImageLoader;
 import com.zireck.remotecraft.model.ServerModel;
 import com.zireck.remotecraft.presenter.ServerSearchPresenter;
 import com.zireck.remotecraft.view.ServerSearchView;
