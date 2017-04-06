@@ -9,16 +9,18 @@ Connect and remotely manage your Minecraft server using cutting edge technology!
 - [Technical Documentation](#technical-documentation)
     - [AutoValue](#autovalue)
     - [Injecting mock dependencies in Robolectric tests using Dagger subcomponents](#injecting-mock-dependencies-in-robolectric-tests-using-dagger-subcomponents)
+    - [Mock network responses](#mock-network-responses)
 - [Credits](#credits)
 - [License](#license)
 
 ## How it works
-I wrote a fake server so you don't actually need to be running the videogame itself or install any extra stuff.
+If you don't have a real server to run against, just run the mock build type. No extra stuff needed.
 
-1. You need to run the [MockServer](https://github.com/RemotecraftProject/RemotecraftApp/blob/feature/search_server/mockserver/src/main/java/com/zireck/remotecraft/server/mock/MockServer.java) class within the mockserver module as a pure java application. <br />
-*(Edit configurations -> + -> Application -> Browse Main class -> MockServer)*
-2. Run the Android app.
-3. Make sure the computer running the server and the Android device running the app are both in the same WiFi network.
+
+Otherwise: <br />
+1. Run Minecraft on your computer, with a previously installed version of the **Remotecraft Forge Mod** (currently unavailable) found [here](https://github.com/RemotecraftProject/RemotecraftMod). <br />
+2. Run the Android app. <br />
+3. Make sure the computer running the game and the Android device running the app are both in the same WiFi network. <br />
 4. Profit!
 
 ## Running tests
@@ -77,6 +79,95 @@ After that, I just had to define my mock collaborators, create a new subcomponen
 ```
 *ServerSearchActivityTest.java*
 
+### Mock network responses
+At first I wrote a pure java module called *mockserver* that I had to run everytime I wanted to test the app. It was a simple java app emulating a server and returning fake hardcoded responses.
+
+Later on, I figured out a way to avoid this dependency and achieve self-contained mock responses within the app itself.
+
+I have two different implementations for the **NetworkConnectionlessTransmitter** abstraction. <br />
+The real one using a *DatagramSocket*:
+
+```java
+public class NetworkDatagramTransmitter implements NetworkConnectionlessTransmitter {
+
+  // ...
+
+  @Override public void send(NetworkPacket networkPacket) throws IOException {
+    datagramSocket.send(networkPacket.getDatagramPacket());
+  }
+
+  @Override public NetworkPacket receive(NetworkPacket networkPacket) throws IOException {
+    datagramSocket.receive(networkPacket.getDatagramPacket());
+    return new NetworkPacket(networkPacket.getDatagramPacket());
+  }
+  
+  // ...
+}
+```
+
+And the fake one:
+
+```java
+public class NetworkConnectionlessMockTransmitter implements NetworkConnectionlessTransmitter {
+  // ...
+  
+  @Override public void send(NetworkPacket networkPacket) throws IOException {
+
+  }
+
+  @Override public NetworkPacket receive(NetworkPacket networkPacket) throws IOException {
+    ServerMessage mockServerMessageResponse = getMockMessageResponse();
+    String mockServerMessageResponseJson = jsonSerializer.toJson(mockServerMessageResponse);
+
+    return new NetworkPacket(mockServerMessageResponseJson);
+  }
+  
+  // ...
+}
+```
+
+I made a new build type and a new BuildConfig variable:
+
+```groovy
+  buildTypes {
+  
+	// ...
+
+    mock {
+      debuggable true
+      testCoverageEnabled = true
+      signingConfig signingConfigs.debug
+
+      buildConfigField("boolean", "IS_MOCK", "true")
+    }
+
+	// ...
+	
+  }
+```
+
+And finally, I just have to provide the proper *NetworkConnectionlessTransmitter* implementation using Dagger:
+
+```java
+@Module public class NetworkModule {
+
+	// ...
+	
+  @Provides @Singleton NetworkConnectionlessTransmitter provideNetworkConnectionlessTransmitter(
+      NetworkDatagramTransmitter networkDatagramTransmitter,
+      NetworkConnectionlessMockTransmitter networkConnectionlessMockTransmitter) {
+    if (BuildConfig.IS_MOCK) {
+      return networkConnectionlessMockTransmitter;
+    } else {
+      return networkDatagramTransmitter;
+    }
+  }
+	
+	// ...
+
+}
+```
+
 ## Credits
 
 **Architecting Android...The clean way?** by Fernando Cejas <br />
@@ -85,6 +176,9 @@ https://github.com/android10/Android-CleanArchitecture
 
 **Infrastructure (or Platform-Specific) layer in Clean Architecture** <br />
 https://github.com/android10/Android-CleanArchitecture/issues/151 <br />
+
+**Network discovery using UDP Broadcast (Java)** <br />
+http://michieldemey.be/blog/network-discovery-using-udp-broadcast/
 
 **Wait for it… IdlingResource and ConditionWatcher** <br />
 https://medium.com/azimolabs/wait-for-it-idlingresource-and-conditionwatcher-602055f32356#.z8jin4693 <br />
