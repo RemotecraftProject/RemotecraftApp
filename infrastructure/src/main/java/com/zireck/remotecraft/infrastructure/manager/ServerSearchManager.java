@@ -4,6 +4,8 @@ import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
 import com.zireck.remotecraft.infrastructure.exception.InvalidServerException;
 import com.zireck.remotecraft.infrastructure.exception.NoResponseException;
+import com.zireck.remotecraft.infrastructure.network.NetworkConnectionlessTransmitter;
+import com.zireck.remotecraft.infrastructure.network.NetworkPacket;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.base.type.ServerProtocol;
@@ -12,12 +14,10 @@ import com.zireck.remotecraft.infrastructure.protocol.mapper.ServerProtocolMappe
 import com.zireck.remotecraft.infrastructure.protocol.messages.CommandMessage;
 import com.zireck.remotecraft.infrastructure.provider.ServerSearchSettings;
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
-import com.zireck.remotecraft.infrastructure.network.NetworkConnectionlessTransmitter;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import io.reactivex.Observable;
 import io.reactivex.observables.ConnectableObservable;
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Collection;
@@ -71,7 +71,7 @@ public class ServerSearchManager {
 
   private ConnectableObservable<ServerProtocol> performSearch() {
     return Observable.<Message>create(emitter -> {
-      DatagramPacket incomingPacket = null;
+      NetworkPacket incomingPacket = null;
       Message message = null;
 
       try {
@@ -111,7 +111,7 @@ public class ServerSearchManager {
 
   private void sendRequestTo(NetworkAddressEntity networkAddressEntity) throws IOException {
     InetAddress inetAddress = InetAddress.getByName(networkAddressEntity.ip());
-    DatagramPacket outgoingPacket = getTransmissionPacket(inetAddress);
+    NetworkPacket outgoingPacket = getTransmissionPacket(inetAddress);
     networkConnectionlessTransmitter.send(outgoingPacket);
   }
 
@@ -120,7 +120,7 @@ public class ServerSearchManager {
   }
 
   private void sendRequestToEveryInterfaceBroadcastAddress() throws IOException {
-    DatagramPacket outgoingPacket;
+    NetworkPacket outgoingPacket;
     Collection<InetAddress> broadcastAddresses = broadcastAddressProvider.getBroadcastAddresses();
 
     for (InetAddress broadcastAddress : broadcastAddresses) {
@@ -129,34 +129,33 @@ public class ServerSearchManager {
     }
   }
 
-  private DatagramPacket getTransmissionPacket(InetAddress inetAddress) {
+  private NetworkPacket getTransmissionPacket(InetAddress inetAddress) {
     CommandMessage getServerInfoCommand = protocolMessageComposer.composeGetServerInfoCommand();
     String getServerInfoCommandJson = messageJsonMapper.transformMessage(getServerInfoCommand);
 
     Timber.d("Sending JSON:");
     Timber.d(getServerInfoCommandJson);
 
-    byte[] payload = getServerInfoCommandJson.getBytes();
-    return new DatagramPacket(payload, payload.length, inetAddress, serverSearchSettings.getPort());
+    return new NetworkPacket(getServerInfoCommandJson, inetAddress, serverSearchSettings.getPort());
   }
 
-  private DatagramPacket waitForServerResponse() throws IOException, NoResponseException {
-    byte[] responseBuffer = new byte[serverSearchSettings.getResponseBufferSize()];
-    DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
+  private NetworkPacket waitForServerResponse() throws IOException, NoResponseException {
+    NetworkPacket networkResponsePacket =
+        new NetworkPacket(serverSearchSettings.getResponseBufferSize());
 
     networkConnectionlessTransmitter.setTimeout(serverSearchSettings.getTimeout());
-    responsePacket = networkConnectionlessTransmitter.receive(responsePacket);
+    networkResponsePacket = networkConnectionlessTransmitter.receive(networkResponsePacket);
 
-    return responsePacket;
+    return networkResponsePacket;
   }
 
-  private Message parseResponse(DatagramPacket incomingPacket) throws InvalidServerException {
-    if (incomingPacket == null || incomingPacket.getData() == null) {
+  private Message parseResponse(NetworkPacket incomingPacket) throws InvalidServerException {
+    if (incomingPacket == null || incomingPacket.getContent() == null) {
       Timber.e("Response Packet cannot be null.");
       return null;
     }
 
-    String messageJsonResponse = new String(incomingPacket.getData()).trim();
+    String messageJsonResponse = incomingPacket.getContent();
     Message message = messageJsonMapper.transformMessage(messageJsonResponse);
 
     if (message == null || !message.isSuccess() || !message.isServer()) {

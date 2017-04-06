@@ -35,16 +35,15 @@ public class NetworkConnectionlessMockTransmitter implements NetworkConnectionle
 
   }
 
-  @Override public void send(DatagramPacket datagramPacket) throws IOException {
+  @Override public void send(NetworkPacket networkPacket) throws IOException {
 
   }
 
-  @Override public DatagramPacket receive(DatagramPacket datagramPacket) throws IOException {
+  @Override public NetworkPacket receive(NetworkPacket networkPacket) throws IOException {
     ServerMessage mockServerMessageResponse = getMockMessageResponse();
     String mockServerMessageResponseJson = jsonSerializer.toJson(mockServerMessageResponse);
-    datagramPacket.setData(mockServerMessageResponseJson.getBytes());
 
-    return datagramPacket;
+    return new NetworkPacket(mockServerMessageResponseJson);
   }
 
   // TODO set up a MockDataSourceProvider

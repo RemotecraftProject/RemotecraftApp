@@ -1,7 +1,6 @@
 package com.zireck.remotecraft.infrastructure.network;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
@@ -25,12 +24,12 @@ public class NetworkDatagramTransmitter implements NetworkConnectionlessTransmit
     datagramSocket.setSoTimeout(timeout);
   }
 
-  @Override public void send(DatagramPacket datagramPacket) throws IOException {
-    datagramSocket.send(datagramPacket);
+  @Override public void send(NetworkPacket networkPacket) throws IOException {
+    datagramSocket.send(networkPacket.getDatagramPacket());
   }
 
-  @Override public DatagramPacket receive(DatagramPacket datagramPacket) throws IOException {
-    datagramSocket.receive(datagramPacket);
-    return datagramPacket;
+  @Override public NetworkPacket receive(NetworkPacket networkPacket) throws IOException {
+    datagramSocket.receive(networkPacket.getDatagramPacket());
+    return new NetworkPacket(networkPacket.getDatagramPacket());
   }
 }

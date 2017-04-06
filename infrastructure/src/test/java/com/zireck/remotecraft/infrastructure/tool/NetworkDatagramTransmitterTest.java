@@ -1,6 +1,7 @@
 package com.zireck.remotecraft.infrastructure.tool;
 
 import com.zireck.remotecraft.infrastructure.network.NetworkDatagramTransmitter;
+import com.zireck.remotecraft.infrastructure.network.NetworkPacket;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import org.junit.Before;
@@ -58,21 +59,19 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
   @Test public void shouldProperlySendDatagramPacket() throws Exception {
     String packetValue = "something";
-    DatagramPacket datagramPacket =
-        new DatagramPacket(packetValue.getBytes(), packetValue.length());
-    networkDatagramTransmitter.send(datagramPacket);
+    NetworkPacket networkPacket = new NetworkPacket(packetValue);
+    networkDatagramTransmitter.send(networkPacket);
 
-    verify(mockDatagramSocket, times(1)).send(datagramPacket);
+    verify(mockDatagramSocket, times(1)).send(networkPacket.getDatagramPacket());
     verifyNoMoreInteractions(mockDatagramSocket);
   }
 
   @Test public void shouldProperlyReceiveDatagramPacket() throws Exception {
     String packetValue = "something";
-    DatagramPacket datagramPacket =
-        new DatagramPacket(packetValue.getBytes(), packetValue.length());
-    networkDatagramTransmitter.receive(datagramPacket);
+    NetworkPacket networkPacket = new NetworkPacket(packetValue);
+    networkDatagramTransmitter.receive(networkPacket);
 
-    verify(mockDatagramSocket, times(1)).receive(datagramPacket);
+    verify(mockDatagramSocket, times(1)).receive(networkPacket.getDatagramPacket());
     verifyNoMoreInteractions(mockDatagramSocket);
   }
 }

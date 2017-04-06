@@ -2,6 +2,7 @@ package com.zireck.remotecraft.infrastructure.manager;
 
 import com.zireck.remotecraft.infrastructure.entity.NetworkAddressEntity;
 import com.zireck.remotecraft.infrastructure.entity.ServerEntity;
+import com.zireck.remotecraft.infrastructure.network.NetworkPacket;
 import com.zireck.remotecraft.infrastructure.protocol.ProtocolMessageComposer;
 import com.zireck.remotecraft.infrastructure.protocol.base.Message;
 import com.zireck.remotecraft.infrastructure.protocol.base.type.ServerProtocol;
@@ -64,10 +65,8 @@ import static org.mockito.Mockito.when;
         .subscribers(1)
         .build();
 
-    DatagramPacket datagramPacket = new DatagramPacket(new byte[] {}, new byte[] {}.length);
-    datagramPacket.setData(new byte[] {});
-    when(mockNetworkConnectionlessTransmitter.receive(any(DatagramPacket.class))).thenReturn(
-        datagramPacket);
+    when(mockNetworkConnectionlessTransmitter.receive(any(NetworkPacket.class))).thenReturn(
+        new NetworkPacket(""));
 
     serverSearchManager =
         new ServerSearchManager(mockServerSearchSettings, mockNetworkConnectionlessTransmitter,
@@ -102,13 +101,13 @@ import static org.mockito.Mockito.when;
     verify(mockNetworkConnectionlessTransmitter, times(1)).setBroadcast(true);
     verify(mockProtocolMessageComposer, atLeastOnce()).composeGetServerInfoCommand();
     verify(mockMessageJsonMapper, atLeastOnce()).transformMessage(any(CommandMessage.class));
-    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).send(any(DatagramPacket.class));
+    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).send(any(NetworkPacket.class));
 
     verify(mockBroadcastAddressProvider, only()).getBroadcastAddresses();
 
     verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).setTimeout(
         mockServerSearchSettings.getTimeout());
-    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).receive(any(DatagramPacket.class));
+    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).receive(any(NetworkPacket.class));
     verify(mockMessageJsonMapper).transformMessage(anyString());
   }
 
@@ -191,13 +190,13 @@ import static org.mockito.Mockito.when;
     verify(mockNetworkConnectionlessTransmitter, never()).setBroadcast(true);
     verify(mockProtocolMessageComposer, atLeastOnce()).composeGetServerInfoCommand();
     verify(mockMessageJsonMapper, atLeastOnce()).transformMessage(any(CommandMessage.class));
-    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).send(any(DatagramPacket.class));
+    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).send(any(NetworkPacket.class));
 
     verify(mockBroadcastAddressProvider, never()).getBroadcastAddresses();
 
     verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).setTimeout(
         mockServerSearchSettings.getTimeout());
-    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).receive(any(DatagramPacket.class));
+    verify(mockNetworkConnectionlessTransmitter, atLeastOnce()).receive(any(NetworkPacket.class));
     verify(mockMessageJsonMapper).transformMessage(anyString());
   }
 
