@@ -46,12 +46,16 @@ public class ServerFoundActivityTest {
   @Mock private Navigator mockNavigator;
   @Mock private ServerFoundPresenter mockServerFoundPresenter;
   @Mock private ImageLoader mockImageLoader;
+  private String mockPlayerAvatarUrl = "https://minotar.net/helm/%s/%s.png";
+  private int mockPlayerAvatarSize = 100;
 
   private ServerFoundComponent serverFoundComponent = new ServerFoundComponent() {
     @Override public void injectMembers(ServerFoundActivity instance) {
       instance.navigator = mockNavigator;
       instance.presenter = mockServerFoundPresenter;
       instance.imageLoader = mockImageLoader;
+      instance.playerAvatarUrl = mockPlayerAvatarUrl;
+      instance.playerAvatarSize = mockPlayerAvatarSize;
     }
   };
 

@@ -12,6 +12,7 @@ import com.zireck.remotecraft.R;
 import com.zireck.remotecraft.dagger.HasActivitySubcomponentBuilders;
 import com.zireck.remotecraft.dagger.components.ServerFoundComponent;
 import com.zireck.remotecraft.dagger.modules.activitymodules.ServerFoundModule;
+import com.zireck.remotecraft.dagger.qualifiers.PlayerAvatarSize;
 import com.zireck.remotecraft.dagger.qualifiers.PlayerAvatarUrl;
 import com.zireck.remotecraft.infrastructure.tool.ImageLoader;
 import com.zireck.remotecraft.model.ServerModel;
@@ -27,6 +28,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   @Inject ServerFoundPresenter presenter;
   @Inject ImageLoader imageLoader;
   @Inject @PlayerAvatarUrl String playerAvatarUrl;
+  @Inject @PlayerAvatarSize int playerAvatarSize;
 
   @BindView(R.id.server_info) ServerInfoView serverInfoView;
 
@@ -87,7 +89,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   }
 
   @Override public void renderServer(ServerModel serverModel) {
-    serverInfoView.renderServer(this, serverModel, imageLoader, playerAvatarUrl);
+    serverInfoView.renderServer(this, serverModel, imageLoader, playerAvatarUrl, playerAvatarSize);
 
     if (getSupportActionBar() != null) {
       getSupportActionBar().setTitle(serverModel.worldName());

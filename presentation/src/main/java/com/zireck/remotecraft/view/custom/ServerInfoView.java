@@ -36,10 +36,10 @@ public class ServerInfoView extends RelativeLayout {
   }
 
   public void renderServer(Context context, ServerModel serverModel, ImageLoader imageLoader,
-      String playerAvatarUrl) {
+      String playerAvatarUrl, int playerAvatarSize) {
     inflateView(context);
 
-    loadAvatarFor(serverModel.playerName(), imageLoader, playerAvatarUrl);
+    loadAvatarFor(serverModel.playerName(), imageLoader, playerAvatarUrl, playerAvatarSize);
     playerNameView.setText(serverModel.playerName());
     worldNameView.setText(serverModel.worldName());
     ssidAndIpView.setText(String.format("%s (%s)", serverModel.ssid(), serverModel.ip()));
@@ -55,8 +55,9 @@ public class ServerInfoView extends RelativeLayout {
     return view;
   }
 
-  private void loadAvatarFor(String playerName, ImageLoader imageLoader, String playerAvatarUrl) {
-    final String avatarSize = "100";
+  private void loadAvatarFor(String playerName, ImageLoader imageLoader, String playerAvatarUrl,
+      int playerAvatarSize) {
+    final String avatarSize = String.valueOf(playerAvatarSize);
     final String avatarUrl = String.format(playerAvatarUrl, playerName, avatarSize);
     imageLoader.load(avatarUrl, playerAvatarView);
   }
