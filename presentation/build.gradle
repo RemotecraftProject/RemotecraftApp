@@ -52,12 +52,33 @@ android {
 
   buildTypes {
     debug {
+      debuggable true
       testCoverageEnabled = true
+      signingConfig signingConfigs.debug
+
+      buildConfigField("boolean", "IS_MOCK", "false")
+    }
+
+    mock {
+      debuggable true
+      testCoverageEnabled = true
+      signingConfig signingConfigs.debug
+
+      buildConfigField("boolean", "IS_MOCK", "true")
     }
 
     release {
+      debuggable false
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+      buildConfigField("boolean", "IS_MOCK", "false")
+    }
+  }
+
+  signingConfigs {
+    release {
+      storeFile file("debug.keystore")
     }
   }
 }

@@ -45,7 +45,7 @@ import javax.inject.Singleton;
   @Provides @Singleton NetworkConnectionlessTransmitter provideNetworkConnectionlessTransmitter(
       NetworkDatagramTransmitter networkDatagramTransmitter,
       NetworkConnectionlessMockTransmitter networkConnectionlessMockTransmitter) {
-    if (BuildConfig.DEBUG) {
+    if (BuildConfig.IS_MOCK) {
       return networkConnectionlessMockTransmitter;
     } else {
       return networkDatagramTransmitter;
