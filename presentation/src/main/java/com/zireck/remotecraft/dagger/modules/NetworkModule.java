@@ -57,14 +57,6 @@ import javax.inject.Singleton;
     return new NetworkDatagramTransmitter(datagramSocket);
   }
 
-  @Provides @Singleton
-  NetworkConnectionlessMockTransmitter provideNetworkConnectionlessMockTransmitter(
-      JsonSerializer jsonSerializer, ServerProtocolMapper serverProtocolMapper,
-      ProtocolMessageComposer protocolMessageComposer) {
-    return new NetworkConnectionlessMockTransmitter(jsonSerializer, serverProtocolMapper,
-        protocolMessageComposer);
-  }
-
   @Provides @Singleton ServerSearchSettings provideServerSearchSettings() {
     return new ServerSearchSettings.Builder().build();
   }

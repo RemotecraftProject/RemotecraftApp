@@ -2,6 +2,7 @@ package com.zireck.remotecraft.dagger.components;
 
 import android.content.Context;
 import com.zireck.remotecraft.RemotecraftApp;
+import com.zireck.remotecraft.dagger.modules.MocksModule;
 import com.zireck.remotecraft.dagger.modules.activitymodules.ActivityBindingModule;
 import com.zireck.remotecraft.dagger.modules.ApplicationModule;
 import com.zireck.remotecraft.dagger.modules.MappersModule;
@@ -22,7 +23,8 @@ import javax.inject.Singleton;
     ActivityBindingModule.class,
     NetworkModule.class,
     ToolsModule.class,
-    MappersModule.class
+    MappersModule.class,
+    MocksModule.class
 })
 public interface ApplicationComponent {
   RemotecraftApp inject(RemotecraftApp remotecraftApp);
