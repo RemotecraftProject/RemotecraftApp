@@ -106,7 +106,7 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     Server server = serverDeserializer.deserialize(serializedDomainServer);
 
     ServerModel serverModel = serverModelDataMapper.transform(server);
-    getView().navigateToMainScreen(serverModel);
+    getView().navigateToServerDetail(serverModel);
   }
 
   public void onClickScanWifi() {

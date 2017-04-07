@@ -168,6 +168,107 @@ And finally, I just have to provide the proper *NetworkConnectionlessTransmitter
 }
 ```
 
+### Notification flow when the activity is in background
+1. The user clicks on the "Scan Wi-Fi" Floating Action Button from the *ServerSearchActivity*.
+2. The *ServerSearchPresenter* receives the event and executes the *SearchServerInteractor* passing an observer as an argument: the **presentationObserver**.
+3. The interactor creates a second observer: the **domainObserver**. And both observers are subscribed to the same observable provided by the *ServerSearchManager* from the infrastructure layer. (There's actually a NetworkDataProvider in-between)
+4. Let's say that, whilst the ServerSearchManager is working, the activity is stopped. At this point, the presenter will invoke the dispose() method from the *SearchServerInteractor*.
+
+	```java
+	@Override public void dispose() {
+	  if (presentationObserver != null && !presentationObserver.isDisposed()) {
+	    disposables.remove(presentationObserver);
+	  }
+	}
+	```
+	Thus, effectively unsubscribing the presentationObserver from the observable.
+5. Now let's say the ServerSearchManager finally found a valid server, and the observable emits the value. Since the presentationObserver was previously unsubscribed, only the domainObserver will receive the data.
+
+	```java
+	private final class SearchServerDomainObserver extends DefaultObservableObserver<Server> {
+		@Override public void onNext(Server server) {
+		  processFoundServer(server);
+		}
+		// ...
+	}
+	```
+And the notification will be thrown only if the presentationObserver is unsubscribed.
+
+	```java
+	private void processFoundServer(Server server) {
+		if (presentationObserver != null && !presentationObserver.isDisposed()) {
+		  return;
+		}
+	
+		notifyServerFoundService.notifyServerFound(server);
+	}
+	```
+
+	Now, we want to pass the Server model from the infrastructure to the presentation layer through the notification.<br />
+	Remember that:
+	* Presentation layer uses ServerModel, and has a mapper ServerModel <-> Server
+	* Domain layer uses Server.
+	* Infrastructure and Data layers uses ServerEntity, and they have a mapper Server <-> ServerEntity
+
+6. The *AndroidNotificationManager* maps the ServerEntity into a Server object and serializes it to JSON. The serialized Server bundled to the intent and attached to the notification.
+
+	```java
+	public void notifyServerFound(ServerEntity serverEntity) {
+		// ...
+	
+	  	Intent notificationIntent = new Intent(context, serverSearchActivityClass);
+	  	Server server = serverEntityDataMapper.transform(serverEntity);
+	  	String serializedServer = jsonSerializer.toJson(server);
+	  	notificationIntent.putExtra(KEY_DOMAIN_SERVER_FOUND_SERIALIZED, serializedServer);
+	  	PendingIntent notificationPendingIntent = PendingIntent.getActivity(context, requestCode, notificationIntent,
+	        PendingIntent.FLAG_UPDATE_CURRENT);
+	  	notificationCompatBuilder.setContentIntent(notificationPendingIntent);
+	
+	  	// ...
+	
+	  	displayNotification(NOTIFICATION_SERVER_FOUND, notificationCompatBuilder.build());
+	}
+	```
+	Mapping is an important step, since the presentation layer wouldn't be able to understand a ServerEntity object.
+
+7. When the user clicks the notification, the *ServerSearchActivity* will open with the previously attached intent.
+
+	```java
+	@Override protected void onNewIntent(Intent intent) {
+	  mapExtras(intent);
+	  super.onNewIntent(intent);
+	}
+	```
+	
+	```java
+	private void mapExtras(Intent intent) {
+	  if (intent == null || intent.getExtras() == null) {
+	    return;
+	  }
+	
+	  Bundle extras = intent.getExtras();
+	  // ...
+	
+	  if (extras.getString(KEY_DOMAIN_SERVER_FOUND_SERIALIZED) != null) {
+	    String serializedServer = extras.getString(KEY_DOMAIN_SERVER_FOUND_SERIALIZED);
+	    presenter.onSerializedDomainServerFound(serializedServer);
+	  }
+	}
+	```
+
+8. The *ServerSearchPresenter* will be able to properly deserialize the json to a Server (domain) object, map it to a ServerModel, and display the server details.
+
+	```java
+	public void onSerializedDomainServerFound(String serializedDomainServer) {
+	  checkViewAttached();
+	
+	  Server server = serverDeserializer.deserialize(serializedDomainServer);
+	
+	  ServerModel serverModel = serverModelDataMapper.transform(server);
+	  getView().navigateToServerDetail(serverModel);
+	}
+	```
+
 ## Credits
 
 **Architecting Android...The clean way?** by Fernando Cejas <br />

@@ -45,8 +45,6 @@ public class AndroidNotificationManager {
   }
 
   public void notifyServerFound(ServerEntity serverEntity) {
-    Server server = serverEntityDataMapper.transform(serverEntity);
-
     NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context)
         .setSmallIcon(R.drawable.ic_wifi_white) // TODO: set the proper icon...
         .setContentTitle(serverEntity.worldName())
@@ -55,6 +53,7 @@ public class AndroidNotificationManager {
         .setDefaults(0);
 
     Intent notificationIntent = new Intent(context, serverSearchActivityClass);
+    Server server = serverEntityDataMapper.transform(serverEntity);
     String serializedServer = jsonSerializer.toJson(server);
     notificationIntent.putExtra(KEY_DOMAIN_SERVER_FOUND_SERIALIZED, serializedServer);
     PendingIntent notificationPendingIntent = makePendingIntent(context, 0, notificationIntent);

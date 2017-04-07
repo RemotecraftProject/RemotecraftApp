@@ -83,10 +83,7 @@ public class SearchServerInteractor
 
   private final class SearchServerDomainObserver extends DefaultObservableObserver<Server> {
     @Override public void onNext(Server server) {
-      // TODO: reenable this:
-      //processFoundServer(server);
-
-      displayNotificationForServer(server);
+      processFoundServer(server);
     }
 
     @Override public void onComplete() {

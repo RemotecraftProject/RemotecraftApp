@@ -37,6 +37,16 @@ public class NetworkConnectionlessMockTransmitter implements NetworkConnectionle
     ServerMessage mockServerMessageResponse = protocolMockMessageDataSource.getServerMessage();
     String mockServerMessageResponseJson = jsonSerializer.toJson(mockServerMessageResponse);
 
+    sleep(3);
+
     return new NetworkPacket(mockServerMessageResponseJson);
+  }
+
+  private void sleep(int seconds) {
+    try {
+      Thread.sleep(seconds * 1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 }
