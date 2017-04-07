@@ -10,11 +10,12 @@ Connect and remotely manage your Minecraft server using cutting edge technology!
     - [AutoValue](#autovalue)
     - [Injecting mock dependencies in Robolectric tests using Dagger subcomponents](#injecting-mock-dependencies-in-robolectric-tests-using-dagger-subcomponents)
     - [Mock network responses](#mock-network-responses)
+    - [Notification flow when the activity is in background](#notification-flow-when-the-activity-is-in-background)
 - [Credits](#credits)
 - [License](#license)
 
 ## How it works
-If you don't have a real server to run against, just run the mock build type. No extra stuff needed.
+If you don't have an actual server to run against, just run the mock build type. No extra stuff needed.
 
 
 Otherwise: <br />
@@ -169,6 +170,11 @@ And finally, I just have to provide the proper *NetworkConnectionlessTransmitter
 ```
 
 ### Notification flow when the activity is in background
+
+![Notification Flow](https://github.com/RemotecraftProject/Documentation/blob/master/images/notification_flow.png)
+
+When a server is found we need to be able to display a notification. Only when the activity is in background, though.
+
 1. The user clicks on the "Scan Wi-Fi" Floating Action Button from the *ServerSearchActivity*.
 2. The *ServerSearchPresenter* receives the event and executes the *SearchServerInteractor* passing an observer as an argument: the **presentationObserver**.
 3. The interactor creates a second observer: the **domainObserver**. And both observers are subscribed to the same observable provided by the *ServerSearchManager* from the infrastructure layer. (There's actually a NetworkDataProvider in-between)
@@ -192,7 +198,7 @@ And finally, I just have to provide the proper *NetworkConnectionlessTransmitter
 		// ...
 	}
 	```
-And the notification will be thrown only if the presentationObserver is unsubscribed.
+	And the notification will be thrown only if the presentationObserver is unsubscribed.
 
 	```java
 	private void processFoundServer(Server server) {
