@@ -15,12 +15,12 @@ Connect and remotely manage your Minecraft server using cutting edge technology!
 - [License](#license)
 
 ## How it works
-If you don't have an actual server to run against, just run the mock build type. No extra stuff needed.
+If you don't have an actual server to run against, just run the *mockDebug* build variant. No extra stuff needed.
 
 
 Otherwise: <br />
 1. Run Minecraft on your computer, with a previously installed version of the **Remotecraft Forge Mod** (currently unavailable) found [here](https://github.com/RemotecraftProject/RemotecraftMod). <br />
-2. Run the Android app. <br />
+2. Run the Android app (using a *prod* flavor) <br />
 3. Make sure the computer running the game and the Android device running the app are both in the same WiFi network. <br />
 4. Profit!
 
