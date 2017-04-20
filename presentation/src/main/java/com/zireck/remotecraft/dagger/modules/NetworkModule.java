@@ -15,7 +15,6 @@ import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.AndroidBr
 import com.zireck.remotecraft.infrastructure.provider.broadcastaddress.BroadcastAddressProvider;
 import com.zireck.remotecraft.infrastructure.provider.networkinterface.AndroidNetworkInterfaceProvider;
 import com.zireck.remotecraft.infrastructure.provider.networkinterface.NetworkInterfaceProvider;
-import com.zireck.remotecraft.infrastructure.tool.JsonSerializer;
 import com.zireck.remotecraft.infrastructure.validation.NetworkInterfaceValidator;
 import com.zireck.remotecraft.infrastructure.validation.ServerMessageValidator;
 import dagger.Module;

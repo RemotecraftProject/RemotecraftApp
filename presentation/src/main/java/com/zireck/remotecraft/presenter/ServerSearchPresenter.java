@@ -4,14 +4,13 @@ import android.net.Uri;
 import com.zireck.remotecraft.domain.NetworkAddress;
 import com.zireck.remotecraft.domain.Permission;
 import com.zireck.remotecraft.domain.Server;
-import com.zireck.remotecraft.domain.util.JsonDeserializer;
-import com.zireck.remotecraft.domain.util.ServerDeserializer;
 import com.zireck.remotecraft.domain.interactor.CheckIfPermissionGrantedInteractor;
 import com.zireck.remotecraft.domain.interactor.RequestPermissionInteractor;
 import com.zireck.remotecraft.domain.interactor.SearchServerInteractor;
 import com.zireck.remotecraft.domain.interactor.base.MaybeInteractor;
 import com.zireck.remotecraft.domain.observer.DefaultObservableObserver;
 import com.zireck.remotecraft.domain.observer.DefaultSingleObserver;
+import com.zireck.remotecraft.domain.util.JsonDeserializer;
 import com.zireck.remotecraft.mapper.NetworkAddressModelDataMapper;
 import com.zireck.remotecraft.mapper.PermissionModelDataMapper;
 import com.zireck.remotecraft.mapper.ServerModelDataMapper;
@@ -280,7 +279,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     checkViewAttached();
     getView().showLoading();
     Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
-    RequestPermissionInteractor.Params params = RequestPermissionInteractor.Params.forPermission(permission);
+    RequestPermissionInteractor.Params params =
+        RequestPermissionInteractor.Params.forPermission(permission);
     requestPermissionInteractor.execute(new RequestPermissionObserver(), params);
   }
 

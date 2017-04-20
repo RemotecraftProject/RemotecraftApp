@@ -33,6 +33,7 @@ before_install:
 #Build, and run tests
 script:
   - ./gradlew clean
+  - ./gradlew checkstyle
   - ./gradlew build
 
 sudo: false

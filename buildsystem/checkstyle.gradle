@@ -1,0 +1,19 @@
+apply plugin: 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+    configFile file('../buildsystem/checkstyle.xml')
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+
+    classpath = files()
+
+    showViolations true
+
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
+}

@@ -41,7 +41,10 @@ ext.version = [
     powermockito              : "1.6.1",
     espresso                  : "2.2.2",
     conditionWatcher          : "0.1",
-    openGlApi                 : "gl1.1-android-2.1_r1"
+    openGlApi                 : "gl1.1-android-2.1_r1",
+
+    // Other
+    checkstyle                : "7.6.1"
 ]
 
 def version = ext.version;
@@ -77,6 +80,8 @@ ext.dependency = [
     androidSpinKit            : "com.github.ybq:Android-SpinKit:${version.androidSpinKit}",
     floatingActionButton      : "com.github.clans:fab:${version.floatingActionButton}",
     kenBurnsView              : "com.flaviofaria:kenburnsview:${version.kenBurnsView}",
+
+    checkstyle                : "com.puppycrawl.tools:checkstyle:${version.checkstyle}",
 
     jUnit                     : "junit:junit:${version.jUnit}",
     assertJ                   : "org.assertj:assertj-core:${version.assertJ}",
@@ -176,7 +181,9 @@ ext.presentationDependencies = [
     materialDesignColors      : "${dependency.materialDesignColors}",
     androidSpinKit            : "${dependency.androidSpinKit}",
     floatingActionButton      : "${dependency.floatingActionButton}",
-    kenBurnsView              : "${dependency.kenBurnsView}"
+    kenBurnsView              : "${dependency.kenBurnsView}",
+
+    checkstyle                : "${dependency.checkstyle}"
 ]
 
 ext.presentationTestDependencies = [

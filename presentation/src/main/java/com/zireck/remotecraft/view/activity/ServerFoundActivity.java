@@ -83,9 +83,9 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
       case android.R.id.home:
         presenter.onClickCancel();
         return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
-
-    return super.onOptionsItemSelected(item);
   }
 
   @Override public void renderServer(ServerModel serverModel) {

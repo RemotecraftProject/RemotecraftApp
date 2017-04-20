@@ -133,7 +133,8 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   }
 
   @Override public void navigateToMainScreen(ServerModel serverModel) {
-    Toast.makeText(this, "Connecting to server: " + serverModel.worldName(), Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, "Connecting to server: " + serverModel.worldName(), Toast.LENGTH_SHORT)
+        .show();
   }
 
   @Override public void showMessage(String message) {

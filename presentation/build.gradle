@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
+apply from: "$rootProject.projectDir/buildsystem/checkstyle.gradle"
 
 def configuration = ext.configuration;
 
@@ -136,6 +137,8 @@ dependencies {
   compile "${library.androidSpinKit}"
   compile "${library.floatingActionButton}"
   compile "${library.kenBurnsView}"
+
+  checkstyle "${library.checkstyle}"
 
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.assertJ}"

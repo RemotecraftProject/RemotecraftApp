@@ -30,7 +30,7 @@ public abstract class BasePresenter<V extends BaseView> implements Presenter<V> 
   }
 
   private static class ViewNotAttachedException extends RuntimeException {
-    public ViewNotAttachedException() {
+    ViewNotAttachedException() {
       super("View must be attached before requesting data to the Presenter");
     }
   }

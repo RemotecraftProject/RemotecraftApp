@@ -52,8 +52,8 @@ public class ApplicationModule {
     return ServerSearchActivity.class;
   }
 
-  @Provides @Singleton
-  public ReceiverActionProvider provideReceiversProvider(ReceiverDataProvider receiversDataProvider) {
+  @Provides @Singleton public ReceiverActionProvider provideReceiversProvider(
+      ReceiverDataProvider receiversDataProvider) {
     return receiversDataProvider;
   }
 

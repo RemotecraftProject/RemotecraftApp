@@ -53,7 +53,7 @@ import javax.inject.Singleton;
     return new GsonSerializer(gson);
   }
 
-  @Provides @Singleton AutoValueGsonTypeAdapterFactory AutoValueGsonTypeAdapterFactory() {
+  @Provides @Singleton AutoValueGsonTypeAdapterFactory autoValueGsonTypeAdapterFactory() {
     return new AutoValueGsonTypeAdapterFactory();
   }
 
