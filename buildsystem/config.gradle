@@ -1,60 +1,8 @@
 ext.configuration = [
   applicationId               : "com.zireck.remotecraft",
-  versionMajor                : 1,
-  versionMinor                : 0,
-  versionPatch                : 0,
-  versionBuild                : -1,
-  versionClassifier           : "",
 
   minimumSdkVersion           : 16,
   compileSdkVersion           : 25,
   targetSdkVersion            : 25,
   buildToolsVersion           : "25.0.0"
 ]
-
-def configuration = ext.configuration;
-def versionPropertiesFilePath = "$rootProject.projectDir/buildsystem/version.properties"
-
-ext.buildVersionCode = {
-  return configuration.minimumSdkVersion * 10000000 +
-      configuration.versionMajor * 10000 +
-      configuration.versionMinor * 100 +
-      configuration.versionPatch
-}
-
-ext.buildVersionName = {
-  String versionName = ext.buildVersionNameWithoutClassifier();
-  if (configuration.versionClassifier != null && !configuration.versionClassifier.isEmpty()) {
-    versionName = versionName + "-" + configuration.versionClassifier
-  }
-  return versionName;
-}
-
-ext.buildVersionNameWithoutClassifier = {
-  configuration.versionBuild = ext.readVersionBuild()
-  return "${configuration.versionMajor}.${configuration.versionMinor}.${configuration.versionPatch}.${configuration.versionBuild}"
-}
-
-ext.readVersionBuild = {
-  def versionPropertiesFile = file(versionPropertiesFilePath)
-  if (!versionPropertiesFile.canRead()) {
-    throw new GradleException("Could not read version.properties")
-  } else {
-    def Properties versionProperties = new Properties()
-    versionProperties.load(new FileInputStream(versionPropertiesFile))
-    return versionProperties['VERSION_BUILD'].toInteger()
-  }
-}
-
-ext.incrementVersionBuild = {
-  def versionPropertiesFile = file(versionPropertiesFilePath)
-  if (!versionPropertiesFile.canRead()) {
-    throw new GradleException("Could not read version.properties")
-  } else {
-    def Properties versionProperties = new Properties()
-    versionProperties.load(new FileInputStream(versionPropertiesFile))
-    def versionBuild = versionProperties['VERSION_BUILD'].toInteger() + 1
-    versionProperties['VERSION_BUILD'] = versionBuild.toString()
-    versionProperties.store(versionPropertiesFile.newWriter(), null)
-  }
-}

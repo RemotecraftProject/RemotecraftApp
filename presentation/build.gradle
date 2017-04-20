@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
+apply from: "$rootProject.projectDir/buildsystem/version.gradle"
 apply from: "$rootProject.projectDir/buildsystem/checkstyle.gradle"
 
 def configuration = ext.configuration;
@@ -15,8 +16,6 @@ android {
     targetSdkVersion configuration.targetSdkVersion
 
     applicationId configuration.applicationId
-    versionCode buildVersionCode()
-    versionName buildVersionName()
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
@@ -51,29 +50,27 @@ android {
     }
   }
 
+  productFlavors {
+    mock {
+      buildConfigField("boolean", "IS_MOCK", "true")
+    }
+
+    prod {
+      buildConfigField("boolean", "IS_MOCK", "false")
+    }
+  }
+
   buildTypes {
     debug {
       debuggable true
       testCoverageEnabled = true
       signingConfig signingConfigs.debug
-
-      buildConfigField("boolean", "IS_MOCK", "false")
-    }
-
-    mock {
-      debuggable true
-      testCoverageEnabled = true
-      signingConfig signingConfigs.debug
-
-      buildConfigField("boolean", "IS_MOCK", "true")
     }
 
     release {
       debuggable false
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-      buildConfigField("boolean", "IS_MOCK", "false")
     }
   }
 
@@ -82,12 +79,33 @@ android {
       storeFile file("debug.keystore")
     }
   }
-}
 
-afterEvaluate { project ->
-  if (project.tasks.findByName("generateReleaseBuildConfig")) {
-    project.tasks.generateReleaseBuildConfig << {
-      incrementVersionBuild()
+  android.variantFilter { variant ->
+    def isRelease = variant.getBuildType().getName() == "release"
+    def isMock = variant.getFlavors().get(0).getName() == "mock"
+
+    if (isRelease && isMock) {
+      variant.setIgnore(true)
+    }
+  }
+
+  applicationVariants.all { variant ->
+    def flavor = variant.mergedFlavor
+    def isRelease = variant.getBuildType().getName() == "release"
+    def isMock = variant.getFlavorName() == "mock"
+    def isDebug = variant.getBuildType().getName() == "debug"
+
+    if (isRelease) {
+      flavor.versionCode = gitVersionCode
+    } else {
+      flavor.versionCode = gitVersionCodeTime
+    }
+
+    flavor.versionName = gitVersionName
+    if (isMock) {
+      flavor.versionNameSuffix = "-mock"
+    } else if (isDebug) {
+      flavor.versionNameSuffix = "-debug"
     }
   }
 }
