@@ -1,5 +1,6 @@
 ext.configuration = [
   applicationId               : "com.zireck.remotecraft",
+  applicationName             : "Remotecraft",
 
   minimumSdkVersion           : 16,
   compileSdkVersion           : 25,

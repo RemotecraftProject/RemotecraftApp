@@ -90,6 +90,7 @@ android {
   }
 
   applicationVariants.all { variant ->
+    def appName = configuration.applicationName
     def flavor = variant.mergedFlavor
     def isRelease = variant.getBuildType().getName() == "release"
     def isMock = variant.getFlavorName() == "mock"
@@ -102,10 +103,23 @@ android {
     }
 
     flavor.versionName = gitVersionName
+
     if (isMock) {
+      flavor.applicationIdSuffix = ".mock"
       flavor.versionNameSuffix = "-mock"
+      appName += "-mock"
     } else if (isDebug) {
+      flavor.applicationIdSuffix = ".debug"
       flavor.versionNameSuffix = "-debug"
+      appName += "-debug"
+    }
+
+    variant.resValue("string", "app_name", appName)
+
+    variant.outputs.each { output ->
+      def parentFile = output.outputFile.parent
+      def fileName = output.outputFile.name.replace("presentation", "remotecraft")
+      output.outputFile = new File(parentFile, fileName)
     }
   }
 }
