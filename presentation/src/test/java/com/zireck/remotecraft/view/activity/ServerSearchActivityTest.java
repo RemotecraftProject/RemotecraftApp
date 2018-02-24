@@ -24,7 +24,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.res.builder.RobolectricPackageManager;
+import org.robolectric.shadows.ShadowPackageManager;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -34,6 +34,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(application = RemotecraftMockApp.class, constants = BuildConfig.class)
@@ -166,8 +167,7 @@ public class ServerSearchActivityTest {
   }
 
   private void setUpCameraFeature() {
-    RobolectricPackageManager robolectricPackageManager =
-        (RobolectricPackageManager) getApp().getPackageManager();
+    ShadowPackageManager robolectricPackageManager = shadowOf(getApp().getPackageManager());
     robolectricPackageManager.setSystemFeature(PackageManager.FEATURE_CAMERA, true);
   }
 

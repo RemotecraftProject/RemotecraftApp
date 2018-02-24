@@ -103,8 +103,7 @@ public class ServerFoundActivityTest {
 
     Intent callingIntent = ServerFoundActivity.getCallingIntent(mockContext, serverModel);
     ServerFoundActivity serverFoundActivityWithIntent =
-        Robolectric.buildActivity(ServerFoundActivity.class)
-        .withIntent(callingIntent)
+        Robolectric.buildActivity(ServerFoundActivity.class, callingIntent)
         .create()
         .get();
 
