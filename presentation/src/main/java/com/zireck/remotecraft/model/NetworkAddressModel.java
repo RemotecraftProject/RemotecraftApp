@@ -10,7 +10,7 @@ import com.google.auto.value.AutoValue;
   public abstract int port();
 
   public @NonNull Builder toBuilder() {
-    return new AutoValue_NetworkAddressModel.Builder(this);
+    return new AutoValue_NetworkAddressModel.Builder();
   }
 
   public static @NonNull Builder builder() {

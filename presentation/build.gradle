@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 apply from: "$rootProject.projectDir/buildsystem/version.gradle"
@@ -17,7 +16,15 @@ android {
 
     applicationId configuration.applicationId
 
+    multiDexEnabled true
+
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        includeCompileClasspath false
+      }
+    }
   }
 
   compileOptions {
@@ -48,7 +55,13 @@ android {
         includeNoLocationClasses = true
       }
     }
+
+    unitTests {
+      includeAndroidResources = true
+    }
   }
+
+  flavorDimensions "default"
 
   productFlavors {
     mock {
@@ -116,10 +129,10 @@ android {
 
     variant.resValue("string", "app_name", appName)
 
-    variant.outputs.each { output ->
+    variant.outputs.all { output ->
       def parentFile = output.outputFile.parent
       def fileName = output.outputFile.name.replace("presentation", "remotecraft")
-      output.outputFile = new File(parentFile, fileName)
+      outputFileName = new File(parentFile, fileName)
     }
   }
 }
@@ -142,41 +155,41 @@ dependencies {
   def library = rootProject.ext.presentationDependencies;
   def libraryTest = rootProject.ext.presentationTestDependencies;
 
-  compile project(':domain')
-  compile project(':data')
-  compile project(':infrastructure')
+  implementation project(':domain')
+  implementation project(':data')
+  implementation project(':infrastructure')
 
-  compile "${library.timber}"
-  apt "${library.daggerCompiler}"
-  compile "${library.dagger}"
-  compile "${library.rxJava}"
-  compile "${library.rxAndroid}"
-  provided "${library.javaxAnnotation}"
-  compile "${library.lightweightStreamApi}"
-  compile "${library.qrCodeReader}"
-  provided "${library.autovalue}"
-  apt "${library.autovalue}"
-  apt "${library.autovalueParcel}"
-  compile "${library.design}"
-  compile "${library.appCompat}"
-  compile "${library.recyclerView}"
-  compile "${library.cardView}"
-  compile "${library.androidAnnotations}"
-  apt "${library.butterKnifeCompiler}"
-  compile "${library.butterKnife}"
-  compile "${library.picasso}"
-  compile "${library.materialDesignColors}"
-  compile "${library.androidSpinKit}"
-  compile "${library.floatingActionButton}"
-  compile "${library.kenBurnsView}"
+  implementation "${library.timber}"
+  annotationProcessor "${library.daggerCompiler}"
+  implementation "${library.dagger}"
+  implementation "${library.rxJava}"
+  implementation "${library.rxAndroid}"
+  compileOnly "${library.javaxAnnotation}"
+  implementation "${library.lightweightStreamApi}"
+  implementation "${library.qrCodeReader}"
+  compileOnly "${library.autovalue}"
+  annotationProcessor "${library.autovalue}"
+  annotationProcessor "${library.autovalueParcel}"
+  implementation "${library.design}"
+  implementation "${library.appCompat}"
+  implementation "${library.recyclerView}"
+  implementation "${library.cardView}"
+  implementation "${library.androidAnnotations}"
+  annotationProcessor "${library.butterKnifeCompiler}"
+  implementation "${library.butterKnife}"
+  implementation "${library.picasso}"
+  implementation "${library.materialDesignColors}"
+  implementation "${library.androidSpinKit}"
+  implementation "${library.floatingActionButton}"
+  implementation "${library.kenBurnsView}"
 
   checkstyle "${library.checkstyle}"
 
-  testCompile "${libraryTest.jUnit}"
-  testCompile "${libraryTest.assertJ}"
-  testCompile "${libraryTest.mockito}"
-  testCompile "${libraryTest.robolectric}"
-  testCompile "${libraryTest.openGlApi}"
+  debugImplementation "${libraryTest.jUnit}"
+  debugImplementation "${libraryTest.assertJ}"
+  debugImplementation "${libraryTest.mockito}"
+  debugImplementation "${libraryTest.robolectric}"
+  debugImplementation "${libraryTest.openGlApi}"
 
   androidTestCompile "${libraryTest.espresso}"
   androidTestCompile "${libraryTest.conditionWatcher}"

@@ -8,7 +8,7 @@ import com.google.auto.value.AutoValue;
   public abstract int port();
 
   public Builder toBuilder() {
-    return new AutoValue_NetworkAddress.Builder(this);
+    return new AutoValue_NetworkAddress.Builder();
   }
 
   public static Builder builder() {

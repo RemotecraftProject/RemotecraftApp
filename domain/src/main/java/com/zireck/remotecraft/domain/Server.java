@@ -16,7 +16,7 @@ import com.google.gson.TypeAdapter;
   public abstract String playerName();
 
   public Builder toBuilder() {
-    return new AutoValue_Server.Builder(this);
+    return new AutoValue_Server.Builder();
   }
 
   public static Builder builder() {

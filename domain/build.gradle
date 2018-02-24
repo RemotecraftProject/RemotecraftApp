@@ -1,3 +1,7 @@
+plugins {
+  id 'net.ltgt.apt' version '0.6'
+}
+
 apply plugin: 'java'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -24,8 +28,10 @@ dependencies {
   compile "${library.javaxInject}"
   compile "${library.gson}"
   compile "${library.lightweightStreamApi}"
-  compile "${library.autovalue}"
-  provided "${library.autovalueGson}"
+  provided "${library.autovalue}"
+  apt "${library.autovalue}"
+  apt 'com.ryanharter.auto.value:auto-value-gson:0.7.0'
+  compile 'com.ryanharter.auto.value:auto-value-gson-annotations:0.7.0'
   compile "${library.apacheCommonsValidator}"
 
   testCompile "${libraryTest.jUnit}"

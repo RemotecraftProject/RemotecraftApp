@@ -16,7 +16,7 @@ import com.google.auto.value.AutoValue;
   public abstract @NonNull String playerName();
 
   public @NonNull Builder toBuilder() {
-    return new AutoValue_ServerModel.Builder(this);
+    return new AutoValue_ServerModel.Builder();
   }
 
   public static @NonNull Builder builder() {

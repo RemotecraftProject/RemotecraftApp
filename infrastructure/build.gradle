@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 
@@ -44,25 +43,27 @@ dependencies {
   def library = rootProject.ext.infrastructureDependencies;
   def libraryTest = rootProject.ext.infrastructureTestDependencies;
 
-  compile project(':domain')
+  implementation project(':domain')
 
-  compile "${library.timber}"
-  apt "${library.daggerCompiler}"
-  compile "${library.dagger}"
-  compile "${library.rxJava}"
-  compile "${library.rxAndroid}"
-  compile "${library.rxReceivers}"
-  provided "${library.javaxAnnotation}"
-  compile "${library.javaxInject}"
-  compile "${library.gson}"
-  compile "${library.lightweightStreamApi}"
-  compile "${library.androidAnnotations}"
-  compile "${library.dexter}"
-  compile "${library.picasso}"
+  implementation "${library.timber}"
+  annotationProcessor "${library.daggerCompiler}"
+  implementation "${library.dagger}"
+  implementation "${library.rxJava}"
+  implementation "${library.rxAndroid}"
+  implementation "${library.rxReceivers}"
+  compileOnly "${library.javaxAnnotation}"
+  implementation "${library.javaxInject}"
+  implementation "${library.gson}"
+  compileOnly "${library.autovalue}"
+  annotationProcessor "${library.autovalue}"
+  implementation "${library.lightweightStreamApi}"
+  implementation "${library.androidAnnotations}"
+  implementation "${library.dexter}"
+  implementation "${library.picasso}"
 
-  testCompile "${libraryTest.jUnit}"
-  testCompile "${libraryTest.assertJ}"
-  testCompile "${libraryTest.powermock}"
-  testCompile "${libraryTest.powermockrunner}"
-  testCompile "${libraryTest.powermockito}"
+  debugImplementation "${libraryTest.jUnit}"
+  debugImplementation "${libraryTest.assertJ}"
+  debugImplementation "${libraryTest.powermock}"
+  debugImplementation "${libraryTest.powermockrunner}"
+  debugImplementation "${libraryTest.powermockito}"
 }

@@ -14,7 +14,7 @@ import com.google.auto.value.AutoValue;
   public abstract String playerName();
 
   public Builder toBuilder() {
-    return new AutoValue_ServerEntity.Builder(this);
+    return new AutoValue_ServerEntity.Builder(                     );
   }
 
   public static Builder builder() {

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 
@@ -43,17 +42,17 @@ dependencies {
   def library = rootProject.ext.dataDependencies;
   def libraryTest = rootProject.ext.dataTestDependencies;
 
-  compile project(':domain')
+  implementation project(':domain')
 
-  compile "${library.timber}"
-  apt "${library.daggerCompiler}"
-  compile "${library.dagger}"
-  compile "${library.rxJava}"
-  compile "${library.rxAndroid}"
-  provided "${library.javaxAnnotation}"
-  compile "${library.javaxInject}"
-  compile "${library.androidAnnotations}"
-  compile "${library.lightweightStreamApi}"
+  implementation "${library.timber}"
+  annotationProcessor "${library.daggerCompiler}"
+  implementation "${library.dagger}"
+  implementation "${library.rxJava}"
+  implementation "${library.rxAndroid}"
+  compileOnly "${library.javaxAnnotation}"
+  implementation "${library.javaxInject}"
+  implementation "${library.androidAnnotations}"
+  implementation "${library.lightweightStreamApi}"
 
-  testCompile "${libraryTest.jUnit}"
+  debugImplementation "${libraryTest.jUnit}"
 }
