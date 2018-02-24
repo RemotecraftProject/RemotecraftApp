@@ -61,9 +61,9 @@ dependencies {
   implementation "${library.dexter}"
   implementation "${library.picasso}"
 
-  debugImplementation "${libraryTest.jUnit}"
-  debugImplementation "${libraryTest.assertJ}"
-  debugImplementation "${libraryTest.powermock}"
-  debugImplementation "${libraryTest.powermockrunner}"
-  debugImplementation "${libraryTest.powermockito}"
+  testImplementation "${libraryTest.jUnit}"
+  testImplementation "${libraryTest.assertJ}"
+  testImplementation "${libraryTest.powermock}"
+  testImplementation "${libraryTest.powermockrunner}"
+  testImplementation "${libraryTest.powermockito}"
 }

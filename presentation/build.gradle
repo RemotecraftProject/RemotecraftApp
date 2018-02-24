@@ -129,9 +129,9 @@ android {
 
     variant.resValue("string", "app_name", appName)
 
-    variant.outputs.all { output ->
-      def parentFile = output.outputFile.parent
-      def fileName = output.outputFile.name.replace("presentation", "remotecraft")
+    variant.outputs.all {
+      def parentFile = "ToDo"
+      def fileName = outputFileName.replace("presentation", "remotecraft")
       outputFileName = new File(parentFile, fileName)
     }
   }
@@ -185,12 +185,12 @@ dependencies {
 
   checkstyle "${library.checkstyle}"
 
-  debugImplementation "${libraryTest.jUnit}"
-  debugImplementation "${libraryTest.assertJ}"
-  debugImplementation "${libraryTest.mockito}"
-  debugImplementation "${libraryTest.robolectric}"
-  debugImplementation "${libraryTest.openGlApi}"
+  testImplementation "${libraryTest.jUnit}"
+  testImplementation "${libraryTest.assertJ}"
+  testImplementation "${libraryTest.mockito}"
+  testImplementation "${libraryTest.robolectric}"
+  testImplementation "${libraryTest.openGlApi}"
 
-  androidTestCompile "${libraryTest.espresso}"
-  androidTestCompile "${libraryTest.conditionWatcher}"
+  androidTestImplementation "${libraryTest.espresso}"
+  androidTestImplementation "${libraryTest.conditionWatcher}"
 }

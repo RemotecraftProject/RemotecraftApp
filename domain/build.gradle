@@ -28,10 +28,10 @@ dependencies {
   compile "${library.javaxInject}"
   compile "${library.gson}"
   compile "${library.lightweightStreamApi}"
-  provided "${library.autovalue}"
   apt "${library.autovalue}"
-  apt 'com.ryanharter.auto.value:auto-value-gson:0.7.0'
-  compile 'com.ryanharter.auto.value:auto-value-gson-annotations:0.7.0'
+  provided "${library.autovalue}"
+  apt "${library.autovalueGson}"
+  compile "${library.autovalueGsonAnnotations}"
   compile "${library.apacheCommonsValidator}"
 
   testCompile "${libraryTest.jUnit}"

@@ -54,5 +54,5 @@ dependencies {
   implementation "${library.androidAnnotations}"
   implementation "${library.lightweightStreamApi}"
 
-  debugImplementation "${libraryTest.jUnit}"
+  testImplementation "${libraryTest.jUnit}"
 }
