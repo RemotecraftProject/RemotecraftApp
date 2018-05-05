@@ -12,6 +12,7 @@ public class ServerProtocol {
   @SerializedName("seed") private String seed;
   @SerializedName("world_name") private String worldName;
   @SerializedName("player_name") private String playerName;
+  @SerializedName("encoded_world_image") private String encodedWorldImage;
 
   private ServerProtocol(Builder builder) {
     this.ssid = builder.ssid;
@@ -22,6 +23,7 @@ public class ServerProtocol {
     this.seed = builder.seed;
     this.worldName = builder.worldName;
     this.playerName = builder.playerName;
+    this.encodedWorldImage = builder.encodedWorldImage;
   }
 
   public String getSsid() {
@@ -56,6 +58,10 @@ public class ServerProtocol {
     return playerName;
   }
 
+  public String getEncodedWorldImage() {
+    return encodedWorldImage;
+  }
+
   public static class Builder {
     private String ssid;
     private String ip;
@@ -65,6 +71,7 @@ public class ServerProtocol {
     private String seed;
     private String worldName;
     private String playerName;
+    private String encodedWorldImage;
 
     public Builder() {
 
@@ -111,6 +118,11 @@ public class ServerProtocol {
 
     public Builder playerName(String playerName) {
       this.playerName = playerName;
+      return this;
+    }
+
+    public Builder encodedWorldImage(String encodedWorldImage) {
+      this.encodedWorldImage = encodedWorldImage;
       return this;
     }
   }

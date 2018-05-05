@@ -210,6 +210,7 @@ import static org.mockito.Mockito.when;
         .seed("123456789")
         .worldName("Za warudo")
         .playerName("Etho")
+        .encodedWorldImage("base64image")
         .build();
   }
 
@@ -223,6 +224,7 @@ import static org.mockito.Mockito.when;
         .seed("123456789")
         .worldName("Za warudo")
         .playerName("Etho")
+        .encodedWorldImage("base64image")
         .build();
   }
 }

@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         .seed("34344343")
         .worldName("Za warudo")
         .playerName("Da beasto")
+        .encodedWorldImage("base64image")
         .build();
 
     ServerEntity serverEntity = serverProtocolMapper.transform(serverProtocol);
@@ -49,6 +50,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     assertThat(serverEntity.seed()).isEqualTo("34344343");
     assertThat(serverEntity.worldName()).isEqualTo("Za warudo");
     assertThat(serverEntity.playerName()).isEqualTo("Da beasto");
+    assertThat(serverEntity.encodedWorldImage()).isEqualTo("base64image");
   }
 
   @Test public void shouldReturnNullServerProtocolGivenNullServerEntity() throws Exception {
@@ -69,6 +71,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         .seed("34344343")
         .worldName("Za warudo")
         .playerName("Da beasto")
+        .encodedWorldImage("base64image")
         .build();
 
     ServerProtocol serverProtocol = serverProtocolMapper.transform(serverEntity);
@@ -83,5 +86,6 @@ import static org.assertj.core.api.Assertions.assertThat;
     assertThat(serverProtocol.getSeed()).isEqualTo("34344343");
     assertThat(serverProtocol.getWorldName()).isEqualTo("Za warudo");
     assertThat(serverProtocol.getPlayerName()).isEqualTo("Da beasto");
+    assertThat(serverProtocol.getEncodedWorldImage()).isEqualTo("base64image");
   }
 }

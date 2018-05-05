@@ -136,6 +136,7 @@ import static org.mockito.Mockito.when;
         .seed("354523456")
         .worldName("The name")
         .playerName("The player")
+        .encodedWorldImage("base64image")
         .build();
   }
 
@@ -149,6 +150,7 @@ import static org.mockito.Mockito.when;
         .seed("354523456")
         .worldName("The name")
         .playerName("The player")
+        .encodedWorldImage("base64image")
         .build();
   }
 }

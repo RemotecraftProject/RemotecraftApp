@@ -37,6 +37,7 @@ import static org.hamcrest.core.Is.is;
         .seed("1234567890")
         .worldName("Etho's Server")
         .playerName("Etho")
+        .encodedWorldImage("base64image")
         .build();
 
     Server server = serverEntityDataMapper.transform(serverEntity);
@@ -51,5 +52,6 @@ import static org.hamcrest.core.Is.is;
     assertThat(server.seed(), is("1234567890"));
     assertThat(server.worldName(), is("Etho's Server"));
     assertThat(server.playerName(), is("Etho"));
+    assertThat(server.encodedWorldImage(), is("base64image"));
   }
 }

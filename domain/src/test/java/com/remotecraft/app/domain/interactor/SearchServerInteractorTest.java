@@ -128,6 +128,7 @@ public class SearchServerInteractorTest {
         .seed("436465435")
         .worldName("Reign of Giants")
         .playerName("Etho")
+        .encodedWorldImage("base64image")
         .build();
   }
 

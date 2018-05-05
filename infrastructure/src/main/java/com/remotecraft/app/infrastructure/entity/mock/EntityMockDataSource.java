@@ -18,6 +18,7 @@ public class EntityMockDataSource {
         .seed("4346234563458034")
         .worldName("Reign of Giants")
         .playerName("Etho")
+        .encodedWorldImage("base64image")
         .build();
   }
 }

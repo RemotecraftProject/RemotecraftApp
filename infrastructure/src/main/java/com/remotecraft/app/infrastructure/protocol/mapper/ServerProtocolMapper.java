@@ -24,6 +24,7 @@ public class ServerProtocolMapper {
         .seed(serverProtocol.getSeed())
         .worldName(serverProtocol.getWorldName())
         .playerName(serverProtocol.getPlayerName())
+        .encodedWorldImage(serverProtocol.getEncodedWorldImage())
         .build();
   }
 
@@ -41,6 +42,7 @@ public class ServerProtocolMapper {
         .seed(serverEntity.seed())
         .worldName(serverEntity.worldName())
         .playerName(serverEntity.playerName())
+        .encodedWorldImage(serverEntity.encodedWorldImage())
         .build();
   }
 }

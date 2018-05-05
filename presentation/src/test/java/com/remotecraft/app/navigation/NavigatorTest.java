@@ -54,6 +54,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
         .seed("34640505599934")
         .worldName("Reign of Giants")
         .playerName("Etho")
+        .encodedWorldImage("base64image")
         .build();
 
     navigator.navigateToServerFoundActivity(null, serverModel);
