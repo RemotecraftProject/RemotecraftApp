@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     >
 
-  <com.zireck.remotecraft.view.custom.ServerInfoView
+  <com.remotecraft.app.view.custom.ServerInfoView
       android:id="@+id/server_info"
       android:layout_width="350dp"
       android:layout_height="250dp"

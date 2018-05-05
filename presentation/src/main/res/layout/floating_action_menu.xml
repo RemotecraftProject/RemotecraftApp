@@ -10,7 +10,7 @@
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    app:layout_behavior="com.zireck.remotecraft.view.custom.FloatingActionMenuBehavior"
+    app:layout_behavior="com.remotecraft.app.view.custom.FloatingActionMenuBehavior"
     fab:menu_animationDelayPerItem="50"
     fab:menu_backgroundColor="@android:color/transparent"
     fab:menu_colorNormal="@color/fab_menu_normal"
