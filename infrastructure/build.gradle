@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 
-def configuration = ext.configuration;
+def configuration = ext.configuration
 
 android {
   defaultPublishConfig "debug"
@@ -39,8 +39,8 @@ android {
 }
 
 dependencies {
-  def library = rootProject.ext.infrastructureDependencies;
-  def libraryTest = rootProject.ext.infrastructureTestDependencies;
+  def library = rootProject.ext.infrastructureDependencies
+  def libraryTest = rootProject.ext.infrastructureTestDependencies
 
   implementation project(':domain')
 

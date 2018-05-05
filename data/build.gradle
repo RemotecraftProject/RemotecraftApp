@@ -38,8 +38,8 @@ android {
 }
 
 dependencies {
-  def library = rootProject.ext.dataDependencies;
-  def libraryTest = rootProject.ext.dataTestDependencies;
+  def library = rootProject.ext.dataDependencies
+  def libraryTest = rootProject.ext.dataTestDependencies
 
   implementation project(':domain')
 

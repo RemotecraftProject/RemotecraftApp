@@ -19,8 +19,8 @@ sourceSets {
 }
 
 dependencies {
-  def library = rootProject.ext.domainDependencies;
-  def libraryTest = rootProject.ext.domainTestDependencies;
+  def library = rootProject.ext.domainDependencies
+  def libraryTest = rootProject.ext.domainTestDependencies
 
   compile "${library.rxJava}"
   provided "${library.javaxAnnotation}"
