@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 apply from: "$rootProject.projectDir/buildsystem/config.gradle"
 apply from: "$rootProject.projectDir/buildsystem/version.gradle"
 apply from: "$rootProject.projectDir/buildsystem/checkstyle.gradle"

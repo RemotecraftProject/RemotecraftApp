@@ -3,7 +3,6 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'me.tatarka.retrolambda'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -37,11 +36,4 @@ dependencies {
   testCompile "${libraryTest.jUnit}"
   testCompile "${libraryTest.assertJ}"
   testCompile "${libraryTest.mockito}"
-}
-
-retrolambda {
-  jdk System.getenv("JAVA8_HOME")
-  oldJdk System.getenv("JAVA7_HOME")
-  javaVersion JavaVersion.VERSION_1_7
-  incremental true
 }
