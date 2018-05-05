@@ -36,6 +36,7 @@ ext.version = [
     assertJ                   : "2.6.0",
     mockito                   : "1.9.0",
     robolectric               : "3.7.1",
+    testRunner                : "1.0.2",
     powermock                 : "1.6.1",
     powermockrunner           : "1.6.1",
     powermockito              : "1.6.1",
@@ -88,6 +89,7 @@ ext.dependency = [
     assertJ                   : "org.assertj:assertj-core:${version.assertJ}",
     mockito                   : "org.mockito:mockito-core:${version.mockito}",
     robolectric               : "org.robolectric:robolectric:${version.robolectric}",
+    testRunner                : "com.android.support.test:runner:${version.testRunner}",
     powermock                 : "org.powermock:powermock:${version.powermock}",
     powermockrunner           : "org.powermock:powermock-module-junit4:${version.powermockrunner}",
     powermockito              : "org.powermock:powermock-api-mockito:${version.powermockito}",
@@ -194,6 +196,7 @@ ext.presentationTestDependencies = [
     assertJ                   : "${dependency.assertJ}",
     mockito                   : "${dependency.mockito}",
     robolectric               : "${dependency.robolectric}",
+    testRunner                : "${dependency.testRunner}",
     espresso                  : "${dependency.espresso}",
     conditionWatcher          : "${dependency.conditionWatcher}",
     openGlApi                 : "${dependency.openGlApi}"

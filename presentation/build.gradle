@@ -192,4 +192,5 @@ dependencies {
 
   androidTestImplementation "${libraryTest.espresso}"
   androidTestImplementation "${libraryTest.conditionWatcher}"
+  androidTestImplementation "${libraryTest.testRunner}"
 }

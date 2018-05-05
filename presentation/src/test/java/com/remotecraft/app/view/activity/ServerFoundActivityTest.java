@@ -14,6 +14,8 @@ import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
 import com.remotecraft.app.navigation.Navigator;
 import com.remotecraft.app.presenter.ServerFoundPresenter;
+import com.remotecraft.app.tools.ImageDecoder;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +48,7 @@ public class ServerFoundActivityTest {
   @Mock private Navigator mockNavigator;
   @Mock private ServerFoundPresenter mockServerFoundPresenter;
   @Mock private ImageLoader mockImageLoader;
+  @Mock private ImageDecoder mockImageDecoder;
   private String mockPlayerAvatarUrl = "https://minotar.net/helm/%s/%s.png";
   private int mockPlayerAvatarSize = 100;
 
@@ -54,6 +57,7 @@ public class ServerFoundActivityTest {
       instance.navigator = mockNavigator;
       instance.presenter = mockServerFoundPresenter;
       instance.imageLoader = mockImageLoader;
+      instance.imageDecoder = mockImageDecoder;
       instance.playerAvatarUrl = mockPlayerAvatarUrl;
       instance.playerAvatarSize = mockPlayerAvatarSize;
     }
@@ -184,6 +188,7 @@ public class ServerFoundActivityTest {
         .seed("4955335923")
         .worldName("Reign of Giants")
         .playerName("GenerikB")
+        .encodedWorldImage("base64image")
         .build();
   }
 }

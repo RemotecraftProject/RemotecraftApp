@@ -25,6 +25,7 @@ public class ServerModelDataMapperTest {
   private static final String FAKE_SEED = "1234567890";
   private static final String FAKE_WORLD_NAME = "Super Server";
   private static final String FAKE_PLAYER_NAME = "Etho";
+  private static final String FAKE_ENCODED_WORLD_IMAGE = "base64image";
 
   private ServerModelDataMapper serverModelDataMapper;
 
@@ -65,6 +66,7 @@ public class ServerModelDataMapperTest {
     assertThat(FAKE_SEED, is(serverModel.seed()));
     assertThat(FAKE_WORLD_NAME, is(serverModel.worldName()));
     assertThat(FAKE_PLAYER_NAME, is(serverModel.playerName()));
+    assertThat(FAKE_ENCODED_WORLD_IMAGE, is(serverModel.encodedWorldImage()));
   }
 
   @Test public void shouldReturnEmptyWorldModelCollectionWhenMappingEmptyWorldCollection()
@@ -113,6 +115,7 @@ public class ServerModelDataMapperTest {
         .seed(FAKE_SEED)
         .worldName(FAKE_WORLD_NAME)
         .playerName(FAKE_PLAYER_NAME)
+        .encodedWorldImage(FAKE_ENCODED_WORLD_IMAGE)
         .build();
   }
 }
