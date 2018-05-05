@@ -17,6 +17,7 @@ import com.remotecraft.app.dagger.qualifiers.PlayerAvatarUrl;
 import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
 import com.remotecraft.app.presenter.ServerFoundPresenter;
+import com.remotecraft.app.tools.ImageDecoder;
 import com.remotecraft.app.view.ServerFoundView;
 import com.remotecraft.app.view.custom.ServerInfoView;
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
 
   @Inject ServerFoundPresenter presenter;
   @Inject ImageLoader imageLoader;
+  @Inject ImageDecoder imageDecoder;
   @Inject @PlayerAvatarUrl String playerAvatarUrl;
   @Inject @PlayerAvatarSize int playerAvatarSize;
 
@@ -89,7 +91,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   }
 
   @Override public void renderServer(ServerModel serverModel) {
-    serverInfoView.renderServer(this, serverModel, imageLoader, playerAvatarUrl, playerAvatarSize);
+    serverInfoView.renderServer(this, serverModel, imageLoader, imageDecoder, playerAvatarUrl, playerAvatarSize);
 
     if (getSupportActionBar() != null) {
       getSupportActionBar().setTitle(serverModel.worldName());

@@ -24,6 +24,7 @@ public class ServerEntityDataMapper {
         .seed(serverEntity.seed())
         .worldName(serverEntity.worldName())
         .playerName(serverEntity.playerName())
+        .encodedWorldImage(serverEntity.encodedWorldImage())
         .build();
   }
 
@@ -41,6 +42,7 @@ public class ServerEntityDataMapper {
         .seed(server.seed())
         .worldName(server.worldName())
         .playerName(server.playerName())
+        .encodedWorldImage(server.encodedWorldImage())
         .build();
   }
 }

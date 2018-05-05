@@ -14,6 +14,7 @@ import com.google.auto.value.AutoValue;
   public abstract @NonNull String seed();
   public abstract @NonNull String worldName();
   public abstract @NonNull String playerName();
+  public abstract @NonNull String encodedWorldImage();
 
   public @NonNull Builder toBuilder() {
     return new AutoValue_ServerModel.Builder();
@@ -33,6 +34,7 @@ import com.google.auto.value.AutoValue;
     public abstract @NonNull Builder seed(@NonNull String seed);
     public abstract @NonNull Builder worldName(@NonNull String worldName);
     public abstract @NonNull Builder playerName(@NonNull String playerName);
+    public abstract @NonNull Builder encodedWorldImage(@NonNull String encodedWorldImage);
     public abstract @NonNull ServerModel build();
   }
 }

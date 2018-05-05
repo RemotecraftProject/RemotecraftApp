@@ -1,6 +1,7 @@
 package com.remotecraft.app.view.custom;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import butterknife.ButterKnife;
 import com.remotecraft.app.R;
 import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
+import com.remotecraft.app.tools.ImageDecoder;
 
 public class ServerInfoView extends RelativeLayout {
 
@@ -36,7 +38,7 @@ public class ServerInfoView extends RelativeLayout {
   }
 
   public void renderServer(Context context, ServerModel serverModel, ImageLoader imageLoader,
-      String playerAvatarUrl, int playerAvatarSize) {
+      ImageDecoder imageDecoder, String playerAvatarUrl, int playerAvatarSize) {
     inflateView(context);
 
     loadAvatarFor(serverModel.playerName(), imageLoader, playerAvatarUrl, playerAvatarSize);
@@ -45,6 +47,8 @@ public class ServerInfoView extends RelativeLayout {
     ssidAndIpView.setText(String.format("%s (%s)", serverModel.ssid(), serverModel.ip()));
     hostnameAndOsView.setText(
         String.format("%s (%s)", serverModel.hostname(), serverModel.os()));
+    Bitmap worldImage = imageDecoder.decode(serverModel.encodedWorldImage());
+    // TODO set world image
   }
 
   private View inflateView(Context context) {

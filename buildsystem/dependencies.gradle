@@ -47,7 +47,7 @@ ext.version = [
     checkstyle                : "7.6.1"
 ]
 
-def version = ext.version;
+def version = ext.version
 
 ext.dependency = [
     timber                    : "com.jakewharton.timber:timber:${version.timber}",
@@ -96,7 +96,7 @@ ext.dependency = [
     openGlApi                 : "org.khronos:opengl-api:${version.openGlApi}"
 ]
 
-def dependency = ext.dependency;
+def dependency = ext.dependency
 
 ext.infrastructureDependencies = [
     timber                    : "${dependency.timber}",

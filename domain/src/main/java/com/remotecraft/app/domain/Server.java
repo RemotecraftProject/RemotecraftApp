@@ -14,6 +14,7 @@ import com.google.gson.TypeAdapter;
   public abstract String seed();
   public abstract String worldName();
   public abstract String playerName();
+  public abstract String encodedWorldImage();
 
   public Builder toBuilder() {
     return new AutoValue_Server.Builder();
@@ -33,6 +34,7 @@ import com.google.gson.TypeAdapter;
     public abstract Builder seed(String seed);
     public abstract Builder worldName(String worldName);
     public abstract Builder playerName(String playerName);
+    public abstract Builder encodedWorldImage(String encodedWorldImage);
     public abstract Server build();
   }
 

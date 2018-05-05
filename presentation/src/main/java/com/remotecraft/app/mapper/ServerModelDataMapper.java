@@ -28,6 +28,7 @@ import javax.inject.Inject;
         .seed(server.seed())
         .worldName(server.worldName())
         .playerName(server.playerName())
+        .encodedWorldImage(server.encodedWorldImage())
         .build();
   }
 

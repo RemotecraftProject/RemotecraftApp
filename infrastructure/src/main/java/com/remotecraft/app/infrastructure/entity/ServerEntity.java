@@ -12,6 +12,7 @@ import com.google.auto.value.AutoValue;
   public abstract String seed();
   public abstract String worldName();
   public abstract String playerName();
+  public abstract String encodedWorldImage();
 
   public Builder toBuilder() {
     return new AutoValue_ServerEntity.Builder(                     );
@@ -31,6 +32,7 @@ import com.google.auto.value.AutoValue;
     public abstract Builder seed(String seed);
     public abstract Builder worldName(String worldName);
     public abstract Builder playerName(String playerName);
+    public abstract Builder encodedWorldImage(String encodedWorldImage);
     public abstract ServerEntity build();
   }
 }
