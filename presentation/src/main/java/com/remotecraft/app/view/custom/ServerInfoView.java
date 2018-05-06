@@ -47,8 +47,8 @@ public class ServerInfoView extends RelativeLayout {
     playerNameView.setText(serverModel.playerName());
     worldNameView.setText(serverModel.worldName());
 
-    String networkInfoText = context.getString(R.string.server_found_network_info, serverModel.ssid(),
-        serverModel.ip());
+    String networkInfoText = context.getString(R.string.server_found_network_info,
+        serverModel.ssid(), serverModel.ip());
     networkInfoView.setText(networkInfoText);
     String osInfoText = context.getString(R.string.server_found_os_info, serverModel.os(),
         serverModel.hostname());
