@@ -21,8 +21,10 @@ public class ServerInfoView extends RelativeLayout {
 
   @BindView(R.id.player_avatar) ImageView playerAvatarView;
   @BindView(R.id.player_name) TextView playerNameView;
+  @BindView(R.id.world_image) ImageView worldImageView;
   @BindView(R.id.world_name) TextView worldNameView;
   @BindView(R.id.ssid_and_ip) TextView ssidAndIpView;
+  @BindView(R.id.icon_os) ImageView iconOsView;
   @BindView(R.id.hostname_and_os) TextView hostnameAndOsView;
 
   public ServerInfoView(Context context) {
@@ -46,9 +48,21 @@ public class ServerInfoView extends RelativeLayout {
     worldNameView.setText(serverModel.worldName());
     ssidAndIpView.setText(String.format("%s (%s)", serverModel.ssid(), serverModel.ip()));
     hostnameAndOsView.setText(
-        String.format("%s (%s)", serverModel.hostname(), serverModel.os()));
-    Bitmap worldImage = imageDecoder.decode(serverModel.encodedWorldImage());
+        String.format("%s (%s)", serverModel.os(), serverModel.hostname()));
+
+    if (serverModel.os().contains("indows")) {
+      iconOsView.setImageResource(R.drawable.ic_os_windows_dark);
+    } else if (serverModel.os().contains("inux")) {
+      iconOsView.setImageResource(R.drawable.ic_os_linux_dark);
+    } else if (serverModel.os().contains("ac")) {
+      iconOsView.setImageResource(R.drawable.ic_os_mac_dark);
+    } else {
+      iconOsView.setImageResource(R.drawable.ic_mac_desktop);
+    }
+
     // TODO set world image
+    Bitmap worldImage = imageDecoder.decode(serverModel.encodedWorldImage());
+    worldImageView.setImageDrawable(getResources().getDrawable(R.drawable.mesa));
   }
 
   private View inflateView(Context context) {

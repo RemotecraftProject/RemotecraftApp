@@ -1,91 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:background="@color/color_accent"
-    android:padding="8dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="16dp"
     android:orientation="vertical"
+    app:cardCornerRadius="8dp"
     >
 
   <LinearLayout
-      android:id="@+id/player"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_centerVertical="true"
-      android:layout_alignParentStart="true"
-      android:layout_alignParentLeft="true"
-      android:layout_marginEnd="16dp"
-      android:layout_marginRight="16dp"
-      android:orientation="vertical"
-      >
+      android:padding="16dp"
+      android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+      <ImageView
+          android:id="@+id/player_avatar"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_gravity="center_vertical"
+          tools:src="@drawable/avatar_etho"/>
+
+      <TextView
+          android:id="@+id/player_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_marginStart="16dp"
+          android:layout_marginLeft="16dp"
+          tools:text="Etho"/>
+
+    </LinearLayout>
 
     <ImageView
-        android:id="@+id/player_avatar"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="center_horizontal"
-        android:adjustViewBounds="true"
-        />
+        android:id="@+id/world_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        tools:src="@drawable/mesa"/>
 
     <TextView
-        android:id="@+id/player_name"
-        android:layout_width="wrap_content"
+        android:id="@+id/world_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Reign of Giants"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal">
+
+      <ImageView
+          android:layout_width="14dp"
+          android:layout_height="14dp"
+          android:layout_gravity="center_vertical"
+          android:src="@drawable/ic_wifi_dark"/>
+
+      <TextView
+          android:id="@+id/ssid_and_ip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_marginStart="6dp"
+          android:layout_marginLeft="6dp"
+          android:textSize="12sp"
+          tools:text="WLAN_C24_PLUS (192.168.1.28)"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Etho"
-        android:textSize="12sp"
-        android:textColor="@android:color/white"
-        android:maxLength="20"
-        android:maxLines="1"
-        android:ellipsize="end"
-        />
+        android:orientation="horizontal">
+
+      <ImageView
+          android:id="@+id/icon_os"
+          android:layout_width="14dp"
+          android:layout_height="14dp"
+          android:layout_gravity="center_vertical"
+          android:src="@drawable/ic_os_mac_dark"/>
+
+      <TextView
+          android:id="@+id/hostname_and_os"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_marginStart="6dp"
+          android:layout_marginLeft="6dp"
+          android:textSize="12sp"
+          tools:text="MacOS (Nebula)"/>
+
+    </LinearLayout>
 
   </LinearLayout>
 
-  <TextView
-      android:id="@+id/world_name"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_above="@+id/ssid_and_ip"
-      android:layout_toEndOf="@+id/player"
-      android:layout_toRightOf="@+id/player"
-      android:text="World Name!"
-      android:textSize="18sp"
-      android:textColor="@android:color/white"
-      android:maxLength="20"
-      android:maxLines="1"
-      android:ellipsize="end"
-      />
-
-  <TextView
-      android:id="@+id/ssid_and_ip"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerVertical="true"
-      android:layout_toEndOf="@+id/player"
-      android:layout_toRightOf="@+id/player"
-      android:text="WLAN_C33 (192.168.1.34)"
-      android:textSize="12sp"
-      android:textColor="@android:color/white"
-      android:maxLines="1"
-      android:ellipsize="end"
-      />
-
-  <TextView
-      android:id="@+id/hostname_and_os"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/ssid_and_ip"
-      android:layout_toEndOf="@+id/player"
-      android:layout_toRightOf="@+id/player"
-      android:text="iMac (macOS Sierra)"
-      android:textSize="12sp"
-      android:textColor="@android:color/white"
-      android:maxLines="1"
-      android:ellipsize="end"
-      />
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>
