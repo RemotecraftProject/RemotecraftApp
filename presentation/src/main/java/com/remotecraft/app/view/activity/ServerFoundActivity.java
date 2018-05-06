@@ -95,7 +95,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
         playerAvatarSize);
 
     if (getSupportActionBar() != null) {
-      getSupportActionBar().setTitle(serverModel.worldName());
+      getSupportActionBar().setTitle(getString(R.string.server_found_title));
     }
   }
 

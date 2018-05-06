@@ -19,13 +19,13 @@ public class ServerInfoView extends RelativeLayout {
 
   private static final int LAYOUT_RESOURCE = R.layout.server_info_view;
 
-  @BindView(R.id.player_avatar) ImageView playerAvatarView;
-  @BindView(R.id.player_name) TextView playerNameView;
-  @BindView(R.id.world_image) ImageView worldImageView;
-  @BindView(R.id.world_name) TextView worldNameView;
-  @BindView(R.id.ssid_and_ip) TextView ssidAndIpView;
-  @BindView(R.id.icon_os) ImageView iconOsView;
-  @BindView(R.id.hostname_and_os) TextView hostnameAndOsView;
+  @BindView(R.id.image_player_avatar) ImageView playerAvatarView;
+  @BindView(R.id.text_player_name) TextView playerNameView;
+  @BindView(R.id.image_world) ImageView worldImageView;
+  @BindView(R.id.text_world_name) TextView worldNameView;
+  @BindView(R.id.text_network_info) TextView networkInfoView;
+  @BindView(R.id.image_os_icon) ImageView iconOsView;
+  @BindView(R.id.text_os_info) TextView osInfoView;
 
   public ServerInfoView(Context context) {
     super(context);
@@ -46,9 +46,13 @@ public class ServerInfoView extends RelativeLayout {
     loadAvatarFor(serverModel.playerName(), imageLoader, playerAvatarUrl, playerAvatarSize);
     playerNameView.setText(serverModel.playerName());
     worldNameView.setText(serverModel.worldName());
-    ssidAndIpView.setText(String.format("%s (%s)", serverModel.ssid(), serverModel.ip()));
-    hostnameAndOsView.setText(
-        String.format("%s (%s)", serverModel.os(), serverModel.hostname()));
+
+    String networkInfoText = context.getString(R.string.server_found_network_info, serverModel.ssid(),
+        serverModel.ip());
+    networkInfoView.setText(networkInfoText);
+    String osInfoText = context.getString(R.string.server_found_os_info, serverModel.os(),
+        serverModel.hostname());
+    osInfoView.setText(osInfoText);
 
     if (serverModel.os().contains("indows")) {
       iconOsView.setImageResource(R.drawable.ic_os_windows_dark);

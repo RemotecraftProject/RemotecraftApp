@@ -1,3 +1,9 @@
 <resources>
   <string name="app_name">Infrastructure</string>
+
+  // Server Found Activity
+  <string name="server_found_title">Server found</string>
+  <string name="server_found_network_info">%1$s (%2$s)</string>
+  <string name="server_found_os_info">%1$s (%2$s)</string>
+  <string name="server_found_connect">Connect</string>
 </resources>
