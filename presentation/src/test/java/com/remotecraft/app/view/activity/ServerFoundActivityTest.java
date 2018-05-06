@@ -147,7 +147,7 @@ public class ServerFoundActivityTest {
     serverFoundActivity.renderServer(serverModel);
 
     assertThat(serverFoundActivity.getSupportActionBar().getTitle(), notNullValue());
-    assertThat(serverFoundActivity.getSupportActionBar().getTitle(), is("Reign of Giants"));
+    assertThat(serverFoundActivity.getSupportActionBar().getTitle(), is("Server found"));
   }
 
   @Test public void shouldDisplayError() throws Exception {
