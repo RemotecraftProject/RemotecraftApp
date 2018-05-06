@@ -91,7 +91,8 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   }
 
   @Override public void renderServer(ServerModel serverModel) {
-    serverInfoView.renderServer(this, serverModel, imageLoader, imageDecoder, playerAvatarUrl, playerAvatarSize);
+    serverInfoView.renderServer(this, serverModel, imageLoader, imageDecoder, playerAvatarUrl,
+        playerAvatarSize);
 
     if (getSupportActionBar() != null) {
       getSupportActionBar().setTitle(serverModel.worldName());
