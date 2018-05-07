@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import com.remotecraft.app.R;
 import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
-import com.remotecraft.app.tools.ImageDecoder;
+import com.remotecraft.app.infrastructure.tool.ImageDecoder;
 
 public class ServerInfoView extends RelativeLayout {
 
@@ -64,9 +64,8 @@ public class ServerInfoView extends RelativeLayout {
       iconOsView.setImageResource(R.drawable.ic_mac_desktop);
     }
 
-    // TODO set world image
     Bitmap worldImage = imageDecoder.decode(serverModel.encodedWorldImage());
-    worldImageView.setImageDrawable(getResources().getDrawable(R.drawable.mesa));
+    worldImageView.setImageBitmap(worldImage);
   }
 
   private View inflateView(Context context) {

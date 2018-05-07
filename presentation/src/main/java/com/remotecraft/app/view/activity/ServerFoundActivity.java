@@ -17,7 +17,7 @@ import com.remotecraft.app.dagger.qualifiers.PlayerAvatarUrl;
 import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
 import com.remotecraft.app.presenter.ServerFoundPresenter;
-import com.remotecraft.app.tools.ImageDecoder;
+import com.remotecraft.app.infrastructure.tool.ImageDecoder;
 import com.remotecraft.app.view.ServerFoundView;
 import com.remotecraft.app.view.custom.ServerInfoView;
 import javax.inject.Inject;

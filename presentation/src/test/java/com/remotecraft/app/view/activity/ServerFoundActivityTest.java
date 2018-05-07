@@ -14,7 +14,7 @@ import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
 import com.remotecraft.app.navigation.Navigator;
 import com.remotecraft.app.presenter.ServerFoundPresenter;
-import com.remotecraft.app.tools.ImageDecoder;
+import com.remotecraft.app.infrastructure.tool.ImageDecoder;
 
 import org.junit.Before;
 import org.junit.Test;
