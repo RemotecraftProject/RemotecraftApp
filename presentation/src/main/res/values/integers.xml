@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="activity_splash_timeout_in_millis">2500</integer>
+</resources>
