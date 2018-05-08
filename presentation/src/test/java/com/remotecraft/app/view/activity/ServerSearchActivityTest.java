@@ -121,7 +121,7 @@ public class ServerSearchActivityTest {
   public void shouldCloseFabMenu() throws Exception {
     serverSearchActivity.closeMenu();
 
-    assertThat(serverSearchActivity.floatingActionMenu.isOpened(), is(false));
+    assertThat(serverSearchActivity.fabMenuView.isOpened(), is(false));
   }
 
   @Test
@@ -142,16 +142,16 @@ public class ServerSearchActivityTest {
   public void shouldStartQrScanner() throws Exception {
     serverSearchActivity.startQrScanner();
 
-    assertThat(serverSearchActivity.closeCameraButton.getVisibility(), is(View.VISIBLE));
-    assertThat(serverSearchActivity.qrCodeReaderView.getVisibility(), is(View.VISIBLE));
+    assertThat(serverSearchActivity.closeCameraView.getVisibility(), is(View.VISIBLE));
+    assertThat(serverSearchActivity.qrReaderView.getVisibility(), is(View.VISIBLE));
   }
 
   @Test
   public void shouldStopQrScanner() throws Exception {
     serverSearchActivity.stopQrScanner();
 
-    assertThat(serverSearchActivity.qrCodeReaderView.getVisibility(), is(View.GONE));
-    assertThat(serverSearchActivity.closeCameraButton.getVisibility(), is(View.GONE));
+    assertThat(serverSearchActivity.qrReaderView.getVisibility(), is(View.GONE));
+    assertThat(serverSearchActivity.closeCameraView.getVisibility(), is(View.GONE));
   }
 
   @Test

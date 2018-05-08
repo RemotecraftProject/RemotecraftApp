@@ -27,12 +27,11 @@ public abstract class ObservableInteractor<T, P extends BaseParams>
   @SuppressWarnings("unchecked")
   @Override
   public void execute(DisposableObserver observer, P params) {
-    buildReactiveStream(params)
+    DisposableObserver disposableObserver = buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribeWith(observer);
-
-    disposables.add(observer);
+    disposables.add(disposableObserver);
   }
 
   @Override

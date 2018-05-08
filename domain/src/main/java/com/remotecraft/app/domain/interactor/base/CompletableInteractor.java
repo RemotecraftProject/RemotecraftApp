@@ -26,12 +26,11 @@ public abstract class CompletableInteractor<P extends BaseParams>
 
   @Override
   public void execute(DisposableCompletableObserver observer, P params) {
-    buildReactiveStream(params)
+    DisposableCompletableObserver disposableObserver = buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribeWith(observer);
-
-    disposables.add(observer);
+    disposables.add(disposableObserver);
   }
 
   @Override

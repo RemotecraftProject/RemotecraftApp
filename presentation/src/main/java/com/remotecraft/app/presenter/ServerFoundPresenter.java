@@ -1,5 +1,6 @@
 package com.remotecraft.app.presenter;
 
+import android.support.annotation.NonNull;
 import com.remotecraft.app.model.ServerModel;
 import com.remotecraft.app.view.ServerFoundView;
 
@@ -43,7 +44,7 @@ public class ServerFoundPresenter extends BasePresenter<ServerFoundView> {
     getView().showError("Invalid Server");
   }
 
-  private void showValidServerInView(ServerModel serverModel) {
+  private void showValidServerInView(@NonNull ServerModel serverModel) {
     checkViewAttached();
     getView().renderServer(serverModel);
   }

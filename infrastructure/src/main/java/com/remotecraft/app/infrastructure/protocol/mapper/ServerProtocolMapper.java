@@ -12,9 +12,7 @@ public class ServerProtocolMapper {
   }
 
   public ServerEntity transform(ServerProtocol serverProtocol) {
-    if (serverProtocol == null) {
-      return null;
-    }
+    if (serverProtocol == null) return null;
 
     return ServerEntity.builder()
         .ssid(serverProtocol.getSsid())
@@ -30,9 +28,7 @@ public class ServerProtocolMapper {
   }
 
   public ServerProtocol transform(ServerEntity serverEntity) {
-    if (serverEntity == null) {
-      return null;
-    }
+    if (serverEntity == null) return null;
 
     return new ServerProtocol.Builder()
         .ssid(serverEntity.ssid())

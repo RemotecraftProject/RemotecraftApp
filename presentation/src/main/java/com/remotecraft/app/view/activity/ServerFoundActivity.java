@@ -2,9 +2,12 @@ package com.remotecraft.app.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,6 +21,7 @@ import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
 import com.remotecraft.app.presenter.ServerFoundPresenter;
 import com.remotecraft.app.infrastructure.tool.ImageDecoder;
+import com.remotecraft.app.tools.OsIconProvider;
 import com.remotecraft.app.view.ServerFoundView;
 import com.remotecraft.app.view.custom.ServerInfoView;
 import javax.inject.Inject;
@@ -29,10 +33,11 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   @Inject ServerFoundPresenter presenter;
   @Inject ImageLoader imageLoader;
   @Inject ImageDecoder imageDecoder;
+  @Inject OsIconProvider osIconProvider;
   @Inject @PlayerAvatarUrl String playerAvatarUrl;
   @Inject @PlayerAvatarSize int playerAvatarSize;
 
-  @BindView(R.id.server_info) ServerInfoView serverInfoView;
+  @BindView(R.id.view_server_info) ServerInfoView serverInfoView;
 
   public static Intent getCallingIntent(Context context, ServerModel serverModel) {
     Intent intent = new Intent(context, ServerFoundActivity.class);
@@ -71,6 +76,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
 
   private void initUi() {
     if (getSupportActionBar() != null) {
+      getSupportActionBar().setTitle(getString(R.string.server_found_title));
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
   }
@@ -94,17 +100,15 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   }
 
   @Override
-  public void renderServer(ServerModel serverModel) {
-    serverInfoView.renderServer(this, serverModel, imageLoader, imageDecoder, playerAvatarUrl,
-        playerAvatarSize);
-
-    if (getSupportActionBar() != null) {
-      getSupportActionBar().setTitle(getString(R.string.server_found_title));
-    }
+  public void renderServer(@NonNull ServerModel serverModel) {
+    Bitmap worldImage = imageDecoder.decode(serverModel.encodedWorldImage());
+    int osIconResource = osIconProvider.getIconForOs(serverModel.os());
+    serverInfoView.renderServer(this, serverModel, imageLoader, worldImage, playerAvatarUrl,
+        playerAvatarSize, osIconResource);
   }
 
   @Override
-  public void showError(String errorMessage) {
+  public void showError(@NonNull String errorMessage) {
     Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
   }
 
@@ -114,7 +118,7 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
   }
 
   @OnClick(R.id.button_connect)
-  public void onClickAccept(View view) {
+  public void onConnectButtonClick(View view) {
     presenter.onClickAccept();
   }
 }

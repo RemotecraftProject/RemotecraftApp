@@ -8,4 +8,11 @@
     <item name="colorAccent">@color/color_accent</item>
   </style>
 
+  <style name="FabButtonStyle">
+    <item name="fab:fab_size">normal</item>
+    <item name="fab:fab_colorNormal">@color/fab_button_normal</item>
+    <item name="fab:fab_colorPressed">@color/fab_button_pressed</item>
+    <item name="fab:fab_colorRipple">@color/fab_button_ripple</item>
+  </style>
+
 </resources>

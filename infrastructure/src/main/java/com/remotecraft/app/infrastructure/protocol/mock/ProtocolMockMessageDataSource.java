@@ -23,7 +23,6 @@ public class ProtocolMockMessageDataSource {
   public ServerMessage getServerMessage() {
     ServerEntity serverEntity = entityMockDataSource.getServerEntity();
     ServerProtocol serverProtocol = serverProtocolMapper.transform(serverEntity);
-
     return protocolMessageComposer.composeServerMessage(serverProtocol);
   }
 }

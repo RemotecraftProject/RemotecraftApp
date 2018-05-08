@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-    android:id="@+id/coordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.ServerSearchActivity"
-    >
+    tools:context=".view.activity.ServerSearchActivity">
 
   <com.flaviofaria.kenburnsview.KenBurnsView
-      android:id="@+id/background"
+      android:id="@+id/image_background"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:src="@drawable/desert"
       android:scaleType="centerCrop"/>
 
   <View
-      android:id="@+id/dimmer_view"
+      android:id="@+id/view_dimmer"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="#C000"
+      android:background="@color/dim_dark"
       android:alpha="0"
-      android:visibility="gone"
-      />
+      android:visibility="gone"/>
 
   <include
       layout="@layout/floating_action_menu"/>
 
   <com.github.ybq.android.spinkit.SpinKitView
-      android:id="@+id/loading"
+      android:id="@+id/view_loading"
+      style="@style/SpinKitView.Large.Circle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:visibility="gone"
-      app:SpinKit_Color="@color/color_primary_dark"
-      style="@style/SpinKitView.Large.Circle"
-      />
+      app:SpinKit_Color="@color/color_primary_dark"/>
 
   <com.dlazaro66.qrcodereaderview.QRCodeReaderView
-      android:id="@+id/qrCodeReaderView"
+      android:id="@+id/view_qr_reader"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:visibility="gone"/>
 
   <ImageButton
-      android:id="@+id/close_camera_button"
+      android:id="@+id/button_close_camera"
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_gravity="top|start"

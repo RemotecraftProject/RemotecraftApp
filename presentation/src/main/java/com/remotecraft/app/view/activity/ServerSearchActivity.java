@@ -19,7 +19,6 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -43,21 +42,21 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   @Inject ServerSearchPresenter presenter;
   @Inject ImageLoader imageLoader;
 
-  @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
-  @BindView(R.id.background) KenBurnsView background;
-  @BindView(R.id.dimmer_view) View dimmerView;
-  @BindView(R.id.loading) SpinKitView loadingView;
-  @BindView(R.id.menu) FloatingActionMenu floatingActionMenu;
-  @BindView(R.id.fab_wifi) FloatingActionButton floatingActionButtonWifi;
-  @BindView(R.id.fab_qrcode) FloatingActionButton floatingActionButtonQrCode;
-  @BindView(R.id.fab_ip) FloatingActionButton floatingActionButtonIp;
-  @BindView(R.id.close_camera_button) ImageButton closeCameraButton;
-  @BindView(R.id.qrCodeReaderView) QRCodeReaderView qrCodeReaderView;
+  @BindView(R.id.layout_root) CoordinatorLayout rootLayout;
+  @BindView(R.id.view_dimmer) View dimmerView;
+  @BindView(R.id.view_loading) SpinKitView loadingView;
+  @BindView(R.id.view_qr_reader) QRCodeReaderView qrReaderView;
+  @BindView(R.id.button_fab_menu) FloatingActionMenu fabMenuView;
+  @BindView(R.id.button_fab_wifi) FloatingActionButton fabWifiView;
+  @BindView(R.id.button_fab_qr) FloatingActionButton fabQrView;
+  @BindView(R.id.button_fab_ip) FloatingActionButton fabIpView;
+  @BindView(R.id.button_close_camera) ImageButton closeCameraView;
 
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, ServerSearchActivity.class);
   }
 
+  @Deprecated
   public static Intent getCallingIntent(Context context, ServerModel serverModel) {
     Intent intent = new Intent(context, ServerSearchActivity.class);
 
@@ -114,9 +113,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     super.onActivityResult(requestCode, resultCode, data);
 
     boolean isSuccess = resultCode == RESULT_OK;
-    if (!isSuccess) {
-      return;
-    }
+    if (!isSuccess) return;
 
     ServerModel serverModel = data.getExtras().getParcelable(ServerFoundActivity.KEY_SERVER);
     presenter.onNavigationResult(requestCode, isSuccess, serverModel);
@@ -160,7 +157,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
 
   @Override
   public void closeMenu() {
-    floatingActionMenu.close(true);
+    fabMenuView.close(true);
   }
 
   @Override
@@ -175,16 +172,16 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
 
   @Override
   public void startQrScanner() {
-    closeCameraButton.setVisibility(View.VISIBLE);
-    qrCodeReaderView.setVisibility(View.VISIBLE);
-    qrCodeReaderView.startCamera();
+    closeCameraView.setVisibility(View.VISIBLE);
+    qrReaderView.setVisibility(View.VISIBLE);
+    qrReaderView.startCamera();
   }
 
   @Override
   public void stopQrScanner() {
-    qrCodeReaderView.stopCamera();
-    qrCodeReaderView.setVisibility(View.GONE);
-    closeCameraButton.setVisibility(View.GONE);
+    qrReaderView.stopCamera();
+    qrReaderView.setVisibility(View.GONE);
+    closeCameraView.setVisibility(View.GONE);
   }
 
   @Override
@@ -197,8 +194,8 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     enterNetworkAddressDialog.setTitle(R.string.enter_network_address_dialog_title);
     enterNetworkAddressDialog.setPositiveButton(R.string.enter_network_address_dialog_button_accept,
         (dialogInterface, i) -> {
-          EditText ip = (EditText) enterNetworkAddressDialogView.findViewById(R.id.ip);
-          EditText port = (EditText) enterNetworkAddressDialogView.findViewById(R.id.port);
+          EditText ip = enterNetworkAddressDialogView.findViewById(R.id.ip);
+          EditText port = enterNetworkAddressDialogView.findViewById(R.id.port);
           presenter.onEnterNetworkAddress(ip.getText().toString(), port.getText().toString());
         });
     enterNetworkAddressDialog.setNegativeButton(R.string.enter_network_address_dialog_button_cancel,
@@ -207,23 +204,23 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     enterNetworkAddressDialog.show();
   }
 
-  @OnClick(R.id.fab_wifi)
-  public void onClickFabWifi(View view) {
+  @OnClick(R.id.button_fab_wifi)
+  public void onFabWifiButtonClick(View view) {
     presenter.onClickScanWifi();
   }
 
-  @OnClick(R.id.fab_qrcode)
-  public void onClickFabQrCode(View view) {
+  @OnClick(R.id.button_fab_qr)
+  public void onFabQrButtonClick(View view) {
     presenter.onClickScanQrCode();
   }
 
-  @OnClick(R.id.fab_ip)
-  public void onClickFabIp(View view) {
+  @OnClick(R.id.button_fab_ip)
+  public void onFabIpButtonClick(View view) {
     presenter.onClickEnterNetworkAddress();
   }
 
-  @OnClick(R.id.close_camera_button)
-  public void onClickCloseCamera(View view) {
+  @OnClick(R.id.button_close_camera)
+  public void onCloseCameraButtonClick(View view) {
     presenter.onClickCloseCamera();
   }
 
@@ -234,32 +231,33 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
 
     initFabMenuAndButtonColors();
     enableFloatingActionMenuAnimation();
-    floatingActionMenu.setClosedOnTouchOutside(true);
-    floatingActionMenu.setOnMenuToggleListener(this::dimeBackground);
-    dimmerView.setOnClickListener(view -> floatingActionMenu.close(true));
+    fabMenuView.setClosedOnTouchOutside(true);
+    fabMenuView.setOnMenuToggleListener(this::dimeBackground);
+    dimmerView.setOnClickListener(view -> fabMenuView.close(true));
 
     setupQrCodeReader();
   }
 
+  @Deprecated
   private void initFabMenuAndButtonColors() {
-    floatingActionMenu.setMenuButtonColorNormal(getResources().getColor(R.color.fab_menu_normal));
-    floatingActionMenu.setMenuButtonColorPressed(getResources().getColor(R.color.fab_menu_pressed));
-    floatingActionMenu.setMenuButtonColorRipple(getResources().getColor(R.color.fab_menu_ripple));
+    fabMenuView.setMenuButtonColorNormal(getResources().getColor(R.color.fab_menu_normal));
+    fabMenuView.setMenuButtonColorPressed(getResources().getColor(R.color.fab_menu_pressed));
+    fabMenuView.setMenuButtonColorRipple(getResources().getColor(R.color.fab_menu_ripple));
 
     int fabButtonColorNormal = getResources().getColor(R.color.fab_button_normal);
     int fabButtonColorPressed = getResources().getColor(R.color.fab_button_pressed);
     int fabButtonColorRipple = getResources().getColor(R.color.fab_button_ripple);
-    floatingActionButtonIp.setColorNormal(fabButtonColorNormal);
-    floatingActionButtonIp.setColorPressed(fabButtonColorPressed);
-    floatingActionButtonIp.setColorRipple(fabButtonColorRipple);
+    fabIpView.setColorNormal(fabButtonColorNormal);
+    fabIpView.setColorPressed(fabButtonColorPressed);
+    fabIpView.setColorRipple(fabButtonColorRipple);
 
-    floatingActionButtonQrCode.setColorNormal(fabButtonColorNormal);
-    floatingActionButtonQrCode.setColorPressed(fabButtonColorPressed);
-    floatingActionButtonQrCode.setColorRipple(fabButtonColorRipple);
+    fabQrView.setColorNormal(fabButtonColorNormal);
+    fabQrView.setColorPressed(fabButtonColorPressed);
+    fabQrView.setColorRipple(fabButtonColorRipple);
 
-    floatingActionButtonWifi.setColorNormal(fabButtonColorNormal);
-    floatingActionButtonWifi.setColorPressed(fabButtonColorPressed);
-    floatingActionButtonWifi.setColorRipple(fabButtonColorRipple);
+    fabWifiView.setColorNormal(fabButtonColorNormal);
+    fabWifiView.setColorPressed(fabButtonColorPressed);
+    fabWifiView.setColorRipple(fabButtonColorRipple);
   }
 
   private void mapExtras(Intent intent) {
@@ -280,24 +278,24 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   }
 
   private void setupQrCodeReader() {
-    qrCodeReaderView.setQRDecodingEnabled(true);
-    qrCodeReaderView.setAutofocusInterval(2000L);
-    qrCodeReaderView.setBackCamera();
-    qrCodeReaderView.setOnQRCodeReadListener(((text, points) -> presenter.onReadQrCode(text)));
+    qrReaderView.setQRDecodingEnabled(true);
+    qrReaderView.setAutofocusInterval(2000L);
+    qrReaderView.setBackCamera();
+    qrReaderView.setOnQRCodeReadListener(((text, points) -> presenter.onReadQrCode(text)));
   }
 
   private void enableFloatingActionMenuAnimation() {
     AnimatorSet set = new AnimatorSet();
 
     ObjectAnimator scaleOutX =
-        ObjectAnimator.ofFloat(floatingActionMenu.getMenuIconView(), "scaleX", 1.0f, 0.2f);
+        ObjectAnimator.ofFloat(fabMenuView.getMenuIconView(), "scaleX", 1.0f, 0.2f);
     ObjectAnimator scaleOutY =
-        ObjectAnimator.ofFloat(floatingActionMenu.getMenuIconView(), "scaleY", 1.0f, 0.2f);
+        ObjectAnimator.ofFloat(fabMenuView.getMenuIconView(), "scaleY", 1.0f, 0.2f);
 
     ObjectAnimator scaleInX =
-        ObjectAnimator.ofFloat(floatingActionMenu.getMenuIconView(), "scaleX", 0.2f, 1.0f);
+        ObjectAnimator.ofFloat(fabMenuView.getMenuIconView(), "scaleX", 0.2f, 1.0f);
     ObjectAnimator scaleInY =
-        ObjectAnimator.ofFloat(floatingActionMenu.getMenuIconView(), "scaleY", 0.2f, 1.0f);
+        ObjectAnimator.ofFloat(fabMenuView.getMenuIconView(), "scaleY", 0.2f, 1.0f);
 
     scaleOutX.setDuration(50);
     scaleOutY.setDuration(50);
@@ -307,8 +305,8 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
 
     scaleInX.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
-        floatingActionMenu.getMenuIconView()
-            .setImageResource(floatingActionMenu.isOpened() ? R.drawable.ic_magnify_white
+        fabMenuView.getMenuIconView()
+            .setImageResource(fabMenuView.isOpened() ? R.drawable.ic_magnify_white
                 : R.drawable.ic_close_white);
       }
     });
@@ -317,7 +315,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     set.play(scaleInX).with(scaleInY).after(scaleOutX);
     set.setInterpolator(new OvershootInterpolator(2));
 
-    floatingActionMenu.setIconToggleAnimatorSet(set);
+    fabMenuView.setIconToggleAnimatorSet(set);
   }
 
   private void dimeBackground(boolean shouldDime) {
@@ -332,6 +330,6 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   }
 
   private void displayMessage(String message) {
-    Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+    Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show();
   }
 }

@@ -4,6 +4,8 @@
   <color name="color_primary_dark">@color/md_green_700</color>
   <color name="color_accent">@color/md_brown_500</color>
 
+  <color name="dim_dark">#C000</color>
+
   <color name="ripple">#99FFFFFF</color>
 
   <color name="fab_menu_normal">@color/color_primary</color>
