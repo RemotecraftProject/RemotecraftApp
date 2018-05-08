@@ -88,7 +88,8 @@ public class AndroidNotificationManager {
   private void updateNotificationLargeIcon(int id,
       NotificationCompat.Builder notificationCompatBuilder, String largeIconUrl) {
     notificationLargeIconTarget = new Target() {
-      @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+      @Override
+      public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
         notificationCompatBuilder
             .setLargeIcon(bitmap)
             .setDefaults(Notification.DEFAULT_ALL);
@@ -96,11 +97,13 @@ public class AndroidNotificationManager {
         displayNotification(id, notificationCompatBuilder.build());
       }
 
-      @Override public void onBitmapFailed(Drawable errorDrawable) {
+      @Override
+      public void onBitmapFailed(Drawable errorDrawable) {
 
       }
 
-      @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
+      @Override
+      public void onPrepareLoad(Drawable placeHolderDrawable) {
 
       }
     };

@@ -19,7 +19,8 @@ public class RequestPermissionInteractor
     this.permissionActionProvider = permissionActionProvider;
   }
 
-  @Override protected Single<Boolean> buildReactiveStream(Params params) {
+  @Override
+  protected Single<Boolean> buildReactiveStream(Params params) {
     if (params == null) {
       return Single.error(new IllegalArgumentException("Invalid Permission"));
     }

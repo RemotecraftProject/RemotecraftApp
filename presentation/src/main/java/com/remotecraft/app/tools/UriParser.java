@@ -5,7 +5,8 @@ import javax.inject.Inject;
 
 public class UriParser {
 
-  @Inject public UriParser() {
+  @Inject
+  public UriParser() {
 
   }
 

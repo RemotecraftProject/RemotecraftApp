@@ -9,7 +9,8 @@ import javax.inject.Inject;
 
 public class NetworkAddressEntityDataMapper {
 
-  @Inject public NetworkAddressEntityDataMapper() {
+  @Inject
+  public NetworkAddressEntityDataMapper() {
 
   }
 

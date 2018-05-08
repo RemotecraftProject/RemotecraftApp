@@ -6,11 +6,13 @@ import javax.inject.Inject;
 
 public class NetworkInterfaceValidator implements Validator<NetworkInterface> {
 
-  @Inject public NetworkInterfaceValidator() {
+  @Inject
+  public NetworkInterfaceValidator() {
 
   }
 
-  @Override public boolean isValid(NetworkInterface networkInterface) {
+  @Override
+  public boolean isValid(NetworkInterface networkInterface) {
     boolean isValid = false;
 
     try {

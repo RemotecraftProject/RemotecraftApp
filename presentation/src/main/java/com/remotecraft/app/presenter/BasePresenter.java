@@ -7,15 +7,18 @@ public abstract class BasePresenter<V extends BaseView> implements Presenter<V> 
 
   private V view;
 
-  @Override public void attachView(@NonNull V view) {
+  @Override
+  public void attachView(@NonNull V view) {
     this.view = view;
   }
 
-  @Override public void detachView() {
+  @Override
+  public void detachView() {
     this.view = null;
   }
 
-  @Override public @NonNull V getView() {
+  @Override
+  public @NonNull V getView() {
     return view;
   }
 

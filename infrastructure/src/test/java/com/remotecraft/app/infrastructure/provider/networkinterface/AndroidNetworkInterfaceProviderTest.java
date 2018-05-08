@@ -9,15 +9,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class AndroidNetworkInterfaceProviderTest {
+@RunWith(MockitoJUnitRunner.class)
+public class AndroidNetworkInterfaceProviderTest {
 
   private AndroidNetworkInterfaceProvider androidNetworkInterfaceProvider;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     androidNetworkInterfaceProvider = new AndroidNetworkInterfaceProvider();
   }
 
-  @Test public void shouldObtainAValidNetworkInterfaceCollection() throws Exception {
+  @Test
+  public void shouldObtainAValidNetworkInterfaceCollection() throws Exception {
     Collection<NetworkInterface> networkInterfaces =
         androidNetworkInterfaceProvider.getNetworkInterfaces();
 

@@ -18,7 +18,8 @@ public class NetworkDataProvider implements NetworkActionProvider {
   private final ServerEntityDataMapper serverEntityDataMapper;
   private final NetworkAddressEntityDataMapper networkAddressEntityDataMapper;
 
-  @Inject public NetworkDataProvider(ServerSearchManager serverSearchManager,
+  @Inject
+  public NetworkDataProvider(ServerSearchManager serverSearchManager,
       ServerEntityDataMapper serverEntityDataMapper,
       NetworkAddressEntityDataMapper networkAddressEntityDataMapper) {
     this.serverSearchManager = serverSearchManager;
@@ -26,11 +27,13 @@ public class NetworkDataProvider implements NetworkActionProvider {
     this.networkAddressEntityDataMapper = networkAddressEntityDataMapper;
   }
 
-  @Override public Observable<Server> searchServer() {
+  @Override
+  public Observable<Server> searchServer() {
     return serverSearchManager.searchServer().map(serverEntityDataMapper::transform);
   }
 
-  @Override public Observable<Server> searchServer(NetworkAddress networkAddress) {
+  @Override
+  public Observable<Server> searchServer(NetworkAddress networkAddress) {
     NetworkAddressEntity networkAddressEntity =
         networkAddressEntityDataMapper.transformInverse(networkAddress);
     return serverSearchManager.searchServer(networkAddressEntity)

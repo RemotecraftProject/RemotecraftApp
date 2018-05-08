@@ -3,8 +3,10 @@ package com.remotecraft.app.domain;
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
+import io.reactivex.annotations.Nullable;
 
-@AutoValue public abstract class Server {
+@AutoValue
+public abstract class Server {
 
   public abstract String ssid();
   public abstract String ip();
@@ -14,7 +16,7 @@ import com.google.gson.TypeAdapter;
   public abstract String seed();
   public abstract String worldName();
   public abstract String playerName();
-  public abstract String encodedWorldImage();
+  public abstract @Nullable String encodedWorldImage();
 
   public Builder toBuilder() {
     return new AutoValue_Server.Builder();

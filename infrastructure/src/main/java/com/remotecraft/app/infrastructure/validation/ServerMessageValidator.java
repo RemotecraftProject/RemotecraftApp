@@ -15,12 +15,14 @@ public class ServerMessageValidator implements MessageValidator<ServerProtocol> 
 
   }
 
-  @Override public boolean isValid(Message message) {
+  @Override
+  public boolean isValid(Message message) {
     invalidServerData = validate(message);
     return invalidServerData.size() == 0;
   }
 
-  @Override public ServerProtocol cast(Message message) {
+  @Override
+  public ServerProtocol cast(Message message) {
     return message.getServer();
   }
 

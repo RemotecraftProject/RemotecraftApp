@@ -15,15 +15,18 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class NetworkAddressEntityDataMapperTest {
+@RunWith(MockitoJUnitRunner.class)
+public class NetworkAddressEntityDataMapperTest {
 
   private NetworkAddressEntityDataMapper networkAddressEntityDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     networkAddressEntityDataMapper = new NetworkAddressEntityDataMapper();
   }
 
-  @Test public void shouldReturnNullNetworkAddressGivenNullNetworkAddressEntity() throws Exception {
+  @Test
+  public void shouldReturnNullNetworkAddressGivenNullNetworkAddressEntity() throws Exception {
     NetworkAddressEntity networkAddressEntity = null;
 
     NetworkAddress networkAddress = networkAddressEntityDataMapper.transform(networkAddressEntity);
@@ -31,7 +34,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(networkAddress, nullValue());
   }
 
-  @Test public void shouldProperlyMapNetworkAddressEntityIntoNetworkAddress() throws Exception {
+  @Test
+  public void shouldProperlyMapNetworkAddressEntityIntoNetworkAddress() throws Exception {
     NetworkAddressEntity networkAddressEntity = NetworkAddressEntity.builder()
         .ip("192.168.1.1")
         .port(8889)
@@ -46,7 +50,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(networkAddress.port(), is(8889));
   }
 
-  @Test public void shouldProperlyMapNetworkAddressEntityCollectionIntoNetworkAddressCollection()
+  @Test
+  public void shouldProperlyMapNetworkAddressEntityCollectionIntoNetworkAddressCollection()
       throws Exception {
     NetworkAddressEntity networkAddressEntity1 = NetworkAddressEntity.builder()
         .ip("192.168.1.1")
@@ -75,7 +80,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(networkAddress2.port(), is(8890));
   }
 
-  @Test public void shouldReturnNullNetworkAddressEntityGivenNullNetworkAddress() throws Exception {
+  @Test
+  public void shouldReturnNullNetworkAddressEntityGivenNullNetworkAddress() throws Exception {
     NetworkAddress networkAddress = null;
 
     NetworkAddressEntity networkAddressEntity =
@@ -84,7 +90,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(networkAddressEntity, nullValue());
   }
 
-  @Test public void shouldProperlyMapNetworkAddressIntoNetworkAddressEntity() throws Exception {
+  @Test
+  public void shouldProperlyMapNetworkAddressIntoNetworkAddressEntity() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("192.168.24.33")
         .port(9991)
@@ -99,7 +106,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(networkAddressEntity.port(), is(9991));
   }
 
-  @Test public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressEntityCollection()
+  @Test
+  public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressEntityCollection()
       throws Exception {
     NetworkAddress networkAddress1 = NetworkAddress.builder()
         .ip("192.168.24.33")

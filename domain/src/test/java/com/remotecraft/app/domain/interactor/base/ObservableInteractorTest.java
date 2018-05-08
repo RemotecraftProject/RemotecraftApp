@@ -24,7 +24,8 @@ public class ObservableInteractorTest {
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     observableInteractor =
@@ -38,20 +39,23 @@ public class ObservableInteractorTest {
 
   // TODO test non-empty stream
 
-  @Test public void shouldReturnEmptyStream() throws Exception {
+  @Test
+  public void shouldReturnEmptyStream() throws Exception {
     emptyObservableInteractor.execute(testDisposableObserver, null);
 
     assertEquals(0, testDisposableObserver.valuesCount);
   }
 
-  @Test public void shouldProperlyDisposeObserver() throws Exception {
+  @Test
+  public void shouldProperlyDisposeObserver() throws Exception {
     observableInteractor.execute(testDisposableObserver, null);
     observableInteractor.dispose();
 
     assertTrue(testDisposableObserver.isDisposed());
   }
 
-  @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
+  @Test(expected = NullPointerException.class)
+  public void shouldFailWhenNullObserver()
       throws Exception {
     observableInteractor.execute(null, null);
   }
@@ -64,7 +68,8 @@ public class ObservableInteractorTest {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Observable<Integer> buildReactiveStream(EmptyParams params) {
+    @Override
+    protected Observable<Integer> buildReactiveStream(EmptyParams params) {
       return Observable.just(1, 1, 1, 1);
     }
   }
@@ -77,7 +82,8 @@ public class ObservableInteractorTest {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Observable<Integer> buildReactiveStream(EmptyParams params) {
+    @Override
+    protected Observable<Integer> buildReactiveStream(EmptyParams params) {
       return Observable.empty();
     }
   }
@@ -86,15 +92,18 @@ public class ObservableInteractorTest {
 
     private int valuesCount = 0;
 
-    @Override public void onNext(T value) {
+    @Override
+    public void onNext(T value) {
       valuesCount++;
     }
 
-    @Override public void onError(Throwable e) {
+    @Override
+    public void onError(Throwable e) {
 
     }
 
-    @Override public void onComplete() {
+    @Override
+    public void onComplete() {
 
     }
   }

@@ -14,19 +14,22 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(MockitoJUnitRunner.class) public class NotifyServerFoundServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class NotifyServerFoundServiceTest {
 
   private NotifyServerFoundService notifyServerFoundService;
 
   @Mock private NotificationActionProvider mockNotificationActionProvider;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     notifyServerFoundService = new NotifyServerFoundService(mockNotificationActionProvider);
   }
 
-  @Test public void shouldNotifyServerFound() throws Exception {
+  @Test
+  public void shouldNotifyServerFound() throws Exception {
     Server mockServer = mock(Server.class);
 
     notifyServerFoundService.notifyServerFound(mockServer);

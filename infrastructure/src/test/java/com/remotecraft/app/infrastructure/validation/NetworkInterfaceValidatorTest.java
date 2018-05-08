@@ -11,26 +11,30 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class) @PrepareForTest({ NetworkInterface.class })
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({ NetworkInterface.class })
 public class NetworkInterfaceValidatorTest {
 
   private NetworkInterfaceValidator networkInterfaceValidator;
 
   private NetworkInterface mockNetworkInterface;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     networkInterfaceValidator = new NetworkInterfaceValidator();
 
     mockNetworkInterface = PowerMockito.mock(NetworkInterface.class);
   }
 
-  @Test public void shouldEvaluateAsInvalidGivenNullInterface() throws Exception {
+  @Test
+  public void shouldEvaluateAsInvalidGivenNullInterface() throws Exception {
     boolean isValid = networkInterfaceValidator.isValid(null);
 
     assertThat(isValid).isFalse();
   }
 
-  @Test public void shouldEvaluateAsInvalidGivenLoopbackInterface() throws Exception {
+  @Test
+  public void shouldEvaluateAsInvalidGivenLoopbackInterface() throws Exception {
     when(mockNetworkInterface.isLoopback()).thenReturn(true);
 
     boolean isValid = networkInterfaceValidator.isValid(mockNetworkInterface);
@@ -38,7 +42,8 @@ public class NetworkInterfaceValidatorTest {
     assertThat(isValid).isFalse();
   }
 
-  @Test public void shouldEvaluateAsInvalidGivenDownInterface() throws Exception {
+  @Test
+  public void shouldEvaluateAsInvalidGivenDownInterface() throws Exception {
     when(mockNetworkInterface.isLoopback()).thenReturn(false);
     when(mockNetworkInterface.isUp()).thenReturn(false);
 
@@ -47,7 +52,8 @@ public class NetworkInterfaceValidatorTest {
     assertThat(isValid).isFalse();
   }
 
-  @Test public void shouldEvaluateAsValidGivenValidInterface() throws Exception {
+  @Test
+  public void shouldEvaluateAsValidGivenValidInterface() throws Exception {
     when(mockNetworkInterface.isLoopback()).thenReturn(false);
     when(mockNetworkInterface.isUp()).thenReturn(true);
 

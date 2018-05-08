@@ -36,7 +36,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class ServerSearchManagerTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ServerSearchManagerTest {
 
   private ServerSearchManager serverSearchManager;
 
@@ -48,7 +49,8 @@ import static org.mockito.Mockito.when;
   @Mock private ServerProtocolMapper mockServerProtocolMapper;
   @Mock private ServerMessageValidator mockServerMessageValidator;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     NetworkAddressEntity networkAddressEntity = NetworkAddressEntity.builder()
@@ -74,7 +76,8 @@ import static org.mockito.Mockito.when;
             mockServerProtocolMapper, mockServerMessageValidator);
   }
 
-  @Test public void shouldFindServerGivenAValidNetworkResponse() throws Exception {
+  @Test
+  public void shouldFindServerGivenAValidNetworkResponse() throws Exception {
     final ServerProtocol mockServerProtocol = getMockServerProtocol();
     final ServerEntity mockServerEntity = getMockServerEntity();
 
@@ -135,7 +138,8 @@ import static org.mockito.Mockito.when;
     ServerEntity serverEntity = serverEntityObservable.blockingFirst();
   }
 
-  @Test(expected = RuntimeException.class) public void shouldNotFindServerGivenANonServerResponse()
+  @Test(expected = RuntimeException.class)
+  public void shouldNotFindServerGivenANonServerResponse()
       throws Exception {
     final ServerProtocol mockServerProtocol = getMockServerProtocol();
     final ServerEntity mockServerEntity = getMockServerEntity();
@@ -159,7 +163,8 @@ import static org.mockito.Mockito.when;
     ServerEntity serverEntity = serverEntityObservable.blockingFirst();
   }
 
-  @Test public void shouldFindServerForIpAddressGivenAValidNetworkResponse() throws Exception {
+  @Test
+  public void shouldFindServerForIpAddressGivenAValidNetworkResponse() throws Exception {
     final ServerProtocol mockServerProtocol = getMockServerProtocol();
     final ServerEntity mockServerEntity = getMockServerEntity();
 

@@ -23,7 +23,8 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import javax.inject.Singleton;
 
-@Module public class NetworkModule {
+@Module
+public class NetworkModule {
 
   public NetworkModule() {
 

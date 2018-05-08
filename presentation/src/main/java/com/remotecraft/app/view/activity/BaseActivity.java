@@ -15,16 +15,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
   @Inject Navigator navigator;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     initInjector();
   }
 
-  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
   }
 
-  @Override public void setContentView(int layoutResID) {
+  @Override
+  public void setContentView(int layoutResID) {
     super.setContentView(layoutResID);
     bindViews();
   }

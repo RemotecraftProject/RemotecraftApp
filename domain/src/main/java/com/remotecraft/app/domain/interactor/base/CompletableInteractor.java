@@ -24,7 +24,8 @@ public abstract class CompletableInteractor<P extends BaseParams>
 
   protected abstract Completable buildReactiveStream(P params);
 
-  @Override public void execute(DisposableCompletableObserver observer, P params) {
+  @Override
+  public void execute(DisposableCompletableObserver observer, P params) {
     buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
@@ -33,7 +34,8 @@ public abstract class CompletableInteractor<P extends BaseParams>
     disposables.add(observer);
   }
 
-  @Override public void dispose() {
+  @Override
+  public void dispose() {
     disposables.clear();
   }
 }

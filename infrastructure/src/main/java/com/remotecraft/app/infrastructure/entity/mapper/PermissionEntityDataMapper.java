@@ -9,7 +9,8 @@ import javax.inject.Inject;
 
 public class PermissionEntityDataMapper {
 
-  @Inject public PermissionEntityDataMapper() {
+  @Inject
+  public PermissionEntityDataMapper() {
 
   }
 

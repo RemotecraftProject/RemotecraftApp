@@ -4,11 +4,13 @@ import io.reactivex.observers.DisposableCompletableObserver;
 
 public class DefaultCompletableObserver extends DisposableCompletableObserver {
 
-  @Override public void onComplete() {
+  @Override
+  public void onComplete() {
 
   }
 
-  @Override public void onError(Throwable e) {
+  @Override
+  public void onError(Throwable e) {
 
   }
 }

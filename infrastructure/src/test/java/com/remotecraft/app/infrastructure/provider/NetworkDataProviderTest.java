@@ -23,7 +23,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class NetworkDataProviderTest {
+@RunWith(MockitoJUnitRunner.class)
+public class NetworkDataProviderTest {
 
   private NetworkActionProvider networkActionProvider;
 
@@ -31,14 +32,16 @@ import static org.mockito.Mockito.when;
   @Mock private ServerEntityDataMapper mockServerEntityDataMapper;
   @Mock private NetworkAddressEntityDataMapper mockNetworkAddressEntityDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     networkActionProvider = new NetworkDataProvider(mockServerSearchManager, mockServerEntityDataMapper,
         mockNetworkAddressEntityDataMapper);
   }
 
-  @Test public void shouldReturnValidServer() throws Exception {
+  @Test
+  public void shouldReturnValidServer() throws Exception {
     ServerEntity serverEntity = getServerEntity();
     Server server = getServer();
     Observable<ServerEntity> observable = Observable.create(subscriber -> {
@@ -59,7 +62,8 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
-  @Test public void shouldNotReturnAnyServer() throws Exception {
+  @Test
+  public void shouldNotReturnAnyServer() throws Exception {
     when(mockServerSearchManager.searchServer()).thenReturn(Observable.never());
 
     Observable<Server> serverObservable = networkActionProvider.searchServer();
@@ -72,7 +76,8 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager);
   }
 
-  @Test public void shouldReturnServerForAGivenNetworkAddress() throws Exception {
+  @Test
+  public void shouldReturnServerForAGivenNetworkAddress() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("192.168.1.1")
         .port(9998)
@@ -103,7 +108,8 @@ import static org.mockito.Mockito.when;
     verifyNoMoreInteractions(mockServerSearchManager, mockServerEntityDataMapper);
   }
 
-  @Test public void shouldNotReturnAnyServerForACertainNetworkAddress() throws Exception {
+  @Test
+  public void shouldNotReturnAnyServerForACertainNetworkAddress() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("192.168.1.435")
         .port(9998)

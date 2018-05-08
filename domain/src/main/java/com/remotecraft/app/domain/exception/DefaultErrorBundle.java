@@ -10,11 +10,13 @@ public class DefaultErrorBundle implements ErrorBundle {
     this.exception = exception;
   }
 
-  @Override public Exception getException() {
+  @Override
+  public Exception getException() {
     return exception;
   }
 
-  @Override public String getErrorMessage() {
+  @Override
+  public String getErrorMessage() {
     return exception != null ? exception.getMessage() : DEFAULT_ERROR_MESSAGE;
   }
 }

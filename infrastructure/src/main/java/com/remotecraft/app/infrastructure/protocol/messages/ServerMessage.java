@@ -12,7 +12,8 @@ public class ServerMessage extends Message {
     this.serverProtocol = builder.serverProtocol;
   }
 
-  @Override public boolean isServer() {
+  @Override
+  public boolean isServer() {
     return true;
   }
 

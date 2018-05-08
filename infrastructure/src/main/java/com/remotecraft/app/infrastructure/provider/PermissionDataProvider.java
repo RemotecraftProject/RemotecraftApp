@@ -32,20 +32,23 @@ public class PermissionDataProvider implements PermissionActionProvider {
   private final PermissionChecker permissionChecker;
   private final PermissionEntityDataMapper permissionEntityDataMapper;
 
-  @Inject public PermissionDataProvider(AndroidPermissionChecker androidPermissionChecker,
+  @Inject
+  public PermissionDataProvider(AndroidPermissionChecker androidPermissionChecker,
       PermissionEntityDataMapper permissionEntityDataMapper) {
     this.permissionChecker = androidPermissionChecker;
     this.permissionEntityDataMapper = permissionEntityDataMapper;
   }
 
-  @Override public Single<Boolean> isGranted(Permission permission) {
+  @Override
+  public Single<Boolean> isGranted(Permission permission) {
     PermissionEntity permissionEntity = permissionEntityDataMapper.transformInverse(permission);
 
     return Single.just(permissionChecker.checkSelfPermission(context, permissionEntity))
         .map(permissionChecker::isGranted);
   }
 
-  @Override public Single<Boolean> request(Permission permission) {
+  @Override
+  public Single<Boolean> request(Permission permission) {
     PermissionEntity permissionEntity = permissionEntityDataMapper.transformInverse(permission);
 
     return Observable.<Boolean>create(emitter -> {
@@ -81,22 +84,27 @@ public class PermissionDataProvider implements PermissionActionProvider {
   private PermissionListener getPermissionRequestListener(PermissionEntity permissionEntity,
       ObservableEmitter<Boolean> emitter) {
     return new PermissionListener() {
-      @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+      @Override
+      public void onPermissionGranted(PermissionGrantedResponse response) {
         emitter.onNext(true);
       }
 
-      @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+      @Override
+      public void onPermissionDenied(PermissionDeniedResponse response) {
         emitter.onNext(false);
       }
 
-      @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+      @Override
+      public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
           PermissionToken token) {
         new PermissionRationaleDialog(activity, permissionEntity, new RationaleResponse() {
-          @Override public void continuePermissionRequest() {
+          @Override
+          public void continuePermissionRequest() {
             token.continuePermissionRequest();
           }
 
-          @Override public void cancelPermissionRequest() {
+          @Override
+          public void cancelPermissionRequest() {
             token.cancelPermissionRequest();
           }
         }).show();

@@ -8,9 +8,11 @@ import com.remotecraft.app.model.NetworkAddressModel;
 import java.util.Collection;
 import javax.inject.Inject;
 
-@PerActivity public class NetworkAddressModelDataMapper {
+@PerActivity
+public class NetworkAddressModelDataMapper {
 
-  @Inject public NetworkAddressModelDataMapper() {
+  @Inject
+  public NetworkAddressModelDataMapper() {
 
   }
 

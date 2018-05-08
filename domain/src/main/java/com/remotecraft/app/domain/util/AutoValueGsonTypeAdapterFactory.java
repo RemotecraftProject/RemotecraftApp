@@ -12,7 +12,8 @@ public class AutoValueGsonTypeAdapterFactory implements TypeAdapterFactory {
 
   }
 
-  @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+  @Override
+  public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
     Class<? super T> rawType = type.getRawType();
 
     if (rawType.equals(Server.class)) {

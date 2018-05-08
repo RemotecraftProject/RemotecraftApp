@@ -10,11 +10,13 @@ public class GsonSerializer implements JsonSerializer {
     this.gson = gson;
   }
 
-  @Override public <T> T fromJson(String json, Class<T> targetClass) {
+  @Override
+  public <T> T fromJson(String json, Class<T> targetClass) {
     return gson.fromJson(json, targetClass);
   }
 
-  @Override public String toJson(Object object) {
+  @Override
+  public String toJson(Object object) {
     return gson.toJson(object);
   }
 }

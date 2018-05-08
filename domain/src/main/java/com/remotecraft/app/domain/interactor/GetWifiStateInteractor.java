@@ -17,7 +17,8 @@ public class GetWifiStateInteractor extends MaybeInteractor<Integer, EmptyParams
     this.receiverActionProvider = receiverActionProvider;
   }
 
-  @Override protected Maybe<Integer> buildReactiveStream(EmptyParams params) {
+  @Override
+  protected Maybe<Integer> buildReactiveStream(EmptyParams params) {
     return receiverActionProvider.getWifiState();
   }
 }

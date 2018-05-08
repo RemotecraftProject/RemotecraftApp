@@ -16,20 +16,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(MockitoJUnitRunner.class) public class NetworkDatagramTransmitterTest {
+@RunWith(MockitoJUnitRunner.class)
+public class NetworkDatagramTransmitterTest {
 
   private NetworkDatagramTransmitter networkDatagramTransmitter;
 
   @Mock private DatagramSocket mockDatagramSocket;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     networkDatagramTransmitter =
         new NetworkDatagramTransmitter(mockDatagramSocket);
   }
 
-  @Test public void shouldNotBeReadyGivenANullDatagramSocket() throws Exception {
+  @Test
+  public void shouldNotBeReadyGivenANullDatagramSocket() throws Exception {
     NetworkDatagramTransmitter networkDatagramTransmitterWithNullDatagramSocket =
         new NetworkDatagramTransmitter(null);
     boolean isReady = networkDatagramTransmitterWithNullDatagramSocket.isReady();
@@ -37,27 +40,31 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
     assertThat(isReady).isFalse();
   }
 
-  @Test public void shouldBeReadyGivenANonNullDatagramSocket() throws Exception {
+  @Test
+  public void shouldBeReadyGivenANonNullDatagramSocket() throws Exception {
     boolean isReady = networkDatagramTransmitter.isReady();
 
     assertThat(isReady).isTrue();
   }
 
-  @Test public void shouldSetBroadcastProperly() throws Exception {
+  @Test
+  public void shouldSetBroadcastProperly() throws Exception {
     networkDatagramTransmitter.setBroadcast(true);
 
     verify(mockDatagramSocket, times(1)).setBroadcast(true);
     verifyNoMoreInteractions(mockDatagramSocket);
   }
 
-  @Test public void shouldProperlySetTimeout() throws Exception {
+  @Test
+  public void shouldProperlySetTimeout() throws Exception {
     networkDatagramTransmitter.setTimeout(60);
 
     verify(mockDatagramSocket, times(1)).setSoTimeout(60);
     verifyNoMoreInteractions(mockDatagramSocket);
   }
 
-  @Test public void shouldProperlySendDatagramPacket() throws Exception {
+  @Test
+  public void shouldProperlySendDatagramPacket() throws Exception {
     String packetValue = "something";
     NetworkPacket networkPacket = new NetworkPacket(packetValue);
     networkDatagramTransmitter.send(networkPacket);
@@ -66,7 +73,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
     verifyNoMoreInteractions(mockDatagramSocket);
   }
 
-  @Test public void shouldProperlyReceiveDatagramPacket() throws Exception {
+  @Test
+  public void shouldProperlyReceiveDatagramPacket() throws Exception {
     String packetValue = "something";
     NetworkPacket networkPacket = new NetworkPacket(packetValue);
     networkDatagramTransmitter.receive(networkPacket);

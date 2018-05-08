@@ -44,7 +44,8 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     return intent;
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_server_found);
 
@@ -53,7 +54,8 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     mapExtras();
   }
 
-  @Override protected void onDestroy() {
+  @Override
+  protected void onDestroy() {
     super.onDestroy();
     presenter.detachView();
   }
@@ -80,7 +82,8 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     }
   }
 
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
         presenter.onClickCancel();
@@ -90,7 +93,8 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     }
   }
 
-  @Override public void renderServer(ServerModel serverModel) {
+  @Override
+  public void renderServer(ServerModel serverModel) {
     serverInfoView.renderServer(this, serverModel, imageLoader, imageDecoder, playerAvatarUrl,
         playerAvatarSize);
 
@@ -99,15 +103,18 @@ public class ServerFoundActivity extends BaseActivity implements ServerFoundView
     }
   }
 
-  @Override public void showError(String errorMessage) {
+  @Override
+  public void showError(String errorMessage) {
     Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
   }
 
-  @Override public void navigateBack(boolean isSuccess, ServerModel serverModel) {
+  @Override
+  public void navigateBack(boolean isSuccess, ServerModel serverModel) {
     navigator.finishActivity(this, isSuccess, KEY_SERVER, serverModel);
   }
 
-  @OnClick(R.id.button_connect) public void onClickAccept(View view) {
+  @OnClick(R.id.button_connect)
+  public void onClickAccept(View view) {
     presenter.onClickAccept();
   }
 }

@@ -19,7 +19,8 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module public class ToolsModule {
+@Module
+public class ToolsModule {
 
   public ToolsModule() {
 

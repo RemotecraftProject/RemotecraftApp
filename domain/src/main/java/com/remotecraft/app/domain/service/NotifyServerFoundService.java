@@ -8,7 +8,8 @@ public class NotifyServerFoundService implements DomainService {
 
   private final NotificationActionProvider notificationActionProvider;
 
-  @Inject public NotifyServerFoundService(NotificationActionProvider notificationActionProvider) {
+  @Inject
+  public NotifyServerFoundService(NotificationActionProvider notificationActionProvider) {
     this.notificationActionProvider = notificationActionProvider;
   }
 

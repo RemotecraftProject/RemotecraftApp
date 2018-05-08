@@ -25,7 +25,8 @@ public abstract class ObservableInteractor<T, P extends BaseParams>
   protected abstract Observable<T> buildReactiveStream(P params);
 
   @SuppressWarnings("unchecked")
-  @Override public void execute(DisposableObserver observer, P params) {
+  @Override
+  public void execute(DisposableObserver observer, P params) {
     buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
@@ -34,7 +35,8 @@ public abstract class ObservableInteractor<T, P extends BaseParams>
     disposables.add(observer);
   }
 
-  @Override public void dispose() {
+  @Override
+  public void dispose() {
     disposables.clear();
   }
 }

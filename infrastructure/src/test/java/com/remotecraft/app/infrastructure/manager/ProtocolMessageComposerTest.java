@@ -14,17 +14,20 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class ProtocolMessageComposerTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ProtocolMessageComposerTest {
 
   private ProtocolMessageComposer protocolMessageComposer;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     protocolMessageComposer = new ProtocolMessageComposer();
   }
 
-  @Test public void shouldReturnValidCommandMessage() throws Exception {
+  @Test
+  public void shouldReturnValidCommandMessage() throws Exception {
     CommandMessage getServerInfoCommand = protocolMessageComposer.composeGetServerInfoCommand();
 
     assertThat(getServerInfoCommand, notNullValue());

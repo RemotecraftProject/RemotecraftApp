@@ -11,7 +11,8 @@ public class SplashActivity extends BaseActivity {
 
   private static final int TIMEOUT_IN_SECONDS = 3;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash);
 

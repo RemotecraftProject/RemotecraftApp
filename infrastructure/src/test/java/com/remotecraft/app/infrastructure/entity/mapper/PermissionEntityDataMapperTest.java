@@ -15,15 +15,18 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class PermissionEntityDataMapperTest {
+@RunWith(MockitoJUnitRunner.class)
+public class PermissionEntityDataMapperTest {
 
   private PermissionEntityDataMapper permissionEntityDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     permissionEntityDataMapper = new PermissionEntityDataMapper();
   }
 
-  @Test public void shouldReturnNullValueGivenANullPermissionEntity() throws Exception {
+  @Test
+  public void shouldReturnNullValueGivenANullPermissionEntity() throws Exception {
     PermissionEntity permissionEntity = null;
 
     Permission permission = permissionEntityDataMapper.transform(permissionEntity);
@@ -31,7 +34,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(permission, nullValue());
   }
 
-  @Test public void shouldProperlyMapPermissionEntityIntoPermission() throws Exception {
+  @Test
+  public void shouldProperlyMapPermissionEntityIntoPermission() throws Exception {
     PermissionEntity permissionCameraEntity = new PermissionEntity.Builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
@@ -54,7 +58,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
         is("You must allow this permission in order for this feature to work"));
   }
 
-  @Test public void shouldProperlyMapPermissionEntityCollectionIntoPermissionCollection()
+  @Test
+  public void shouldProperlyMapPermissionEntityCollectionIntoPermissionCollection()
       throws Exception {
     PermissionEntity cameraPermissionEntity = new PermissionEntity.Builder()
         .permission("CAMERA")
@@ -84,7 +89,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(permission2.permission(), is("CONTACTS"));
   }
 
-  @Test public void shouldReturnNullValueGivenANullPermission() throws Exception {
+  @Test
+  public void shouldReturnNullValueGivenANullPermission() throws Exception {
     Permission permission = null;
 
     PermissionEntity permissionEntity = permissionEntityDataMapper.transformInverse(permission);
@@ -92,7 +98,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
     assertThat(permissionEntity, nullValue());
   }
 
-  @Test public void shouldProperlyMapPermissionIntoPermissionEntity() throws Exception {
+  @Test
+  public void shouldProperlyMapPermissionIntoPermissionEntity() throws Exception {
     Permission permissionCamera = Permission.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
@@ -116,7 +123,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
         is("You must allow this permission in order for this feature to work"));
   }
 
-  @Test public void shouldProperlyMapPermissionCollectionIntoPermissionEntityCollection()
+  @Test
+  public void shouldProperlyMapPermissionCollectionIntoPermissionEntityCollection()
       throws Exception {
     Permission cameraPermission = Permission.builder()
         .permission("CAMERA")

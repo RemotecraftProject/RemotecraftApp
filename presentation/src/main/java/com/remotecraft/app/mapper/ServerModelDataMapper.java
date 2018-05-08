@@ -8,9 +8,11 @@ import com.remotecraft.app.model.ServerModel;
 import java.util.Collection;
 import javax.inject.Inject;
 
-@PerActivity public class ServerModelDataMapper {
+@PerActivity
+public class ServerModelDataMapper {
 
-  @Inject public ServerModelDataMapper() {
+  @Inject
+  public ServerModelDataMapper() {
 
   }
 

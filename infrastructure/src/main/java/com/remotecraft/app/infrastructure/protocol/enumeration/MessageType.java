@@ -12,7 +12,8 @@ public enum MessageType {
     this.messageType = messageType;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return messageType;
   }
 }

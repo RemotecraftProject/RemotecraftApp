@@ -2,7 +2,8 @@ package com.remotecraft.app.domain;
 
 import com.google.auto.value.AutoValue;
 
-@AutoValue public abstract class NetworkAddress {
+@AutoValue
+public abstract class NetworkAddress {
 
   public abstract String ip();
   public abstract int port();

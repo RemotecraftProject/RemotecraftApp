@@ -13,19 +13,23 @@ public class PicassoImageLoader implements ImageLoader {
     this.picasso = picasso;
   }
 
-  @Override public void load(String url, ImageView imageView) {
+  @Override
+  public void load(String url, ImageView imageView) {
     picasso.load(url).into(imageView);
   }
 
-  @Override public void load(File file, ImageView imageView) {
+  @Override
+  public void load(File file, ImageView imageView) {
     picasso.load(file).into(imageView);
   }
 
-  @Override public void load(int resource, ImageView imageView) {
+  @Override
+  public void load(int resource, ImageView imageView) {
     picasso.load(resource).into(imageView);
   }
 
-  @Override public void load(String url, Target target) {
+  @Override
+  public void load(String url, Target target) {
     picasso.load(url).into(target);
   }
 }

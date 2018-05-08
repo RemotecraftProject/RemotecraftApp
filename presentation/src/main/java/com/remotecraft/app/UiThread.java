@@ -14,7 +14,8 @@ public class UiThread implements PostExecutionThread {
 
   }
 
-  @Override public Scheduler getScheduler() {
+  @Override
+  public Scheduler getScheduler() {
     return AndroidSchedulers.mainThread();
   }
 }

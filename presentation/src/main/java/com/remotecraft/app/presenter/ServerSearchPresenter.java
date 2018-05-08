@@ -285,7 +285,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   }
 
   private final class SearchServerObserver extends DefaultObservableObserver<Server> {
-    @Override public void onNext(Server server) {
+    @Override
+    public void onNext(Server server) {
       isScanningWifi = false;
       Timber.d("Received Server: %s", server.worldName());
 
@@ -298,7 +299,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
       getView().navigateToServerDetail(serverModel);
     }
 
-    @Override public void onError(Throwable e) {
+    @Override
+    public void onError(Throwable e) {
       isScanningWifi = false;
 
       if (!isViewAttached()) {
@@ -310,7 +312,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   }
 
   private final class IsPermissionGrantedObserver extends DefaultSingleObserver<Boolean> {
-    @Override public void onSuccess(Boolean granted) {
+    @Override
+    public void onSuccess(Boolean granted) {
       if (!isViewAttached()) {
         return;
       }
@@ -322,7 +325,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
       }
     }
 
-    @Override public void onError(Throwable e) {
+    @Override
+    public void onError(Throwable e) {
       if (!isViewAttached()) {
         return;
       }
@@ -332,7 +336,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   }
 
   private final class RequestPermissionObserver extends DefaultSingleObserver<Boolean> {
-    @Override public void onSuccess(Boolean granted) {
+    @Override
+    public void onSuccess(Boolean granted) {
       if (!isViewAttached()) {
         return;
       }
@@ -345,7 +350,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
       }
     }
 
-    @Override public void onError(Throwable e) {
+    @Override
+    public void onError(Throwable e) {
       if (!isViewAttached()) {
         return;
       }

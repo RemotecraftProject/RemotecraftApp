@@ -21,21 +21,24 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class PermissionDataProviderTest {
+@RunWith(MockitoJUnitRunner.class)
+public class PermissionDataProviderTest {
 
   private PermissionActionProvider permissionActionProvider;
 
   @Mock private AndroidPermissionChecker mockAndroidPermissionChecker;
   @Mock private PermissionEntityDataMapper mockPermissionEntityDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     permissionActionProvider =
         new PermissionDataProvider(mockAndroidPermissionChecker, mockPermissionEntityDataMapper);
   }
 
-  @Test public void shouldNotifyPermissionIsGrantedWhenItsActuallyGranted() throws Exception {
+  @Test
+  public void shouldNotifyPermissionIsGrantedWhenItsActuallyGranted() throws Exception {
     Permission permission = getPermission();
     PermissionEntity permissionEntity = getPermissionEntity();
     when(mockPermissionEntityDataMapper.transformInverse(permission)).thenReturn(permissionEntity);
@@ -54,7 +57,8 @@ import static org.mockito.Mockito.when;
     assertThat(streamValues.get(0)).isTrue();
   }
 
-  @Test public void shouldNotifyPermissionNotGrantedWhenItsActuallyNotGranted() throws Exception {
+  @Test
+  public void shouldNotifyPermissionNotGrantedWhenItsActuallyNotGranted() throws Exception {
     Permission permission = getPermission();
     PermissionEntity permissionEntity = getPermissionEntity();
     when(mockPermissionEntityDataMapper.transformInverse(permission)).thenReturn(permissionEntity);

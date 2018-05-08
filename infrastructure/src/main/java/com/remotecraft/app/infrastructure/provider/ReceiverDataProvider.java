@@ -9,11 +9,13 @@ public class ReceiverDataProvider implements ReceiverActionProvider {
 
   @Inject Context context;
 
-  @Inject public ReceiverDataProvider() {
+  @Inject
+  public ReceiverDataProvider() {
 
   }
 
-  @Override public Maybe<Integer> getWifiState() {
+  @Override
+  public Maybe<Integer> getWifiState() {
     // TODO wait until RxReceivers library updates to RxJava 2
     //return RxWifiManager.wifiStateChanges(context);
     return Maybe.empty();

@@ -20,15 +20,18 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class ErrorMessageFactoryTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ErrorMessageFactoryTest {
 
   @Mock private Context context;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
   }
 
-  @Test public void shouldReturnDefaultErrorMessageGivenDifferentExceptionWithoutMessage()
+  @Test
+  public void shouldReturnDefaultErrorMessageGivenDifferentExceptionWithoutMessage()
       throws Exception {
     when(context.getString(R.string.exception_generic)).thenReturn("Unknown error.");
     RuntimeException runtimeException = new RuntimeException("");
@@ -40,7 +43,8 @@ import static org.mockito.Mockito.when;
     assertThat(errorMessage, is("Unknown error."));
   }
 
-  @Test public void shouldReturnSameErrorMessageAsDifferentExceptionGiven() throws Exception {
+  @Test
+  public void shouldReturnSameErrorMessageAsDifferentExceptionGiven() throws Exception {
     RuntimeException runtimeException = new RuntimeException("This cannot possibly happen.");
 
     String errorMessage = ErrorMessageFactory.create(context, runtimeException);
@@ -49,7 +53,8 @@ import static org.mockito.Mockito.when;
     assertThat(errorMessage, is("This cannot possibly happen."));
   }
 
-  @Test public void shouldReturnDefaultErrorMessageForNoInternetConnectionException()
+  @Test
+  public void shouldReturnDefaultErrorMessageForNoInternetConnectionException()
       throws Exception {
     when(context.getString(R.string.exception_no_internet_connection)).thenReturn(
         "No Internet Connection Default Error Message");
@@ -63,7 +68,8 @@ import static org.mockito.Mockito.when;
     assertThat(errorMessage, is("No Internet Connection Default Error Message"));
   }
 
-  @Test public void shouldReturnDefaultErrorMessageForNoResponseException() throws Exception {
+  @Test
+  public void shouldReturnDefaultErrorMessageForNoResponseException() throws Exception {
     when(context.getString(R.string.exception_no_response)).thenReturn(
         "No Response Default Error Message");
     NoResponseException noResponseException = new NoResponseException();
@@ -75,7 +81,8 @@ import static org.mockito.Mockito.when;
     assertThat(errorMessage, is("No Response Default Error Message"));
   }
 
-  @Test public void shouldReturnDefaultErrorMessageForInvalidServerException() throws Exception {
+  @Test
+  public void shouldReturnDefaultErrorMessageForInvalidServerException() throws Exception {
     when(context.getString(R.string.exception_invalid_server)).thenReturn(
         "Invalid Server Default Error Message");
     InvalidServerException invalidServerException = new InvalidServerException();

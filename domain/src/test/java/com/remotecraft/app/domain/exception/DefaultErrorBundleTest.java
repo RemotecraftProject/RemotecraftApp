@@ -8,7 +8,8 @@ public class DefaultErrorBundleTest {
 
   private DefaultErrorBundle defaultErrorBundle;
 
-  @Test public void shouldReturnNullExceptionGivenANullException() throws Exception {
+  @Test
+  public void shouldReturnNullExceptionGivenANullException() throws Exception {
     DefaultErrorBundle defaultErrorBundle = new DefaultErrorBundle(null);
 
     Exception exception = defaultErrorBundle.getException();
@@ -16,7 +17,8 @@ public class DefaultErrorBundleTest {
     assertThat(exception).isNull();
   }
 
-  @Test public void shouldReturnTheRightException() throws Exception {
+  @Test
+  public void shouldReturnTheRightException() throws Exception {
     RuntimeException runtimeException = new RuntimeException();
     DefaultErrorBundle defaultErrorBundle = new DefaultErrorBundle(runtimeException);
 
@@ -26,7 +28,8 @@ public class DefaultErrorBundleTest {
     assertThat(exception).isInstanceOf(RuntimeException.class);
   }
 
-  @Test public void shouldReturnTheRightErrorMessageForAGivenException() throws Exception {
+  @Test
+  public void shouldReturnTheRightErrorMessageForAGivenException() throws Exception {
     NullPointerException nullPointerException = new NullPointerException("This cannot be null!");
     DefaultErrorBundle defaultErrorBundle = new DefaultErrorBundle(nullPointerException);
 
@@ -37,7 +40,8 @@ public class DefaultErrorBundleTest {
     assertThat(errorMessage).isEqualTo("This cannot be null!");
   }
 
-  @Test public void shouldReturnNullErrorMessageForAnExceptionWithoutMessage() throws Exception {
+  @Test
+  public void shouldReturnNullErrorMessageForAnExceptionWithoutMessage() throws Exception {
     NullPointerException nullPointerException = new NullPointerException();
     DefaultErrorBundle defaultErrorBundle = new DefaultErrorBundle(nullPointerException);
 
@@ -46,7 +50,8 @@ public class DefaultErrorBundleTest {
     assertThat(errorMessage).isNullOrEmpty();
   }
 
-  @Test public void shouldReturnDefaultErrorMessageGivenANullException() throws Exception {
+  @Test
+  public void shouldReturnDefaultErrorMessageGivenANullException() throws Exception {
     DefaultErrorBundle defaultErrorBundle = new DefaultErrorBundle(null);
 
     String errorMessage = defaultErrorBundle.getErrorMessage();

@@ -8,9 +8,11 @@ import com.remotecraft.app.model.PermissionModel;
 import java.util.Collection;
 import javax.inject.Inject;
 
-@PerActivity public class PermissionModelDataMapper {
+@PerActivity
+public class PermissionModelDataMapper {
 
-  @Inject public PermissionModelDataMapper() {
+  @Inject
+  public PermissionModelDataMapper() {
 
   }
 

@@ -2,7 +2,8 @@ package com.remotecraft.app.infrastructure.entity;
 
 import com.google.auto.value.AutoValue;
 
-@AutoValue public abstract class NetworkAddressEntity {
+@AutoValue
+public abstract class NetworkAddressEntity {
 
   public abstract String ip();
   public abstract int port();

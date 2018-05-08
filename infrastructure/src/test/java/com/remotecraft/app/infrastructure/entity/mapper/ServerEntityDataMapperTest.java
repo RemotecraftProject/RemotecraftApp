@@ -13,21 +13,25 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-@RunWith(MockitoJUnitRunner.class) public class ServerEntityDataMapperTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ServerEntityDataMapperTest {
 
   private ServerEntityDataMapper serverEntityDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     serverEntityDataMapper = new ServerEntityDataMapper();
   }
 
-  @Test public void shouldReturnNullValueGivenANullServerEntity() throws Exception {
+  @Test
+  public void shouldReturnNullValueGivenANullServerEntity() throws Exception {
     Server server = serverEntityDataMapper.transform(null);
 
     assertThat(server, nullValue());
   }
 
-  @Test public void shouldProperlyMapServerEntityIntoServer() throws Exception {
+  @Test
+  public void shouldProperlyMapServerEntityIntoServer() throws Exception {
     ServerEntity serverEntity = ServerEntity.builder()
         .ssid("WLAN_CCQ4")
         .ip("127.0.0.1")

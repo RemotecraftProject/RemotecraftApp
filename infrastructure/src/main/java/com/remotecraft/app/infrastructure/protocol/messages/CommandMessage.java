@@ -12,7 +12,8 @@ public class CommandMessage extends Message {
     this.commandProtocol = builder.commandProtocol;
   }
 
-  @Override public boolean isCommand() {
+  @Override
+  public boolean isCommand() {
     return true;
   }
 

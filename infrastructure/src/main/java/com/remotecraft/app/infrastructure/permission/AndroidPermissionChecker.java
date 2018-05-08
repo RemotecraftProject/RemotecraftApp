@@ -8,15 +8,18 @@ import javax.inject.Inject;
 
 public class AndroidPermissionChecker implements PermissionChecker {
 
-  @Inject public AndroidPermissionChecker() {
+  @Inject
+  public AndroidPermissionChecker() {
 
   }
 
-  @Override public int checkSelfPermission(Context context, PermissionEntity permissionEntity) {
+  @Override
+  public int checkSelfPermission(Context context, PermissionEntity permissionEntity) {
     return ContextCompat.checkSelfPermission(context, permissionEntity.getPermission());
   }
 
-  @Override public boolean isGranted(int checkedSelfPermission) {
+  @Override
+  public boolean isGranted(int checkedSelfPermission) {
     return checkedSelfPermission == PackageManager.PERMISSION_GRANTED;
   }
 }

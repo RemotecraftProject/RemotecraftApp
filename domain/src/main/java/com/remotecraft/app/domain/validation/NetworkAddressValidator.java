@@ -6,11 +6,13 @@ import org.apache.commons.validator.routines.InetAddressValidator;
 
 public class NetworkAddressValidator implements Validator<NetworkAddress> {
 
-  @Inject public NetworkAddressValidator() {
+  @Inject
+  public NetworkAddressValidator() {
 
   }
 
-  @Override public boolean isValid(NetworkAddress networkAddress) {
+  @Override
+  public boolean isValid(NetworkAddress networkAddress) {
     if (networkAddress == null) {
       return false;
     }

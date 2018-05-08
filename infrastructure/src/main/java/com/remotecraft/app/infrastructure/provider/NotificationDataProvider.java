@@ -12,13 +12,15 @@ public class NotificationDataProvider implements NotificationActionProvider {
   private final AndroidNotificationManager androidNotificationManager;
   private final ServerEntityDataMapper serverEntityDataMapper;
 
-  @Inject public NotificationDataProvider(AndroidNotificationManager androidNotificationManager,
+  @Inject
+  public NotificationDataProvider(AndroidNotificationManager androidNotificationManager,
       ServerEntityDataMapper serverEntityDataMapper) {
     this.androidNotificationManager = androidNotificationManager;
     this.serverEntityDataMapper = serverEntityDataMapper;
   }
 
-  @Override public void notifyServerFound(Server server) {
+  @Override
+  public void notifyServerFound(Server server) {
     ServerEntity serverEntity = serverEntityDataMapper.transformInverse(server);
     androidNotificationManager.notifyServerFound(serverEntity);
   }

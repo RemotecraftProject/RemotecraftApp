@@ -43,7 +43,8 @@ public class ContinuableSnackbarOnDeniedPermissionListener extends BasePermissio
     this.duration = duration;
   }
 
-  @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+  @Override
+  public void onPermissionDenied(PermissionDeniedResponse response) {
     super.onPermissionDenied(response);
 
     Snackbar snackbar = Snackbar.make(rootView, text, duration);
@@ -56,7 +57,8 @@ public class ContinuableSnackbarOnDeniedPermissionListener extends BasePermissio
     snackbar.show();
   }
 
-  @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+  @Override
+  public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
       PermissionToken token) {
     // do nothing
   }
@@ -114,7 +116,8 @@ public class ContinuableSnackbarOnDeniedPermissionListener extends BasePermissio
         String buttonText) {
       this.buttonText = buttonText;
       this.onClickListener = new View.OnClickListener() {
-        @Override public void onClick(View v) {
+        @Override
+        public void onClick(View v) {
           Context context = rootView.getContext();
           Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
               Uri.parse("package:" + context.getPackageName()));

@@ -16,7 +16,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class RequestPermissionInteractorTest {
+@RunWith(MockitoJUnitRunner.class)
+  public class RequestPermissionInteractorTest {
 
   private RequestPermissionInteractor requestPermissionInteractor;
 
@@ -24,7 +25,8 @@ import static org.mockito.Mockito.when;
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     requestPermissionInteractor =
@@ -32,7 +34,8 @@ import static org.mockito.Mockito.when;
             mockPostExecutionThread);
   }
 
-  @Test public void shouldReturnErrorGivenNullPermission() throws Exception {
+  @Test
+  public void shouldReturnErrorGivenNullPermission() throws Exception {
     Single<Boolean> reactiveStream = requestPermissionInteractor.buildReactiveStream(null);
 
     assertThat(reactiveStream).isNotNull();
@@ -42,7 +45,8 @@ import static org.mockito.Mockito.when;
     testObserver.assertNotComplete();
   }
 
-  @Test public void shouldConfirmGrantedPermissionWhenUserConfirms() throws Exception {
+  @Test
+  public void shouldConfirmGrantedPermissionWhenUserConfirms() throws Exception {
     Permission permission = getPermission();
     RequestPermissionInteractor.Params params =
         RequestPermissionInteractor.Params.forPermission(permission);
@@ -57,7 +61,8 @@ import static org.mockito.Mockito.when;
     testObserver.assertComplete();
   }
 
-  @Test public void shouldNotConfirmPermissionWhenUserDoesNotConfirm() throws Exception {
+  @Test
+  public void shouldNotConfirmPermissionWhenUserDoesNotConfirm() throws Exception {
     Permission permission = getPermission();
     RequestPermissionInteractor.Params params =
         RequestPermissionInteractor.Params.forPermission(permission);

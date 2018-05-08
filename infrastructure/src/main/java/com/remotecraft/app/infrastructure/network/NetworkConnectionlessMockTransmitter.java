@@ -17,23 +17,28 @@ public class NetworkConnectionlessMockTransmitter implements NetworkConnectionle
     this.jsonSerializer = jsonSerializer;
   }
 
-  @Override public boolean isReady() {
+  @Override
+  public boolean isReady() {
     return true;
   }
 
-  @Override public void setBroadcast(boolean isBroadcast) throws SocketException {
+  @Override
+  public void setBroadcast(boolean isBroadcast) throws SocketException {
 
   }
 
-  @Override public void setTimeout(int timeout) throws SocketException {
+  @Override
+  public void setTimeout(int timeout) throws SocketException {
 
   }
 
-  @Override public void send(NetworkPacket networkPacket) throws IOException {
+  @Override
+  public void send(NetworkPacket networkPacket) throws IOException {
 
   }
 
-  @Override public NetworkPacket receive(NetworkPacket networkPacket) throws IOException {
+  @Override
+  public NetworkPacket receive(NetworkPacket networkPacket) throws IOException {
     ServerMessage mockServerMessageResponse = protocolMockMessageDataSource.getServerMessage();
     String mockServerMessageResponseJson = jsonSerializer.toJson(mockServerMessageResponse);
 

@@ -6,7 +6,8 @@ import javax.inject.Inject;
 
 public class ServerEntityDataMapper {
 
-  @Inject public ServerEntityDataMapper() {
+  @Inject
+  public ServerEntityDataMapper() {
 
   }
 

@@ -14,11 +14,13 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class NetworkAddressModelDataMapperTest {
+@RunWith(MockitoJUnitRunner.class)
+public class NetworkAddressModelDataMapperTest {
 
   private NetworkAddressModelDataMapper networkAddressModelDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     networkAddressModelDataMapper = new NetworkAddressModelDataMapper();
   }
 
@@ -29,7 +31,8 @@ import static org.junit.Assert.assertThat;
     networkAddressModelDataMapper.transform(networkAddress);
   }
 
-  @Test public void shouldProperlyMapNetworkAddressIntoNetworkAddressModel() throws Exception {
+  @Test
+  public void shouldProperlyMapNetworkAddressIntoNetworkAddressModel() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("192.168.1.45")
         .port(9999)
@@ -45,7 +48,8 @@ import static org.junit.Assert.assertThat;
     assertThat(networkAddressModel.port(), is(9999));
   }
 
-  @Test public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressModelCollection()
+  @Test
+  public void shouldProperlyMapNetworkAddressCollectionIntoNetworkAddressModelCollection()
       throws Exception {
     NetworkAddress networkAddress1 = NetworkAddress.builder()
         .ip("192.168.1.45")
@@ -87,7 +91,8 @@ import static org.junit.Assert.assertThat;
     networkAddressModelDataMapper.transformInverse(networkAddressModel);
   }
 
-  @Test public void shouldProperlyMapNetworkAddressModelIntoNetworkAddress() throws Exception {
+  @Test
+  public void shouldProperlyMapNetworkAddressModelIntoNetworkAddress() throws Exception {
     NetworkAddressModel networkAddressModel = NetworkAddressModel.builder()
         .ip("192.168.1.45")
         .port(9999)
@@ -103,7 +108,8 @@ import static org.junit.Assert.assertThat;
     assertThat(networkAddress.port(), is(9999));
   }
 
-  @Test public void shouldProperlyMapNetworkAddressModelCollectionIntoNetworkAddressCollection()
+  @Test
+  public void shouldProperlyMapNetworkAddressModelCollectionIntoNetworkAddressCollection()
       throws Exception {
     NetworkAddressModel networkAddressModel1 = NetworkAddressModel.builder()
         .ip("192.168.1.45")

@@ -2,9 +2,11 @@ package com.remotecraft.app.model;
 
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 
-@AutoValue public abstract class ServerModel implements Parcelable {
+@AutoValue
+public abstract class ServerModel implements Parcelable {
 
   public abstract @NonNull String ssid();
   public abstract @NonNull String ip();
@@ -14,7 +16,7 @@ import com.google.auto.value.AutoValue;
   public abstract @NonNull String seed();
   public abstract @NonNull String worldName();
   public abstract @NonNull String playerName();
-  public abstract @NonNull String encodedWorldImage();
+  public abstract @Nullable String encodedWorldImage();
 
   public @NonNull Builder toBuilder() {
     return new AutoValue_ServerModel.Builder();
@@ -34,7 +36,7 @@ import com.google.auto.value.AutoValue;
     public abstract @NonNull Builder seed(@NonNull String seed);
     public abstract @NonNull Builder worldName(@NonNull String worldName);
     public abstract @NonNull Builder playerName(@NonNull String playerName);
-    public abstract @NonNull Builder encodedWorldImage(@NonNull String encodedWorldImage);
+    public abstract @Nullable Builder encodedWorldImage(@Nullable String encodedWorldImage);
     public abstract @NonNull ServerModel build();
   }
 }

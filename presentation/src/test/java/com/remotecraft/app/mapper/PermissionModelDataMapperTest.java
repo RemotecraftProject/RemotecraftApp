@@ -14,11 +14,13 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class PermissionModelDataMapperTest {
+@RunWith(MockitoJUnitRunner.class)
+public class PermissionModelDataMapperTest {
 
   private PermissionModelDataMapper permissionModelDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     permissionModelDataMapper = new PermissionModelDataMapper();
   }
 
@@ -29,7 +31,8 @@ import static org.junit.Assert.assertThat;
     permissionModelDataMapper.transform(permission);
   }
 
-  @Test public void shouldProperlyMapPermissionIntoPermissionModel() throws Exception {
+  @Test
+  public void shouldProperlyMapPermissionIntoPermissionModel() throws Exception {
     Permission permission = Permission.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
@@ -51,7 +54,8 @@ import static org.junit.Assert.assertThat;
     assertThat(permissionModel.deniedMessage(), is("Allow it!"));
   }
 
-  @Test public void shouldProperlyMapPermissionCollectionIntoPermissionModelCollection()
+  @Test
+  public void shouldProperlyMapPermissionCollectionIntoPermissionModelCollection()
       throws Exception {
     Permission permission1 = Permission.builder()
         .permission("CAMERA")
@@ -92,7 +96,8 @@ import static org.junit.Assert.assertThat;
     permissionModelDataMapper.transformInverse(permissionModel);
   }
 
-  @Test public void shouldProperlyMapPermissionModelIntoPermission() throws Exception {
+  @Test
+  public void shouldProperlyMapPermissionModelIntoPermission() throws Exception {
     PermissionModel permissionModel = PermissionModel.builder()
         .permission("CAMERA")
         .rationaleTitle("Permission Request")
@@ -114,7 +119,8 @@ import static org.junit.Assert.assertThat;
     assertThat(permission.deniedMessage(), is("Allow it!"));
   }
 
-  @Test public void shouldProperlyMapPermissionModelCollectionIntoPermissionCollection()
+  @Test
+  public void shouldProperlyMapPermissionModelCollectionIntoPermissionCollection()
       throws Exception {
     PermissionModel permissionModel1 = PermissionModel.builder()
         .permission("CAMERA")

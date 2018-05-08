@@ -1,8 +1,10 @@
 package com.remotecraft.app.infrastructure.entity;
 
+import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 
-@AutoValue public abstract class ServerEntity {
+@AutoValue
+public abstract class ServerEntity {
 
   public abstract String ssid();
   public abstract String ip();
@@ -12,10 +14,10 @@ import com.google.auto.value.AutoValue;
   public abstract String seed();
   public abstract String worldName();
   public abstract String playerName();
-  public abstract String encodedWorldImage();
+  public abstract @Nullable String encodedWorldImage();
 
   public Builder toBuilder() {
-    return new AutoValue_ServerEntity.Builder(                     );
+    return new AutoValue_ServerEntity.Builder();
   }
 
   public static Builder builder() {

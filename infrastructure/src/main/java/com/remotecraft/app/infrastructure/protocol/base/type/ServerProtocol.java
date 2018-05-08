@@ -1,5 +1,6 @@
 package com.remotecraft.app.infrastructure.protocol.base.type;
 
+import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 public class ServerProtocol {
@@ -12,7 +13,7 @@ public class ServerProtocol {
   @SerializedName("seed") private String seed;
   @SerializedName("world_name") private String worldName;
   @SerializedName("player_name") private String playerName;
-  @SerializedName("encoded_world_image") private String encodedWorldImage;
+  @SerializedName("encoded_world_image") private @Nullable String encodedWorldImage;
 
   private ServerProtocol(Builder builder) {
     this.ssid = builder.ssid;

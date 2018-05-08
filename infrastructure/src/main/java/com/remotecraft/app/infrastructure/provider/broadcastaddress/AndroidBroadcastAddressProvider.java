@@ -21,7 +21,8 @@ public class AndroidBroadcastAddressProvider implements BroadcastAddressProvider
     this.networkInterfaceValidator = networkInterfaceValidator;
   }
 
-  @Override public Collection<InetAddress> getBroadcastAddresses() throws SocketException {
+  @Override
+  public Collection<InetAddress> getBroadcastAddresses() throws SocketException {
     return Stream.of(networkInterfaceProvider.getNetworkInterfaces())
         .filter(networkInterfaceValidator::isValid)
         .map(NetworkInterface::getInterfaceAddresses)

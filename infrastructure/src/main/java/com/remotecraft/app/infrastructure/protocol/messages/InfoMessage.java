@@ -12,7 +12,8 @@ public class InfoMessage extends Message {
     this.infoProtocol = builder.infoProtocol;
   }
 
-  @Override public boolean isInfo() {
+  @Override
+  public boolean isInfo() {
     return true;
   }
 

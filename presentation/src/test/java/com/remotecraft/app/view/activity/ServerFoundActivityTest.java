@@ -53,7 +53,8 @@ public class ServerFoundActivityTest {
   private int mockPlayerAvatarSize = 100;
 
   private ServerFoundComponent serverFoundComponent = new ServerFoundComponent() {
-    @Override public void injectMembers(ServerFoundActivity instance) {
+    @Override
+    public void injectMembers(ServerFoundActivity instance) {
       instance.navigator = mockNavigator;
       instance.presenter = mockServerFoundPresenter;
       instance.imageLoader = mockImageLoader;
@@ -63,7 +64,8 @@ public class ServerFoundActivityTest {
     }
   };
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     when(mockBuilder.build()).thenReturn(serverFoundComponent);
@@ -74,7 +76,8 @@ public class ServerFoundActivityTest {
     ButterKnife.bind(serverFoundActivity);
   }
 
-  @Test public void shouldCreateValidCallingIntent() throws Exception {
+  @Test
+  public void shouldCreateValidCallingIntent() throws Exception {
     Context mockContext = mock(Context.class);
     ServerModel serverModel = getServerModel();
 
@@ -92,7 +95,8 @@ public class ServerFoundActivityTest {
     assertThat(actualServerModel.ip(), is("192.168.15.47"));
   }
 
-  @Test public void shouldProperlyAttachViewToPresenterWhenCreatingActivity() throws Exception {
+  @Test
+  public void shouldProperlyAttachViewToPresenterWhenCreatingActivity() throws Exception {
     ServerFoundActivity serverFoundActivityNotCreated =
         Robolectric.buildActivity(ServerFoundActivity.class).get();
 
@@ -101,7 +105,8 @@ public class ServerFoundActivityTest {
     verify(mockServerFoundPresenter, times(1)).attachView(serverFoundActivityNotCreated);
   }
 
-  @Test public void shouldPassServerModelToPresenterWhenGiven() throws Exception {
+  @Test
+  public void shouldPassServerModelToPresenterWhenGiven() throws Exception {
     Context mockContext = mock(Context.class);
     ServerModel serverModel = getServerModel();
 
@@ -114,7 +119,8 @@ public class ServerFoundActivityTest {
     verify(mockServerFoundPresenter, times(1)).setServer(any(ServerModel.class));
   }
 
-  @Test public void shouldNotPassServerModelToPresenterWhenNotGiven() throws Exception {
+  @Test
+  public void shouldNotPassServerModelToPresenterWhenNotGiven() throws Exception {
     Context mockContext = mock(Context.class);
 
     ServerFoundActivity serverFoundActivityWithoutServerModel =
@@ -123,7 +129,8 @@ public class ServerFoundActivityTest {
     verify(mockServerFoundPresenter, never()).setServer(any(ServerModel.class));
   }
 
-  @Test public void shouldCancelActivityWhenHomeButtonPressed() throws Exception {
+  @Test
+  public void shouldCancelActivityWhenHomeButtonPressed() throws Exception {
     MenuItem mockMenuItem = mock(MenuItem.class);
     when(mockMenuItem.getItemId()).thenReturn(android.R.id.home);
 
@@ -132,7 +139,8 @@ public class ServerFoundActivityTest {
     verify(mockServerFoundPresenter, times(1)).onClickCancel();
   }
 
-  @Test public void shouldNotCancelActivityWhenHomeButtonNotPressed() throws Exception {
+  @Test
+  public void shouldNotCancelActivityWhenHomeButtonNotPressed() throws Exception {
     MenuItem mockMenuItem = mock(MenuItem.class);
     when(mockMenuItem.getItemId()).thenReturn(-1);
 
@@ -141,7 +149,8 @@ public class ServerFoundActivityTest {
     verify(mockServerFoundPresenter, never()).onClickCancel();
   }
 
-  @Test public void shouldRenderServer() throws Exception {
+  @Test
+  public void shouldRenderServer() throws Exception {
     ServerModel serverModel = getServerModel();
 
     serverFoundActivity.renderServer(serverModel);
@@ -150,7 +159,8 @@ public class ServerFoundActivityTest {
     assertThat(serverFoundActivity.getSupportActionBar().getTitle(), is("Server found"));
   }
 
-  @Test public void shouldDisplayError() throws Exception {
+  @Test
+  public void shouldDisplayError() throws Exception {
     serverFoundActivity.showError("Something came up");
 
     Toast latestToast = ShadowToast.getLatestToast();
@@ -161,14 +171,16 @@ public class ServerFoundActivityTest {
     assertThat(textOfLatestToast, is("Something came up"));
   }
 
-  @Test public void shouldNavigateBack() throws Exception {
+  @Test
+  public void shouldNavigateBack() throws Exception {
     ServerModel serverModel = getServerModel();
     serverFoundActivity.navigateBack(true, serverModel);
 
     verify(mockNavigator).finishActivity(serverFoundActivity, true, "server", serverModel);
   }
 
-  @Test public void shouldNotifyPresenterWhenClickAccept() throws Exception {
+  @Test
+  public void shouldNotifyPresenterWhenClickAccept() throws Exception {
     serverFoundActivity.onClickAccept(null);
 
     verify(mockServerFoundPresenter).onClickAccept();

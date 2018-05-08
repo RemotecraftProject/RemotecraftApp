@@ -7,9 +7,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class CommandTypeTest {
+@RunWith(MockitoJUnitRunner.class)
+public class CommandTypeTest {
 
-  @Test public void shouldGetValidCommandType() throws Exception {
+  @Test
+  public void shouldGetValidCommandType() throws Exception {
     String getWorldInfoString = CommandType.GET_SERVER_INFO.toString();
 
     assertThat(getWorldInfoString).isNotNull();

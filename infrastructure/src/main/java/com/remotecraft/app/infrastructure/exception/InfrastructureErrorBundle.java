@@ -10,11 +10,13 @@ public class InfrastructureErrorBundle implements ErrorBundle {
     this.exception = exception;
   }
 
-  @Override public Exception getException() {
+  @Override
+  public Exception getException() {
     return exception;
   }
 
-  @Override public String getErrorMessage() {
+  @Override
+  public String getErrorMessage() {
     String errorMessage = "";
     if (exception != null && exception.getMessage() != null) {
       errorMessage = exception.getMessage();

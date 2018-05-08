@@ -33,7 +33,8 @@ public class SearchServerInteractor
     this.networkAddressValidator = networkAddressValidator;
   }
 
-  @Override protected Observable<Server> buildReactiveStream(Params params) {
+  @Override
+  protected Observable<Server> buildReactiveStream(Params params) {
     if (params == null) {
       return Observable.error(new IllegalArgumentException("Params must be provided"));
     }
@@ -48,7 +49,8 @@ public class SearchServerInteractor
   }
 
   @SuppressWarnings("unchecked")
-  @Override public void execute(DisposableObserver observer, Params params) {
+  @Override
+  public void execute(DisposableObserver observer, Params params) {
     Observable searchServerObservable = buildReactiveStream(params)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler());
@@ -63,7 +65,8 @@ public class SearchServerInteractor
     disposables.add(presentationObserver);
   }
 
-  @Override public void dispose() {
+  @Override
+  public void dispose() {
     if (presentationObserver != null && !presentationObserver.isDisposed()) {
       disposables.remove(presentationObserver);
     }
@@ -82,11 +85,13 @@ public class SearchServerInteractor
   }
 
   private final class SearchServerDomainObserver extends DefaultObservableObserver<Server> {
-    @Override public void onNext(Server server) {
+    @Override
+    public void onNext(Server server) {
       processFoundServer(server);
     }
 
-    @Override public void onComplete() {
+    @Override
+    public void onComplete() {
       disposables.remove(domainObserver);
     }
   }

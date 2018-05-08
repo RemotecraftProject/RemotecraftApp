@@ -4,7 +4,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.google.auto.value.AutoValue;
 
-@AutoValue public abstract class PermissionModel implements Parcelable {
+@AutoValue
+public abstract class PermissionModel implements Parcelable {
 
   public abstract @NonNull String permission();
   public abstract @NonNull String rationaleTitle();

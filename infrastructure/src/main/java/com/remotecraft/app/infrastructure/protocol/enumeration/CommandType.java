@@ -9,7 +9,8 @@ public enum CommandType {
     this.command = command;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return command;
   }
 }

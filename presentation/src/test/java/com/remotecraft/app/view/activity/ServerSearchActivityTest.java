@@ -50,14 +50,16 @@ public class ServerSearchActivityTest {
   @Mock private ImageLoader mockImageLoader;
 
   private ServerSearchComponent serverSearchComponent = new ServerSearchComponent() {
-    @Override public void injectMembers(ServerSearchActivity instance) {
+    @Override
+    public void injectMembers(ServerSearchActivity instance) {
       instance.navigator = mockNavigator;
       instance.presenter = mockServerSearchPresenter;
       instance.imageLoader = mockImageLoader;
     }
   };
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     when(mockBuilder.build()).thenReturn(serverSearchComponent);
@@ -70,25 +72,29 @@ public class ServerSearchActivityTest {
     ButterKnife.bind(serverSearchActivity);
   }
 
-  @Test public void shouldResumePresenter() throws Exception {
+  @Test
+  public void shouldResumePresenter() throws Exception {
     serverSearchActivity.onResume();
 
     verify(mockServerSearchPresenter, atLeastOnce()).resume();
   }
 
-  @Test public void shouldPausePresenter() throws Exception {
+  @Test
+  public void shouldPausePresenter() throws Exception {
     serverSearchActivity.onPause();
 
     verify(mockServerSearchPresenter).pause();
   }
 
-  @Test public void shouldDestroyPresenter() throws Exception {
+  @Test
+  public void shouldDestroyPresenter() throws Exception {
     serverSearchActivity.onDestroy();
 
     verify(mockServerSearchPresenter).destroy();
   }
 
-  @Test public void shouldProcessActivityResult() throws Exception {
+  @Test
+  public void shouldProcessActivityResult() throws Exception {
     Intent mockIntent = mock(Intent.class);
     Bundle mockBundle = mock(Bundle.class);
     ServerModel mockServerModel = mock(ServerModel.class);
@@ -102,7 +108,8 @@ public class ServerSearchActivityTest {
     verify(mockServerSearchPresenter).onNavigationResult(12345, true, mockServerModel);
   }
 
-  @Test public void shouldNavigateToServerDetail() throws Exception {
+  @Test
+  public void shouldNavigateToServerDetail() throws Exception {
     ServerModel mockServerModel = mock(ServerModel.class);
 
     serverSearchActivity.navigateToServerDetail(mockServerModel);
@@ -110,57 +117,66 @@ public class ServerSearchActivityTest {
     verify(mockNavigator).navigateToServerFoundActivity(serverSearchActivity, mockServerModel);
   }
 
-  @Test public void shouldCloseFabMenu() throws Exception {
+  @Test
+  public void shouldCloseFabMenu() throws Exception {
     serverSearchActivity.closeMenu();
 
     assertThat(serverSearchActivity.floatingActionMenu.isOpened(), is(false));
   }
 
-  @Test public void shouldShowLoading() throws Exception {
+  @Test
+  public void shouldShowLoading() throws Exception {
     serverSearchActivity.showLoading();
 
     assertThat(serverSearchActivity.loadingView.getVisibility(), is(View.VISIBLE));
   }
 
-  @Test public void shouldHideLoading() throws Exception {
+  @Test
+  public void shouldHideLoading() throws Exception {
     serverSearchActivity.hideLoading();
 
     assertThat(serverSearchActivity.loadingView.getVisibility(), is(View.GONE));
   }
 
-  @Test public void shouldStartQrScanner() throws Exception {
+  @Test
+  public void shouldStartQrScanner() throws Exception {
     serverSearchActivity.startQrScanner();
 
     assertThat(serverSearchActivity.closeCameraButton.getVisibility(), is(View.VISIBLE));
     assertThat(serverSearchActivity.qrCodeReaderView.getVisibility(), is(View.VISIBLE));
   }
 
-  @Test public void shouldStopQrScanner() throws Exception {
+  @Test
+  public void shouldStopQrScanner() throws Exception {
     serverSearchActivity.stopQrScanner();
 
     assertThat(serverSearchActivity.qrCodeReaderView.getVisibility(), is(View.GONE));
     assertThat(serverSearchActivity.closeCameraButton.getVisibility(), is(View.GONE));
   }
 
-  @Test public void shouldDelegateClickFabWifiToPresenter() throws Exception {
+  @Test
+  public void shouldDelegateClickFabWifiToPresenter() throws Exception {
     serverSearchActivity.onClickFabWifi(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickScanWifi();
   }
 
-  @Test public void shouldDelegateClickFabQrCodeToPresenter() throws Exception {
+  @Test
+  public void shouldDelegateClickFabQrCodeToPresenter() throws Exception {
     serverSearchActivity.onClickFabQrCode(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickScanQrCode();
   }
 
-  @Test public void shouldDelegateClickFabIpToPresenter() throws Exception {
+  @Test
+  public void shouldDelegateClickFabIpToPresenter() throws Exception {
     serverSearchActivity.onClickFabIp(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickEnterNetworkAddress();
   }
 
-  @Test public void shouldDelegateClickCloseCameraToPresenter() throws Exception {
+  @Test
+  public void shouldDelegateClickCloseCameraToPresenter() throws Exception {
     serverSearchActivity.onClickCloseCamera(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickCloseCamera();

@@ -17,7 +17,8 @@ public class ServerDeserializer implements JsonDeserializer<Server> {
     this.autoValueGsonTypeAdapterFactory = autoValueGsonTypeAdapterFactory;
   }
 
-  @Override public Server deserialize(String serializedServer) {
+  @Override
+  public Server deserialize(String serializedServer) {
     Gson gson = gsonBuilder
         .registerTypeAdapterFactory(autoValueGsonTypeAdapterFactory)
         .create();

@@ -17,19 +17,22 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class InfrastructureErrorBundleTest {
+@RunWith(MockitoJUnitRunner.class)
+public class InfrastructureErrorBundleTest {
 
   private InfrastructureErrorBundle infrastructureErrorBundle;
 
   @Mock private Exception mockException;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     infrastructureErrorBundle = new InfrastructureErrorBundle(mockException);
   }
 
-  @Test public void shouldReturnTheRightException() throws Exception {
+  @Test
+  public void shouldReturnTheRightException() throws Exception {
     Exception exception = infrastructureErrorBundle.getException();
 
     assertThat(exception, notNullValue());
@@ -37,7 +40,8 @@ import static org.mockito.Mockito.when;
     assertThat(exception, is(mockException));
   }
 
-  @Test public void shouldReturnTheRightMessageForTheGivenException() throws Exception {
+  @Test
+  public void shouldReturnTheRightMessageForTheGivenException() throws Exception {
     when(mockException.getMessage()).thenReturn("Error message!!");
 
     String errorMessage = infrastructureErrorBundle.getErrorMessage();
@@ -49,7 +53,8 @@ import static org.mockito.Mockito.when;
     assertThat(errorMessage, is("Error message!!"));
   }
 
-  @Test public void shouldReturnNullExceptionGivenANullException() throws Exception {
+  @Test
+  public void shouldReturnNullExceptionGivenANullException() throws Exception {
     InfrastructureErrorBundle infrastructureErrorBundleWithNullException =
         new InfrastructureErrorBundle(null);
     Exception exception = infrastructureErrorBundleWithNullException.getException();
@@ -57,7 +62,8 @@ import static org.mockito.Mockito.when;
     assertThat(exception, nullValue());
   }
 
-  @Test public void shouldReturnEmptyErrorMessageGivenANullException() throws Exception {
+  @Test
+  public void shouldReturnEmptyErrorMessageGivenANullException() throws Exception {
     InfrastructureErrorBundle infrastructureErrorBundleWithNullException =
         new InfrastructureErrorBundle(null);
     String errorMessage = infrastructureErrorBundleWithNullException.getErrorMessage();
@@ -65,7 +71,8 @@ import static org.mockito.Mockito.when;
     assertThat(errorMessage, is(""));
   }
 
-  @Test public void shouldReturnEmptyErrorMessageGivenAnExceptionWithoutMessage() throws Exception {
+  @Test
+  public void shouldReturnEmptyErrorMessageGivenAnExceptionWithoutMessage() throws Exception {
     InfrastructureErrorBundle infrastructureErrorBundle =
         new InfrastructureErrorBundle(new NoInternetConnectionException());
     String errorMessage = infrastructureErrorBundle.getErrorMessage();

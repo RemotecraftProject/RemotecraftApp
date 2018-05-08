@@ -16,12 +16,12 @@ import timber.log.Timber;
 
 public class RemotecraftApp extends Application implements HasActivitySubcomponentBuilders {
 
-  @Inject
-  Map<Class<? extends Activity>, ActivityComponentBuilder> activityComponentBuilders;
+  @Inject Map<Class<? extends Activity>, ActivityComponentBuilder> activityComponentBuilders;
   private ApplicationComponent applicationComponent;
   private ActivityTracker activityTracker;
 
-  @Override public void onCreate() {
+  @Override
+  public void onCreate() {
     super.onCreate();
 
     this.initLogger();
@@ -33,7 +33,8 @@ public class RemotecraftApp extends Application implements HasActivitySubcompone
     return (HasActivitySubcomponentBuilders) context.getApplicationContext();
   }
 
-  @Override public ActivityComponentBuilder getActivityComponentBuilder(
+  @Override
+  public ActivityComponentBuilder getActivityComponentBuilder(
       Class<? extends Activity> activityClass) {
     return activityComponentBuilders.get(activityClass);
   }

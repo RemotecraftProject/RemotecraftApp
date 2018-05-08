@@ -29,7 +29,8 @@ public class FloatingActionMenuBehavior extends CoordinatorLayout.Behavior {
     super();
   }
 
-  @Override public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
+  @Override
+  public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
     return dependency instanceof Snackbar.SnackbarLayout;
   }
 
@@ -77,13 +78,15 @@ public class FloatingActionMenuBehavior extends CoordinatorLayout.Behavior {
   /**
    * onStartNestedScroll and onNestedScroll will hide/show the FabMenu when a scroll is detected.
    */
-  @Override public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View child,
+  @Override
+  public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View child,
       View directTargetChild, View target, int nestedScrollAxes) {
     return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL || super.onStartNestedScroll(
         coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
   }
 
-  @Override public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target,
+  @Override
+  public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target,
       int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
     super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed,
         dyUnconsumed);

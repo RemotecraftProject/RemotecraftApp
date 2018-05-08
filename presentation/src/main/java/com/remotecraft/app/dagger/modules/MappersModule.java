@@ -6,7 +6,8 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module public class MappersModule {
+@Module
+public class MappersModule {
 
   public MappersModule() {
 

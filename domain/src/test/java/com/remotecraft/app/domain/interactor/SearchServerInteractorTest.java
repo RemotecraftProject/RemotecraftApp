@@ -31,14 +31,16 @@ public class SearchServerInteractorTest {
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     searchServerInteractor =
         new SearchServerInteractor(searchServerService, notifyServerFoundService,
             mockNetworkAddressValidator, mockThreadExecutor, mockPostExecutionThread);
   }
 
-  @Test public void shouldBuildReactiveStreamForEmptyParams() throws Exception {
+  @Test
+  public void shouldBuildReactiveStreamForEmptyParams() throws Exception {
     SearchServerInteractor.Params emptyParams = SearchServerInteractor.Params.empty();
 
     searchServerInteractor.buildReactiveStream(emptyParams);
@@ -49,7 +51,8 @@ public class SearchServerInteractorTest {
     verifyZeroInteractions(mockPostExecutionThread);
   }
 
-  @Test public void shouldBuildReactiveStreamForValidNetworkAddress() throws Exception {
+  @Test
+  public void shouldBuildReactiveStreamForValidNetworkAddress() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("192.168.1.44")
         .port(9998)
@@ -64,14 +67,16 @@ public class SearchServerInteractorTest {
     verifyNoMoreInteractions(searchServerService);
   }
 
-  @Test public void shouldNotBuildReactiveStreamGivenNullParams() throws Exception {
+  @Test
+  public void shouldNotBuildReactiveStreamGivenNullParams() throws Exception {
     Observable<Server> serverObservable = searchServerInteractor.buildReactiveStream(null);
 
     TestObserver<Server> testObserver = serverObservable.test();
     testObserver.assertErrorMessage("Params must be provided");
   }
 
-  @Test public void shouldNotBuildReactiveStreamForInvalidNetworkAddress() throws Exception {
+  @Test
+  public void shouldNotBuildReactiveStreamForInvalidNetworkAddress() throws Exception {
     NetworkAddress networkAddress = NetworkAddress.builder()
         .ip("")
         .port(-1)
@@ -87,7 +92,8 @@ public class SearchServerInteractorTest {
     verifyZeroInteractions(searchServerService);
   }
 
-  @Test public void shoulNotReturnInvalidReactiveStreamWhenValidWorldFound() throws Exception {
+  @Test
+  public void shoulNotReturnInvalidReactiveStreamWhenValidWorldFound() throws Exception {
     SearchServerInteractor.Params emptyParams = SearchServerInteractor.Params.empty();
     when(searchServerService.searchServer()).thenReturn(getValidWorldReactiveStream());
 
@@ -96,7 +102,8 @@ public class SearchServerInteractorTest {
     assertThat(reactiveStream).isNotNull();
   }
 
-  @Test public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
+  @Test
+  public void shouldNotReturnInvalidReactiveStreamWhenNoWorldFound() throws Exception {
     SearchServerInteractor.Params emptyParams = SearchServerInteractor.Params.empty();
     when(searchServerService.searchServer()).thenReturn(Observable.empty());
 
@@ -105,7 +112,8 @@ public class SearchServerInteractorTest {
     assertThat(reactiveStream).isNotNull();
   }
 
-  @Test public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
+  @Test
+  public void shouldReturnEmptyReactiveStreamWhenNoWorldFound() throws Exception {
     SearchServerInteractor.Params emptyParams = SearchServerInteractor.Params.empty();
     when(searchServerService.searchServer()).thenReturn(Observable.empty());
 

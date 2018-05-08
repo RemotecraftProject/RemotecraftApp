@@ -20,13 +20,15 @@ public class GetWifiStateInteractorTest {
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     getWifiStateInteractor = new GetWifiStateInteractor(mockReceiverActionProvider, mockThreadExecutor,
         mockPostExecutionThread);
   }
 
-  @Test public void shouldBuildReactiveStreamProperly() throws Exception {
+  @Test
+  public void shouldBuildReactiveStreamProperly() throws Exception {
     getWifiStateInteractor.buildReactiveStream(null);
 
     verify(mockReceiverActionProvider).getWifiState();

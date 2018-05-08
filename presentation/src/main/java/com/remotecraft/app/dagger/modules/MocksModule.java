@@ -12,7 +12,8 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module public class MocksModule {
+@Module
+public class MocksModule {
 
   @Provides @Singleton EntityMockDataSource provideEntityMockDataSource(Context context,
       ImageDecoder imageDecoder) {

@@ -12,7 +12,8 @@ public class ErrorMessage extends Message {
     this.errorProtocol = builder.errorProtocol;
   }
 
-  @Override public boolean isSuccess() {
+  @Override
+  public boolean isSuccess() {
     return false;
   }
 

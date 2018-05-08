@@ -6,7 +6,8 @@ import javax.inject.Inject;
 
 public class ServerProtocolMapper {
 
-  @Inject public ServerProtocolMapper() {
+  @Inject
+  public ServerProtocolMapper() {
 
   }
 

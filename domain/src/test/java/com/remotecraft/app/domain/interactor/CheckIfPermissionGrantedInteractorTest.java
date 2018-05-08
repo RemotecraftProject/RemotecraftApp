@@ -17,7 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class CheckIfPermissionGrantedInteractorTest {
+@RunWith(MockitoJUnitRunner.class)
+  public class CheckIfPermissionGrantedInteractorTest {
 
   private CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor;
 
@@ -25,7 +26,8 @@ import static org.mockito.Mockito.when;
   @Mock private PostExecutionThread mockPostExecutionThread;
   @Mock private PermissionActionProvider mockPermissionActionProvider;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     checkIfPermissionGrantedInteractor =
@@ -33,7 +35,8 @@ import static org.mockito.Mockito.when;
             mockPostExecutionThread);
   }
 
-  @Test public void shouldReturnErrorWhenNullPermissionGiven() throws Exception {
+  @Test
+  public void shouldReturnErrorWhenNullPermissionGiven() throws Exception {
     Single<Boolean> reactiveStream = checkIfPermissionGrantedInteractor.buildReactiveStream(null);
 
     assertThat(reactiveStream).isNotNull();
@@ -43,7 +46,8 @@ import static org.mockito.Mockito.when;
     testObserver.assertNotComplete();
   }
 
-  @Test public void shouldConfirmGrantedPermissionGivenGrantedPermission() throws Exception {
+  @Test
+  public void shouldConfirmGrantedPermissionGivenGrantedPermission() throws Exception {
     Permission permission = getPermission();
     CheckIfPermissionGrantedInteractor.Params params =
         CheckIfPermissionGrantedInteractor.Params.forPermission(permission);
@@ -58,7 +62,8 @@ import static org.mockito.Mockito.when;
     testObserver.assertComplete();
   }
 
-  @Test public void shouldDenyWhenGivenNotGrantedPermission() throws Exception {
+  @Test
+  public void shouldDenyWhenGivenNotGrantedPermission() throws Exception {
     Permission permission = getPermission();
     CheckIfPermissionGrantedInteractor.Params params =
         CheckIfPermissionGrantedInteractor.Params.forPermission(permission);

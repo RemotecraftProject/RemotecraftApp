@@ -4,15 +4,18 @@ import io.reactivex.observers.DisposableMaybeObserver;
 
 public class DefaultMaybeObserver<T> extends DisposableMaybeObserver<T> {
 
-  @Override public void onSuccess(T value) {
+  @Override
+  public void onSuccess(T value) {
 
   }
 
-  @Override public void onError(Throwable e) {
+  @Override
+  public void onError(Throwable e) {
 
   }
 
-  @Override public void onComplete() {
+  @Override
+  public void onComplete() {
 
   }
 }

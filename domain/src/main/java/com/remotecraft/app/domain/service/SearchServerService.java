@@ -10,7 +10,8 @@ public class SearchServerService implements DomainService {
 
   private final NetworkActionProvider networkActionProvider;
 
-  @Inject public SearchServerService(NetworkActionProvider networkActionProvider) {
+  @Inject
+  public SearchServerService(NetworkActionProvider networkActionProvider) {
     this.networkActionProvider = networkActionProvider;
   }
 

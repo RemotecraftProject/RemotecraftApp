@@ -8,7 +8,8 @@ public class MessageJsonMapper {
 
   private final JsonSerializer jsonSerializer;
 
-  @Inject public MessageJsonMapper(JsonSerializer jsonSerializer) {
+  @Inject
+  public MessageJsonMapper(JsonSerializer jsonSerializer) {
     this.jsonSerializer = jsonSerializer;
   }
 

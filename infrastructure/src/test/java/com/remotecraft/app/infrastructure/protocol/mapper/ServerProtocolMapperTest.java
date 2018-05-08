@@ -9,15 +9,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class) public class ServerProtocolMapperTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ServerProtocolMapperTest {
 
   private ServerProtocolMapper serverProtocolMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     serverProtocolMapper = new ServerProtocolMapper();
   }
 
-  @Test public void shouldReturnNullServerEntityGivenNullServerProtocol() throws Exception {
+  @Test
+  public void shouldReturnNullServerEntityGivenNullServerProtocol() throws Exception {
     ServerProtocol serverProtocol = null;
 
     ServerEntity serverEntity = serverProtocolMapper.transform(serverProtocol);
@@ -25,7 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
     assertThat(serverEntity).isNull();
   }
 
-  @Test public void shouldProperlyMapServerProtocolToServerEntity() throws Exception {
+  @Test
+  public void shouldProperlyMapServerProtocolToServerEntity() throws Exception {
     ServerProtocol serverProtocol = new ServerProtocol.Builder()
         .ssid("WLAN_C33C")
         .ip("127.0.0.1")
@@ -53,7 +57,8 @@ import static org.assertj.core.api.Assertions.assertThat;
     assertThat(serverEntity.encodedWorldImage()).isEqualTo("base64image");
   }
 
-  @Test public void shouldReturnNullServerProtocolGivenNullServerEntity() throws Exception {
+  @Test
+  public void shouldReturnNullServerProtocolGivenNullServerEntity() throws Exception {
     ServerEntity serverEntity = null;
 
     ServerProtocol serverProtocol = serverProtocolMapper.transform(serverEntity);
@@ -61,7 +66,8 @@ import static org.assertj.core.api.Assertions.assertThat;
     assertThat(serverProtocol).isNull();
   }
 
-  @Test public void shouldProperlyMapServerEntityToServerProtocol() throws Exception {
+  @Test
+  public void shouldProperlyMapServerEntityToServerProtocol() throws Exception {
     ServerEntity serverEntity = ServerEntity.builder()
         .ssid("WLAN_C33C")
         .ip("127.0.0.1")

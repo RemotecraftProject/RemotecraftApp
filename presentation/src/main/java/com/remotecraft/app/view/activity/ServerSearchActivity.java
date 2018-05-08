@@ -68,7 +68,8 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     return intent;
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_server_search);
 
@@ -77,33 +78,39 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     mapExtras(getIntent());
   }
 
-  @Override protected void onResume() {
+  @Override
+  protected void onResume() {
     super.onResume();
     presenter.resume();
   }
 
-  @Override protected void onPause() {
+  @Override
+  protected void onPause() {
     super.onPause();
     presenter.pause();
   }
 
-  @Override protected void onStop() {
+  @Override
+  protected void onStop() {
     super.onStop();
     presenter.stop();
   }
 
-  @Override protected void onDestroy() {
+  @Override
+  protected void onDestroy() {
     super.onDestroy();
     presenter.destroy();
     presenter.detachView();
   }
 
-  @Override protected void onNewIntent(Intent intent) {
+  @Override
+  protected void onNewIntent(Intent intent) {
     mapExtras(intent);
     super.onNewIntent(intent);
   }
 
-  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
     boolean isSuccess = resultCode == RESULT_OK;
@@ -124,53 +131,64 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
         .injectMembers(this);
   }
 
-  @Override public void onBackPressed() {
+  @Override
+  public void onBackPressed() {
     super.onBackPressed();
   }
 
-  @Override public void navigateToServerDetail(ServerModel serverModel) {
+  @Override
+  public void navigateToServerDetail(ServerModel serverModel) {
     navigator.navigateToServerFoundActivity(this, serverModel);
   }
 
-  @Override public void navigateToMainScreen(ServerModel serverModel) {
+  @Override
+  public void navigateToMainScreen(ServerModel serverModel) {
     Toast.makeText(this, "Connecting to server: " + serverModel.worldName(), Toast.LENGTH_SHORT)
         .show();
   }
 
-  @Override public void showMessage(String message) {
+  @Override
+  public void showMessage(String message) {
     displayMessage(message);
   }
 
-  @Override public void showError(Exception exception) {
+  @Override
+  public void showError(Exception exception) {
     String errorMessage = ErrorMessageFactory.create(this, exception);
     displayMessage(errorMessage);
   }
 
-  @Override public void closeMenu() {
+  @Override
+  public void closeMenu() {
     floatingActionMenu.close(true);
   }
 
-  @Override public void showLoading() {
+  @Override
+  public void showLoading() {
     loadingView.setVisibility(View.VISIBLE);
   }
 
-  @Override public void hideLoading() {
+  @Override
+  public void hideLoading() {
     loadingView.setVisibility(View.GONE);
   }
 
-  @Override public void startQrScanner() {
+  @Override
+  public void startQrScanner() {
     closeCameraButton.setVisibility(View.VISIBLE);
     qrCodeReaderView.setVisibility(View.VISIBLE);
     qrCodeReaderView.startCamera();
   }
 
-  @Override public void stopQrScanner() {
+  @Override
+  public void stopQrScanner() {
     qrCodeReaderView.stopCamera();
     qrCodeReaderView.setVisibility(View.GONE);
     closeCameraButton.setVisibility(View.GONE);
   }
 
-  @Override public void showEnterNetworkAddressDialog() {
+  @Override
+  public void showEnterNetworkAddressDialog() {
     AlertDialog.Builder enterNetworkAddressDialog = new AlertDialog.Builder(this);
     LayoutInflater layoutInflater = getLayoutInflater();
     View enterNetworkAddressDialogView =
@@ -189,19 +207,23 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     enterNetworkAddressDialog.show();
   }
 
-  @OnClick(R.id.fab_wifi) public void onClickFabWifi(View view) {
+  @OnClick(R.id.fab_wifi)
+  public void onClickFabWifi(View view) {
     presenter.onClickScanWifi();
   }
 
-  @OnClick(R.id.fab_qrcode) public void onClickFabQrCode(View view) {
+  @OnClick(R.id.fab_qrcode)
+  public void onClickFabQrCode(View view) {
     presenter.onClickScanQrCode();
   }
 
-  @OnClick(R.id.fab_ip) public void onClickFabIp(View view) {
+  @OnClick(R.id.fab_ip)
+  public void onClickFabIp(View view) {
     presenter.onClickEnterNetworkAddress();
   }
 
-  @OnClick(R.id.close_camera_button) public void onClickCloseCamera(View view) {
+  @OnClick(R.id.close_camera_button)
+  public void onClickCloseCamera(View view) {
     presenter.onClickCloseCamera();
   }
 

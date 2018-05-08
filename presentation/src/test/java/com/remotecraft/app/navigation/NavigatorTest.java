@@ -16,14 +16,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(MockitoJUnitRunner.class) public class NavigatorTest {
+@RunWith(MockitoJUnitRunner.class)
+public class NavigatorTest {
 
   private Navigator navigator;
 
   @Mock private Context mockContext;
   @Mock private Activity mockActivity;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     navigator = new Navigator();
@@ -35,7 +37,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
     navigator.navigateToServerSearchActivity(null);
   }
 
-  @Test public void shouldProperlyNavigateToServerSearchActivity() throws Exception {
+  @Test
+  public void shouldProperlyNavigateToServerSearchActivity() throws Exception {
     navigator.navigateToServerSearchActivity(mockContext);
 
     verify(mockContext, times(1)).startActivity(any(Intent.class));
@@ -78,7 +81,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
         Navigator.RequestCode.SERVER_FOUND);
   }*/
 
-  @Test public void shouldProperlyFinishActivity() throws Exception {
+  @Test
+  public void shouldProperlyFinishActivity() throws Exception {
     navigator.finishActivity(mockActivity);
 
     verify(mockActivity, times(1)).finish();

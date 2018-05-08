@@ -11,12 +11,15 @@ import com.remotecraft.app.dagger.HasComponent;
 
 public abstract class BaseFragment extends Fragment {
 
-  @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return super.onCreateView(inflater, container, savedInstanceState);
   }
 
-  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+  @Override
+  public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     bindViews(view);
   }

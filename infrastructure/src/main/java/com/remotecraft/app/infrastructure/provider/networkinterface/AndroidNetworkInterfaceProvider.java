@@ -8,11 +8,13 @@ import javax.inject.Inject;
 
 public class AndroidNetworkInterfaceProvider implements NetworkInterfaceProvider {
 
-  @Inject public AndroidNetworkInterfaceProvider() {
+  @Inject
+  public AndroidNetworkInterfaceProvider() {
 
   }
 
-  @Override public Collection<NetworkInterface> getNetworkInterfaces() throws SocketException {
+  @Override
+  public Collection<NetworkInterface> getNetworkInterfaces() throws SocketException {
     return Collections.list(NetworkInterface.getNetworkInterfaces());
   }
 }

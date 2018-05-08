@@ -22,7 +22,8 @@ public class SingleInteractorTest {
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     singleInteractor = new SingleInteractorTestClass(mockThreadExecutor, mockPostExecutionThread);
@@ -33,14 +34,16 @@ public class SingleInteractorTest {
 
   // TODO test stream containing values
 
-  @Test public void shouldProperlyDisposeObserver() throws Exception {
+  @Test
+  public void shouldProperlyDisposeObserver() throws Exception {
     singleInteractor.execute(testDisposableSingleObserver, null);
     singleInteractor.dispose();
 
     assertTrue(testDisposableSingleObserver.isDisposed());
   }
 
-  @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
+  @Test(expected = NullPointerException.class)
+  public void shouldFailWhenNullObserver()
       throws Exception {
     singleInteractor.execute(null, null);
   }
@@ -52,7 +55,8 @@ public class SingleInteractorTest {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Single<Integer> buildReactiveStream(EmptyParams params) {
+    @Override
+    protected Single<Integer> buildReactiveStream(EmptyParams params) {
       return Single.just(1);
     }
   }
@@ -61,11 +65,13 @@ public class SingleInteractorTest {
 
     private int valuesCount = 0;
 
-    @Override public void onSuccess(T value) {
+    @Override
+    public void onSuccess(T value) {
       valuesCount++;
     }
 
-    @Override public void onError(Throwable e) {
+    @Override
+    public void onError(Throwable e) {
 
     }
   }

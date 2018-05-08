@@ -23,7 +23,8 @@ public class MaybeInteractorTest {
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     maybeInteractor = new MaybeInteractorTestClass(mockThreadExecutor, mockPostExecutionThread);
@@ -34,20 +35,23 @@ public class MaybeInteractorTest {
 
   // TODO test non-empty stream
 
-  @Test public void shouldReturnEmptyStream() throws Exception {
+  @Test
+  public void shouldReturnEmptyStream() throws Exception {
     maybeInteractor.execute(testDisposableMaybeObserver, null);
 
     assertEquals(0, testDisposableMaybeObserver.valuesCount);
   }
 
-  @Test public void shouldProperlyDisposeObserver() throws Exception {
+  @Test
+  public void shouldProperlyDisposeObserver() throws Exception {
     maybeInteractor.execute(testDisposableMaybeObserver, null);
     maybeInteractor.dispose();
 
     assertTrue(testDisposableMaybeObserver.isDisposed());
   }
 
-  @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
+  @Test(expected = NullPointerException.class)
+  public void shouldFailWhenNullObserver()
       throws Exception {
     maybeInteractor.execute(null, null);
   }
@@ -60,11 +64,13 @@ public class MaybeInteractorTest {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Maybe<Integer> buildReactiveStream(EmptyParams emptyParams) {
+    @Override
+    protected Maybe<Integer> buildReactiveStream(EmptyParams emptyParams) {
       return Maybe.empty();
     }
 
-    @Override public void execute(DisposableMaybeObserver observer, EmptyParams params) {
+    @Override
+    public void execute(DisposableMaybeObserver observer, EmptyParams params) {
       super.execute(observer, params);
     }
   }
@@ -73,15 +79,18 @@ public class MaybeInteractorTest {
 
     private int valuesCount = 0;
 
-    @Override public void onSuccess(T value) {
+    @Override
+    public void onSuccess(T value) {
       valuesCount++;
     }
 
-    @Override public void onError(Throwable e) {
+    @Override
+    public void onError(Throwable e) {
 
     }
 
-    @Override public void onComplete() {
+    @Override
+    public void onComplete() {
 
     }
   }

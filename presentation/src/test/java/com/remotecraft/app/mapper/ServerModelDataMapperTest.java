@@ -29,11 +29,13 @@ public class ServerModelDataMapperTest {
 
   private ServerModelDataMapper serverModelDataMapper;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     serverModelDataMapper = new ServerModelDataMapper();
   }
 
-  @Test public void shouldNotReturnNullWorldModelWhenMappingValidWorld() throws Exception {
+  @Test
+  public void shouldNotReturnNullWorldModelWhenMappingValidWorld() throws Exception {
     Server server = getFakeServer();
 
     ServerModel serverModel = serverModelDataMapper.transform(server);
@@ -47,7 +49,8 @@ public class ServerModelDataMapperTest {
     serverModelDataMapper.transform(server);
   }
 
-  @Test public void shouldReturnWorldModelInstanceWhenMappingWorld() throws Exception {
+  @Test
+  public void shouldReturnWorldModelInstanceWhenMappingWorld() throws Exception {
     Server server = getFakeServer();
 
     ServerModel serverModel = serverModelDataMapper.transform(server);
@@ -55,7 +58,8 @@ public class ServerModelDataMapperTest {
     assertThat(serverModel, is(instanceOf(ServerModel.class)));
   }
 
-  @Test public void shouldTransformProperlyAllFieldsWhenMappingWorld() throws Exception {
+  @Test
+  public void shouldTransformProperlyAllFieldsWhenMappingWorld() throws Exception {
     Server server = getFakeServer();
 
     ServerModel serverModel = serverModelDataMapper.transform(server);
@@ -69,7 +73,8 @@ public class ServerModelDataMapperTest {
     assertThat(FAKE_ENCODED_WORLD_IMAGE, is(serverModel.encodedWorldImage()));
   }
 
-  @Test public void shouldReturnEmptyWorldModelCollectionWhenMappingEmptyWorldCollection()
+  @Test
+  public void shouldReturnEmptyWorldModelCollectionWhenMappingEmptyWorldCollection()
       throws Exception {
     Collection<ServerModel> serverModels = serverModelDataMapper.transform(Collections.emptyList());
 
@@ -77,7 +82,8 @@ public class ServerModelDataMapperTest {
     assertTrue(serverModels.isEmpty());
   }
 
-  @Test public void shouldReturnTheSameAmountOfElementsWhenMappingWorldCollection()
+  @Test
+  public void shouldReturnTheSameAmountOfElementsWhenMappingWorldCollection()
       throws Exception {
     ArrayList<Server> servers = new ArrayList<>();
     servers.add(getFakeServer());
@@ -90,7 +96,8 @@ public class ServerModelDataMapperTest {
     assertThat(serverModels.size(), is(3));
   }
 
-  @Test public void shouldReturnWorldModelInstanceCollectionWhenMappingWorldCollection()
+  @Test
+  public void shouldReturnWorldModelInstanceCollectionWhenMappingWorldCollection()
       throws Exception {
     ArrayList<Server> servers = new ArrayList<>();
     servers.add(getFakeServer());

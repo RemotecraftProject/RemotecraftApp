@@ -24,7 +24,8 @@ public class CompletableInteractorTest {
   @Mock private ThreadExecutor mockThreadExecutor;
   @Mock private PostExecutionThread mockPostExecutionThread;
 
-  @Before public void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
 
     completableInteractor =
@@ -38,20 +39,23 @@ public class CompletableInteractorTest {
 
   // TODO test should complete stream
 
-  @Test public void shouldNeverComplete() throws Exception {
+  @Test
+  public void shouldNeverComplete() throws Exception {
     notCompletableInteractor.execute(testDisposableCompletableObserver, null);
 
     assertFalse(testDisposableCompletableObserver.isCompleted);
   }
 
-  @Test public void shouldProperlyDisposeObserver() throws Exception {
+  @Test
+  public void shouldProperlyDisposeObserver() throws Exception {
     completableInteractor.execute(testDisposableCompletableObserver, null);
     completableInteractor.dispose();
 
     assertTrue(testDisposableCompletableObserver.isDisposed());
   }
 
-  @Test(expected = NullPointerException.class) public void shouldFailWhenNullObserver()
+  @Test(expected = NullPointerException.class)
+  public void shouldFailWhenNullObserver()
       throws Exception {
     completableInteractor.execute(null, null);
   }
@@ -64,7 +68,8 @@ public class CompletableInteractorTest {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Completable buildReactiveStream(EmptyParams params) {
+    @Override
+    protected Completable buildReactiveStream(EmptyParams params) {
       return Completable.complete();
     }
   }
@@ -77,7 +82,8 @@ public class CompletableInteractorTest {
       super(threadExecutor, postExecutionThread);
     }
 
-    @Override protected Completable buildReactiveStream(EmptyParams params) {
+    @Override
+    protected Completable buildReactiveStream(EmptyParams params) {
       return Completable.never();
     }
   }
@@ -87,11 +93,13 @@ public class CompletableInteractorTest {
 
     private boolean isCompleted = false;
 
-    @Override public void onComplete() {
+    @Override
+    public void onComplete() {
       isCompleted = true;
     }
 
-    @Override public void onError(Throwable e) {
+    @Override
+    public void onError(Throwable e) {
 
     }
   }
