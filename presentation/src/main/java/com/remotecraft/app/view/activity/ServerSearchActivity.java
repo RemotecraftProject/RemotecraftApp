@@ -7,11 +7,13 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -52,6 +54,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   @BindView(R.id.button_fab_ip) FloatingActionButton fabIpView;
   @BindView(R.id.button_close_camera) ImageButton closeCameraView;
 
+  @NonNull
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, ServerSearchActivity.class);
   }
@@ -238,7 +241,6 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     setupQrCodeReader();
   }
 
-  @Deprecated
   private void initFabMenuAndButtonColors() {
     fabMenuView.setMenuButtonColorNormal(getResources().getColor(R.color.fab_menu_normal));
     fabMenuView.setMenuButtonColorPressed(getResources().getColor(R.color.fab_menu_pressed));
@@ -247,14 +249,17 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     int fabButtonColorNormal = getResources().getColor(R.color.fab_button_normal);
     int fabButtonColorPressed = getResources().getColor(R.color.fab_button_pressed);
     int fabButtonColorRipple = getResources().getColor(R.color.fab_button_ripple);
+    fabIpView.setButtonSize(FloatingActionButton.SIZE_NORMAL);
     fabIpView.setColorNormal(fabButtonColorNormal);
     fabIpView.setColorPressed(fabButtonColorPressed);
     fabIpView.setColorRipple(fabButtonColorRipple);
 
+    fabQrView.setButtonSize(FloatingActionButton.SIZE_NORMAL);
     fabQrView.setColorNormal(fabButtonColorNormal);
     fabQrView.setColorPressed(fabButtonColorPressed);
     fabQrView.setColorRipple(fabButtonColorRipple);
 
+    fabWifiView.setButtonSize(FloatingActionButton.SIZE_NORMAL);
     fabWifiView.setColorNormal(fabButtonColorNormal);
     fabWifiView.setColorPressed(fabButtonColorPressed);
     fabWifiView.setColorRipple(fabButtonColorRipple);
@@ -285,7 +290,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   }
 
   private void enableFloatingActionMenuAnimation() {
-    AnimatorSet set = new AnimatorSet();
+    AnimatorSet animatorSet = new AnimatorSet();
 
     ObjectAnimator scaleOutX =
         ObjectAnimator.ofFloat(fabMenuView.getMenuIconView(), "scaleX", 1.0f, 0.2f);
@@ -305,17 +310,16 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
 
     scaleInX.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
-        fabMenuView.getMenuIconView()
-            .setImageResource(fabMenuView.isOpened() ? R.drawable.ic_magnify_white
-                : R.drawable.ic_close_white);
+        int fabMenuIcon = fabMenuView.isOpened() ? R.drawable.ic_magnify_white : R.drawable.ic_close_white;
+        fabMenuView.getMenuIconView().setImageResource(fabMenuIcon);
       }
     });
 
-    set.play(scaleOutX).with(scaleOutY);
-    set.play(scaleInX).with(scaleInY).after(scaleOutX);
-    set.setInterpolator(new OvershootInterpolator(2));
+    animatorSet.play(scaleOutX).with(scaleOutY);
+    animatorSet.play(scaleInX).with(scaleInY).after(scaleOutX);
+    animatorSet.setInterpolator(new OvershootInterpolator(2));
 
-    fabMenuView.setIconToggleAnimatorSet(set);
+    fabMenuView.setIconToggleAnimatorSet(animatorSet);
   }
 
   private void dimeBackground(boolean shouldDime) {
@@ -324,7 +328,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
     dimmerView.setVisibility(View.VISIBLE);
     dimmerView.animate()
         .alpha(targetAlpha)
-        .setDuration(250)
+        .setDuration(shouldDime ? 250 : 200)
         .withEndAction(() -> dimmerView.setVisibility(endVisibility))
         .start();
   }

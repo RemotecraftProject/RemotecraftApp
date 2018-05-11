@@ -16,7 +16,8 @@
         android:id="@+id/view_server_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:layoutAnimation="@anim/animation_slide_up"/>
 
   </RelativeLayout>
   

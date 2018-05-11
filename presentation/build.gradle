@@ -180,7 +180,6 @@ dependencies {
   implementation "${library.materialDesignColors}"
   implementation "${library.androidSpinKit}"
   implementation "${library.floatingActionButton}"
-  implementation "${library.kenBurnsView}"
 
   checkstyle "${library.checkstyle}"
 

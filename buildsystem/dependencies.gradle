@@ -29,7 +29,6 @@ ext.version = [
     materialDesignColors      : "3.0.0",
     androidSpinKit            : "1.1.0",
     floatingActionButton      : "1.6.4",
-    kenBurnsView              : "1.0.7",
 
     // Testing
     jUnit                     : "4.12",
@@ -81,7 +80,6 @@ ext.dependency = [
     materialDesignColors      : "com.wada811:android-material-design-colors:${version.materialDesignColors}",
     androidSpinKit            : "com.github.ybq:Android-SpinKit:${version.androidSpinKit}",
     floatingActionButton      : "com.github.clans:fab:${version.floatingActionButton}",
-    kenBurnsView              : "com.flaviofaria:kenburnsview:${version.kenBurnsView}",
 
     checkstyle                : "com.puppycrawl.tools:checkstyle:${version.checkstyle}",
 
@@ -186,7 +184,6 @@ ext.presentationDependencies = [
     materialDesignColors      : "${dependency.materialDesignColors}",
     androidSpinKit            : "${dependency.androidSpinKit}",
     floatingActionButton      : "${dependency.floatingActionButton}",
-    kenBurnsView              : "${dependency.kenBurnsView}",
 
     checkstyle                : "${dependency.checkstyle}"
 ]
