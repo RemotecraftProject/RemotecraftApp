@@ -16,6 +16,7 @@ import com.remotecraft.app.navigation.Navigator;
 import com.remotecraft.app.presenter.ServerFoundPresenter;
 import com.remotecraft.app.infrastructure.tool.ImageDecoder;
 
+import com.remotecraft.app.tools.OsIconProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,6 +50,7 @@ public class ServerFoundActivityTest {
   @Mock private ServerFoundPresenter mockServerFoundPresenter;
   @Mock private ImageLoader mockImageLoader;
   @Mock private ImageDecoder mockImageDecoder;
+  @Mock private OsIconProvider mockOsIconProvider;
   private String mockPlayerAvatarUrl = "https://minotar.net/helm/%s/%s.png";
   private int mockPlayerAvatarSize = 100;
 
@@ -59,6 +61,7 @@ public class ServerFoundActivityTest {
       instance.presenter = mockServerFoundPresenter;
       instance.imageLoader = mockImageLoader;
       instance.imageDecoder = mockImageDecoder;
+      instance.osIconProvider = mockOsIconProvider;
       instance.playerAvatarUrl = mockPlayerAvatarUrl;
       instance.playerAvatarSize = mockPlayerAvatarSize;
     }
@@ -181,7 +184,7 @@ public class ServerFoundActivityTest {
 
   @Test
   public void shouldNotifyPresenterWhenClickAccept() throws Exception {
-    serverFoundActivity.onClickAccept(null);
+    serverFoundActivity.onConnectButtonClick(null);
 
     verify(mockServerFoundPresenter).onClickAccept();
   }

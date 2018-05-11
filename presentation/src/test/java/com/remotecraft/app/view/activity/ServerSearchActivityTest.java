@@ -156,28 +156,28 @@ public class ServerSearchActivityTest {
 
   @Test
   public void shouldDelegateClickFabWifiToPresenter() throws Exception {
-    serverSearchActivity.onClickFabWifi(mock(View.class));
+    serverSearchActivity.onFabWifiButtonClick(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickScanWifi();
   }
 
   @Test
   public void shouldDelegateClickFabQrCodeToPresenter() throws Exception {
-    serverSearchActivity.onClickFabQrCode(mock(View.class));
+    serverSearchActivity.onFabQrButtonClick(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickScanQrCode();
   }
 
   @Test
   public void shouldDelegateClickFabIpToPresenter() throws Exception {
-    serverSearchActivity.onClickFabIp(mock(View.class));
+    serverSearchActivity.onFabIpButtonClick(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickEnterNetworkAddress();
   }
 
   @Test
   public void shouldDelegateClickCloseCameraToPresenter() throws Exception {
-    serverSearchActivity.onClickCloseCamera(mock(View.class));
+    serverSearchActivity.onCloseCameraButtonClick(mock(View.class));
 
     verify(mockServerSearchPresenter, times(1)).onClickCloseCamera();
   }
