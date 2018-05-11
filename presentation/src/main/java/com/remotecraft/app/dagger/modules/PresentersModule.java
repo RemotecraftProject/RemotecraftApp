@@ -1,6 +1,8 @@
 package com.remotecraft.app.dagger.modules;
 
 import com.remotecraft.app.dagger.qualifiers.PerActivity;
+import com.remotecraft.app.dagger.qualifiers.PermissionAccessWifiState;
+import com.remotecraft.app.dagger.qualifiers.PermissionCamera;
 import com.remotecraft.app.domain.Server;
 import com.remotecraft.app.domain.interactor.CheckIfPermissionGrantedInteractor;
 import com.remotecraft.app.domain.interactor.GetWifiStateInteractor;
@@ -28,13 +30,13 @@ public class PresentersModule {
       GetWifiStateInteractor getWifiStateInteractor, SearchServerInteractor searchServerInteractor,
       CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
       RequestPermissionInteractor requestPermissionInteractor,
-      PermissionModel cameraPermissionModel, JsonDeserializer<Server> serverDeserializer,
-      ServerModelDataMapper serverModelDataMapper,
-      NetworkAddressModelDataMapper networkAddressModelDataMapper,
+      @PermissionAccessWifiState PermissionModel accessWifiStatePermissionModel,
+      @PermissionCamera PermissionModel cameraPermissionModel, JsonDeserializer<Server> serverDeserializer,
+      ServerModelDataMapper serverModelDataMapper, NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     return new ServerSearchPresenter(getWifiStateInteractor, searchServerInteractor,
-        checkIfPermissionGrantedInteractor, requestPermissionInteractor, cameraPermissionModel,
-        serverDeserializer, serverModelDataMapper, networkAddressModelDataMapper,
+        checkIfPermissionGrantedInteractor, requestPermissionInteractor, accessWifiStatePermissionModel,
+        cameraPermissionModel, serverDeserializer, serverModelDataMapper, networkAddressModelDataMapper,
         permissionModelDataMapper, uriParser);
   }
 

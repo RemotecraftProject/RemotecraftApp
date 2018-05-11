@@ -2,8 +2,8 @@ package com.remotecraft.app.domain.interactor;
 
 import com.remotecraft.app.domain.executor.PostExecutionThread;
 import com.remotecraft.app.domain.executor.ThreadExecutor;
-import com.remotecraft.app.domain.interactor.params.EmptyParams;
 import com.remotecraft.app.domain.interactor.base.MaybeInteractor;
+import com.remotecraft.app.domain.interactor.params.EmptyParams;
 import com.remotecraft.app.domain.provider.ReceiverActionProvider;
 import io.reactivex.Maybe;
 
@@ -20,5 +20,16 @@ public class GetWifiStateInteractor extends MaybeInteractor<Integer, EmptyParams
   @Override
   protected Maybe<Integer> buildReactiveStream(EmptyParams params) {
     return receiverActionProvider.getWifiState();
+  }
+
+  public static final class Params implements EmptyParams {
+
+    private Params() {
+
+    }
+
+    public static GetWifiStateInteractor.Params emptyParams() {
+      return new GetWifiStateInteractor.Params();
+    }
   }
 }
