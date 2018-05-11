@@ -23,7 +23,8 @@ public class PermissionsModule {
     return PermissionModel.builder()
         .permission(Manifest.permission.ACCESS_WIFI_STATE)
         .rationaleTitle(resources.getString(R.string.permission_access_wifi_state_rationale_title))
-        .rationaleMessage(resources.getString(R.string.permission_access_wifi_state_rationale_message))
+        .rationaleMessage(
+            resources.getString(R.string.permission_access_wifi_state_rationale_message))
         .deniedMessage(resources.getString(R.string.permission_access_wifi_state_denied_message))
         .build();
   }

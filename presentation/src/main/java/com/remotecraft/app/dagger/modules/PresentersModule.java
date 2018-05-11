@@ -31,13 +31,14 @@ public class PresentersModule {
       CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
       RequestPermissionInteractor requestPermissionInteractor,
       @PermissionAccessWifiState PermissionModel accessWifiStatePermissionModel,
-      @PermissionCamera PermissionModel cameraPermissionModel, JsonDeserializer<Server> serverDeserializer,
-      ServerModelDataMapper serverModelDataMapper, NetworkAddressModelDataMapper networkAddressModelDataMapper,
+      @PermissionCamera PermissionModel cameraPermissionModel,
+      JsonDeserializer<Server> serverDeserializer, ServerModelDataMapper serverModelDataMapper,
+      NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     return new ServerSearchPresenter(getWifiStateInteractor, searchServerInteractor,
-        checkIfPermissionGrantedInteractor, requestPermissionInteractor, accessWifiStatePermissionModel,
-        cameraPermissionModel, serverDeserializer, serverModelDataMapper, networkAddressModelDataMapper,
-        permissionModelDataMapper, uriParser);
+        checkIfPermissionGrantedInteractor, requestPermissionInteractor,
+        accessWifiStatePermissionModel, cameraPermissionModel, serverDeserializer,
+        serverModelDataMapper, networkAddressModelDataMapper, permissionModelDataMapper, uriParser);
   }
 
   @Provides @PerActivity ServerFoundPresenter provideServerFoundPresenter() {

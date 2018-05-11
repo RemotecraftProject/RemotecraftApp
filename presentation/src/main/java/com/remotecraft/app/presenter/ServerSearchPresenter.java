@@ -49,9 +49,9 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   public ServerSearchPresenter(MaybeInteractor getWifiStateInteractor,
       SearchServerInteractor searchServerInteractor,
       CheckIfPermissionGrantedInteractor checkIfPermissionGrantedInteractor,
-      RequestPermissionInteractor requestPermissionInteractor, PermissionModel accessWifiStatePermissionModel,
-      PermissionModel cameraPermissionModel, JsonDeserializer<Server> serverDeserializer,
-      ServerModelDataMapper serverModelDataMapper,
+      RequestPermissionInteractor requestPermissionInteractor,
+      PermissionModel accessWifiStatePermissionModel, PermissionModel cameraPermissionModel,
+      JsonDeserializer<Server> serverDeserializer, ServerModelDataMapper serverModelDataMapper,
       NetworkAddressModelDataMapper networkAddressModelDataMapper,
       PermissionModelDataMapper permissionModelDataMapper, UriParser uriParser) {
     this.getWifiStateInteractor = getWifiStateInteractor;
@@ -70,7 +70,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   public void resume() {
     checkViewAttached();
 
-    checkIfPermissionGranted(accessWifiStatePermissionModel, new IsAccessWifiStatePermissionGrantedObserver());
+    checkIfPermissionGranted(accessWifiStatePermissionModel,
+        new IsAccessWifiStatePermissionGrantedObserver());
 
     if (!isScanningWifi && !isScanningQr) {
       getView().hideLoading();
@@ -278,7 +279,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     getView().stopQrScanner();
   }
 
-  private void checkIfPermissionGranted(PermissionModel permissionModel, DisposableSingleObserver observer) {
+  private void checkIfPermissionGranted(PermissionModel permissionModel,
+      DisposableSingleObserver observer) {
     checkViewAttached();
     getView().showLoading();
     Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
@@ -287,7 +289,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     checkIfPermissionGrantedInteractor.execute(observer, params);
   }
 
-  private void requestPermission(PermissionModel permissionModel, DisposableSingleObserver observer) {
+  private void requestPermission(PermissionModel permissionModel,
+      DisposableSingleObserver observer) {
     checkViewAttached();
     getView().showLoading();
     Permission permission = permissionModelDataMapper.transformInverse(permissionModel);
@@ -297,7 +300,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   }
 
   private void checkWifiStrenght() {
-    getWifiStateInteractor.execute(new CheckWifiStrenghtObserver(), GetWifiStateInteractor.Params.emptyParams());
+    getWifiStateInteractor.execute(new CheckWifiStrenghtObserver(),
+        GetWifiStateInteractor.Params.emptyParams());
   }
 
   private final class SearchServerObserver extends DefaultObservableObserver<Server> {
@@ -327,14 +331,16 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     }
   }
 
-  private final class IsAccessWifiStatePermissionGrantedObserver extends DefaultSingleObserver<Boolean> {
+  private final class IsAccessWifiStatePermissionGrantedObserver
+      extends DefaultSingleObserver<Boolean> {
     @Override public void onSuccess(Boolean granted) {
       if (!isViewAttached()) return;
 
       if (granted) {
         checkWifiStrenght();
       } else {
-        requestPermission(accessWifiStatePermissionModel, new RequestAccessWifiStatePermissionObserver());
+        requestPermission(accessWifiStatePermissionModel,
+            new RequestAccessWifiStatePermissionObserver());
       }
     }
 
@@ -368,7 +374,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     }
   }
 
-  private final class RequestAccessWifiStatePermissionObserver extends DefaultSingleObserver<Boolean> {
+  private final class RequestAccessWifiStatePermissionObserver
+      extends DefaultSingleObserver<Boolean> {
     @Override public void onSuccess(Boolean granted) {
       if (!isViewAttached()) return;
 

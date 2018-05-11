@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -310,7 +309,8 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
 
     scaleInX.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationStart(Animator animation) {
-        int fabMenuIcon = fabMenuView.isOpened() ? R.drawable.ic_magnify_white : R.drawable.ic_close_white;
+        int fabMenuIcon =
+            fabMenuView.isOpened() ? R.drawable.ic_magnify_white : R.drawable.ic_close_white;
         fabMenuView.getMenuIconView().setImageResource(fabMenuIcon);
       }
     });
