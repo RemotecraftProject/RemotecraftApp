@@ -8,6 +8,13 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.ServerSearchActivity">
 
+  <com.remotecraft.app.view.custom.WifiStateView
+      android:id="@+id/view_wifi_state"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="8dp"/>
+
   <View
       android:id="@+id/view_dimmer"
       android:layout_width="match_parent"

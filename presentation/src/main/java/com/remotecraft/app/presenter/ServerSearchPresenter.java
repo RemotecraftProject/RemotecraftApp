@@ -388,9 +388,8 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
     }
 
     @Override public void onError(Throwable e) {
-      if (!isViewAttached()) {
-        return;
-      }
+      if (!isViewAttached()) return;
+
       getView().hideLoading();
       getView().showError((Exception) e);
     }
@@ -399,9 +398,7 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
   private final class RequestCameraPermissionObserver extends DefaultSingleObserver<Boolean> {
     @Override
     public void onSuccess(Boolean granted) {
-      if (!isViewAttached()) {
-        return;
-      }
+      if (!isViewAttached()) return;
 
       if (granted) {
         startQrScanning();
@@ -413,18 +410,18 @@ public class ServerSearchPresenter extends BasePresenter<ServerSearchView> {
 
     @Override
     public void onError(Throwable e) {
-      if (!isViewAttached()) {
-        return;
-      }
+      if (!isViewAttached()) return;
+
       getView().hideLoading();
       getView().showError((Exception) e);
     }
   }
 
   private final class CheckWifiStrenghtObserver extends DefaultMaybeObserver<Integer> {
-    @Override public void onSuccess(Integer value) {
-      // TODO update UI
-      Timber.d("WiFi strenght: " + value);
+    @Override public void onSuccess(Integer wifiStrenght) {
+      if (!isViewAttached()) return;
+
+      getView().showWifiState(wifiStrenght);
     }
 
     @Override public void onError(Throwable e) {

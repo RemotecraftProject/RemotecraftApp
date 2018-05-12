@@ -13,4 +13,5 @@ public interface ServerSearchView extends BaseView {
   void startQrScanner();
   void stopQrScanner();
   void showEnterNetworkAddressDialog();
+  void showWifiState(int wifiStrenghtLevel);
 }

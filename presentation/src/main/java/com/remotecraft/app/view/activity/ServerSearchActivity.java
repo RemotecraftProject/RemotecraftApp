@@ -30,8 +30,10 @@ import com.remotecraft.app.dagger.modules.activitymodules.ServerSearchModule;
 import com.remotecraft.app.exception.ErrorMessageFactory;
 import com.remotecraft.app.infrastructure.tool.ImageLoader;
 import com.remotecraft.app.model.ServerModel;
+import com.remotecraft.app.model.WifiStateModel;
 import com.remotecraft.app.presenter.ServerSearchPresenter;
 import com.remotecraft.app.view.ServerSearchView;
+import com.remotecraft.app.view.custom.WifiStateView;
 import javax.inject.Inject;
 
 public class ServerSearchActivity extends BaseActivity implements ServerSearchView {
@@ -44,6 +46,7 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
   @Inject ImageLoader imageLoader;
 
   @BindView(R.id.layout_root) CoordinatorLayout rootLayout;
+  @BindView(R.id.view_wifi_state) WifiStateView wifiStateView;
   @BindView(R.id.view_dimmer) View dimmerView;
   @BindView(R.id.view_loading) SpinKitView loadingView;
   @BindView(R.id.view_qr_reader) QRCodeReaderView qrReaderView;
@@ -204,6 +207,54 @@ public class ServerSearchActivity extends BaseActivity implements ServerSearchVi
         (dialogInterface, i) -> dialogInterface.dismiss());
 
     enterNetworkAddressDialog.show();
+  }
+
+  @Override public void showWifiState(int wifiStrenghtLevel) {
+    // TODO move this logic into a WifiStateModelFactory
+    int strenghtIconResource;
+    int strenghtResource;
+    int strenghtDescriptionResource;
+    switch (wifiStrenghtLevel) {
+      case 5:
+        strenghtResource = R.string.wifi_state_excellent;
+        strenghtDescriptionResource = R.string.wifi_state_excellent_description;
+        strenghtIconResource = R.drawable.ic_wifi_strength_excellent;
+        break;
+      case 4:
+        strenghtResource = R.string.wifi_state_good;
+        strenghtDescriptionResource = R.string.wifi_state_good_descripiont;
+        strenghtIconResource = R.drawable.ic_wifi_strength_good;
+        break;
+      case 3:
+        strenghtResource = R.string.wifi_state_ok;
+        strenghtDescriptionResource = R.string.wifi_state_ok_description;
+        strenghtIconResource = R.drawable.ic_wifi_strength_ok;
+        break;
+      case 2:
+        strenghtResource = R.string.wifi_state_poor;
+        strenghtDescriptionResource = R.string.wifi_state_poor_description;
+        strenghtIconResource = R.drawable.ic_wifi_strength_poor;
+        break;
+      case 1:
+        strenghtResource = R.string.wifi_state_bad;
+        strenghtDescriptionResource = R.string.wifi_state_bad_description;
+        strenghtIconResource = R.drawable.ic_wifi_strength_bad;
+        break;
+      default:
+        // TODO not connected to any wifi is not the same as the wifi being disabled
+        strenghtResource = R.string.wifi_state_no_connection;
+        strenghtDescriptionResource = R.string.wifi_state_no_connection_description;
+        strenghtIconResource = R.drawable.ic_wifi_off;
+    }
+
+    WifiStateModel wifiStateModel = WifiStateModel.builder()
+        .strenghtLevel(wifiStrenghtLevel)
+        .strenght(getString(strenghtResource))
+        .strenghtDescription(getString(strenghtDescriptionResource))
+        .iconResource(strenghtIconResource)
+        .build();
+
+    wifiStateView.renderWifiState(wifiStateModel);
   }
 
   @OnClick(R.id.button_fab_wifi)

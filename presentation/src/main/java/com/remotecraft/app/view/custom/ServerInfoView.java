@@ -16,7 +16,7 @@ import com.remotecraft.app.model.ServerModel;
 
 public class ServerInfoView extends RelativeLayout {
 
-  private static final int LAYOUT_RESOURCE = R.layout.server_info_view;
+  private static final int LAYOUT_RESOURCE = R.layout.view_server_info;
 
   @BindView(R.id.image_player_avatar) ImageView playerAvatarView;
   @BindView(R.id.text_player_name) TextView playerNameView;
@@ -38,6 +38,7 @@ public class ServerInfoView extends RelativeLayout {
     super(context, attrs, defStyleAttr);
   }
 
+  // TODO remove context and use getContext() instead
   public void renderServer(Context context, ServerModel serverModel, ImageLoader imageLoader,
       Bitmap worldImage, String playerAvatarUrl, int playerAvatarSize, int osIconResource) {
     inflateView(context);

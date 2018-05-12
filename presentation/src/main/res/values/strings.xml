@@ -24,6 +24,24 @@
   <string name="permission_camera_rationale_message">You need to allow the camera permission.</string>
   <string name="permission_camera_denied_message">Allow camera permission in app settings</string>
 
+  <string name="wifi_state_excellent">Excellent</string>
+  <string name="wifi_state_excellent_description">Your connection is perfect. Start searching for your server now.</string>
+
+  <string name="wifi_state_good">Good</string>
+  <string name="wifi_state_good_descripiont">Your connection seems very stable. Start searching for your server now.</string>
+
+  <string name="wifi_state_ok">Ok</string>
+  <string name="wifi_state_ok_description">Your connection seems ok. Start searching for your server now.</string>
+
+  <string name="wifi_state_poor">Poor</string>
+  <string name="wifi_state_poor_description">Your WiFi connection looks weak. You can search for your server now but the connection will suffer.</string>
+
+  <string name="wifi_state_bad">Bad</string>
+  <string name="wifi_state_bad_description">Your WiFi connection doesn\'t look like its suitable for establishing a connection. We suggest you to search for better coverage before searching for your server.</string>
+
+  <string name="wifi_state_no_connection">No connection</string>
+  <string name="wifi_state_no_connection_description">Your WiFi connection is not available. Make sure you enable it in the settings.</string>
+
   // Server Found Activity
   <string name="server_found_title">Server found</string>
   <string name="server_found_network_info">%1$s (%2$s)</string>
