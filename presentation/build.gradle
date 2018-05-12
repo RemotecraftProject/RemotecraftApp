@@ -64,6 +64,7 @@ android {
 
   productFlavors {
     mock {
+      minSdkVersion configuration.minimumMockSdkVersion
       buildConfigField("boolean", "IS_MOCK", "true")
     }
 
