@@ -39,6 +39,9 @@
   <string name="wifi_state_bad">Bad</string>
   <string name="wifi_state_bad_description">Your WiFi connection doesn\'t look like its suitable for establishing a connection. We suggest you to search for better coverage before searching for your server.</string>
 
+  <string name="wifi_state_terrible">Terrible</string>
+  <string name="wifi_state_terrible_description">You have a terrible WiFi reception. We suggest you to search for better coverage before searching for your server.</string>
+
   <string name="wifi_state_no_connection">No connection</string>
   <string name="wifi_state_no_connection_description">Your WiFi connection is not available. Make sure you enable it in the settings.</string>
 

@@ -27,12 +27,19 @@ public class ReceiverDataProvider implements ReceiverActionProvider {
         emitter.onError(new NullPointerException());
         return;
       }
+
+      if (!wifiManager.isWifiEnabled()) {
+        emitter.onSuccess(-1);
+        return;
+      }
+
       int numberOfLevels = 4;
       WifiInfo connectionInfo = wifiManager.getConnectionInfo();
       if (connectionInfo == null) {
         emitter.onError(new NullPointerException());
         return;
       }
+
       int wifiStrenght = WifiManager.calculateSignalLevel(connectionInfo.getRssi(), numberOfLevels);
       emitter.onSuccess(wifiStrenght);
       emitter.onComplete();

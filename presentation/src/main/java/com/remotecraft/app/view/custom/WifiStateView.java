@@ -38,7 +38,9 @@ public class WifiStateView extends RelativeLayout {
   public void renderWifiState(final WifiStateModel wifiStateModel) {
     inflateView(getContext());
 
-    if (wifiStateModel.strenghtLevel() == 0) {
+    if (wifiStateModel.strenghtLevel() == -1) {
+      headerLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_black));
+    } else if (wifiStateModel.strenghtLevel() == 0) {
       headerLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_red_500));
     } else if (wifiStateModel.strenghtLevel() >= 1 && wifiStateModel.strenghtLevel() <= 3) {
       headerLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_yellow_500));
